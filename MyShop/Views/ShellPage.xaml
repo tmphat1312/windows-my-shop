@@ -62,7 +62,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Orders" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.OrdersViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE92;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Account" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AccountViewModel">
