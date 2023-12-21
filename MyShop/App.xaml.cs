@@ -6,7 +6,6 @@ using MyShop.Activation;
 using MyShop.Contracts.Services;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Services;
-using MyShop.Helpers;
 using MyShop.Models;
 using MyShop.Services;
 using MyShop.ViewModels;
@@ -14,14 +13,8 @@ using MyShop.Views;
 
 namespace MyShop;
 
-// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
 public partial class App : Application
 {
-    // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
-    // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-    // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-    // https://docs.microsoft.com/dotnet/core/extensions/configuration
-    // https://docs.microsoft.com/dotnet/core/extensions/logging
     public IHost Host
     {
         get;
@@ -40,7 +33,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -66,9 +62,24 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
+            services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<OrdersViewModel>();
+            services.AddTransient<OrdersPage>();
+            services.AddTransient<AccountViewModel>();
+            services.AddTransient<AccountPage>();
+            services.AddTransient<BooksDetailViewModel>();
+            services.AddTransient<BooksDetailPage>();
+            services.AddTransient<BooksViewModel>();
+            services.AddTransient<BooksPage>();
+            services.AddTransient<CategoriesDetailViewModel>();
+            services.AddTransient<CategoriesDetailPage>();
+            services.AddTransient<CategoriesViewModel>();
+            services.AddTransient<CategoriesPage>();
+            services.AddTransient<UsersViewModel>();
+            services.AddTransient<UsersPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
             services.AddTransient<MainViewModel>();

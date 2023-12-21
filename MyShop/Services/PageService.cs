@@ -16,6 +16,13 @@ public class PageService : IPageService
     {
         Configure<MainViewModel, MainPage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<UsersViewModel, UsersPage>();
+        Configure<CategoriesViewModel, CategoriesPage>();
+        Configure<CategoriesDetailViewModel, CategoriesDetailPage>();
+        Configure<BooksViewModel, BooksPage>();
+        Configure<BooksDetailViewModel, BooksDetailPage>();
+        Configure<AccountViewModel, AccountPage>();
+        Configure<OrdersViewModel, OrdersPage>();
     }
 
     public Type GetPageType(string key)
