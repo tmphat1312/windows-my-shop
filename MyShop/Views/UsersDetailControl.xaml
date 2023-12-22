@@ -12,44 +12,46 @@
         IsTabStop="True">
         <StackPanel HorizontalAlignment="Left">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <FontIcon
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="48"
-                    Glyph="{x:Bind ListDetailsMenuItem.Symbol, Mode=OneWay}"
-                    AutomationProperties.Name="{x:Bind ListDetailsMenuItem.SymbolName, Mode=OneWay}"  />
+                <Image Grid.Column="0"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+               
+                     Source="{x:Bind ListDetailsMenuItem.Image, Mode=OneWay}"
+                     Width="32"
+                     Height="32" />    
+                
                 <TextBlock
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center"
-                    Text="{x:Bind ListDetailsMenuItem.Company, Mode=OneWay}"
+                    Text="{x:Bind ListDetailsMenuItem.Name, Mode=OneWay}"
                     Style="{ThemeResource TitleTextBlockStyle}" />
             </StackPanel>
             <StackPanel Padding="0,15,0,0">
-                <TextBlock Text="Status" Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Text="Role:" Style="{StaticResource DetailSubTitleStyle}" />
 
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.Status, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
-
-                <TextBlock
-                    Margin="{StaticResource SmallTopMargin}"
-                    Text="Order date"
-                    Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.OrderDate, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
-                <TextBlock
-                    Margin="{StaticResource SmallTopMargin}"
-                    Text="Company"
-                    Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.Company, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.Role, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
 
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
-                    Text="Ship to"
+                    Text="Email:"
                     Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.ShipTo, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.Email, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
                 <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Text="Create Account Time:"
+                    Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.CreateAt, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+
+                <TextBlock
+                    Margin="{StaticResource SmallTopMargin}"
+                    Text="Password Update Time:"
+                    Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.PasswordUpdateAt, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                <!--<TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Text="Order total"
-                    Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.OrderTotal, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                    Style="{StaticResource DetailSubTitleStyle}" />-->
+                <!--<TextBlock Text="{x:Bind ListDetailsMenuItem.OrderTotal, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
 
                 <TextBlock
                     Margin="{StaticResource MediumTopMargin}"
@@ -66,7 +68,7 @@
                 <TextBlock
                     Margin="{StaticResource MediumBottomMargin}"
                     Style="{StaticResource DetailBodyStyle}"
-                    Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis hendrerit nulla, vel molestie libero. In nec ultricies magna, ultricies molestie ipsum. Mauris non dignissim velit. Etiam malesuada blandit mauris eu maximus. Quisque ornare, felis nec scelerisque mollis, risus dolor posuere magna, in gravida quam mi id nisi. Nullam mattis consequat ex. Cras nulla neque, dictum ac urna et, vestibulum feugiat ex. Pellentesque malesuada accumsan ligula, vel fringilla lacus facilisis sit amet. Proin convallis tempor arcu, ac placerat libero pretium ut. Praesent hendrerit nisl at lobortis viverra. Fusce vitae velit odio. Nam ut tortor sed purus finibus sollicitudin quis at ante. Ut sodales dolor vel eros mollis suscipit. Donec eu nulla id urna ultricies consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;" />
+                    Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis hendrerit nulla, vel molestie libero. In nec ultricies magna, ultricies molestie ipsum. Mauris non dignissim velit. Etiam malesuada blandit mauris eu maximus. Quisque ornare, felis nec scelerisque mollis, risus dolor posuere magna, in gravida quam mi id nisi. Nullam mattis consequat ex. Cras nulla neque, dictum ac urna et, vestibulum feugiat ex. Pellentesque malesuada accumsan ligula, vel fringilla lacus facilisis sit amet. Proin convallis tempor arcu, ac placerat libero pretium ut. Praesent hendrerit nisl at lobortis viverra. Fusce vitae velit odio. Nam ut tortor sed purus finibus sollicitudin quis at ante. Ut sodales dolor vel eros mollis suscipit. Donec eu nulla id urna ultricies consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;" />-->
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
