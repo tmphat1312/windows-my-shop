@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,22 +13,21 @@ namespace MyShop.ViewModels;
 public partial class BooksViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-    private readonly ISampleDataService _sampleDataService;
+    private readonly IBookDataService _bookDataService;
 
-    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    public ObservableCollection<Book> Source { get; } = new ObservableCollection<Book>();
 
-    public BooksViewModel(INavigationService navigationService, ISampleDataService sampleDataService)
+    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService)
     {
         _navigationService = navigationService;
-        _sampleDataService = sampleDataService;
+        _bookDataService = bookDataService;
     }
 
     public async void OnNavigatedTo(object parameter)
     {
         Source.Clear();
 
-        // TODO: Replace with real data.
-        var data = await _sampleDataService.GetContentGridDataAsync();
+        var data = await _bookDataService.GetContentGridDataAsync();
         foreach (var item in data)
         {
             Source.Add(item);
@@ -41,12 +39,12 @@ public partial class BooksViewModel : ObservableRecipient, INavigationAware
     }
 
     [RelayCommand]
-    private void OnItemClick(SampleOrder? clickedItem)
+    private void OnItemClick(Book? clickedItem)
     {
         if (clickedItem != null)
         {
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
-            _navigationService.NavigateTo(typeof(BooksDetailViewModel).FullName!, clickedItem.OrderID);
+            _navigationService.NavigateTo(typeof(BooksDetailViewModel).FullName!, clickedItem);
         }
     }
 }

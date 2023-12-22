@@ -64,6 +64,7 @@ public partial class App : Application
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IBookDataService, BookDataService>();
 
             // Views and ViewModels
             services.AddTransient<OrdersViewModel>();
