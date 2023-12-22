@@ -7,13 +7,13 @@ namespace MyShop.Views;
 
 public sealed partial class UsersDetailControl : UserControl
 {
-    public SampleOrder? ListDetailsMenuItem
+    public User? ListDetailsMenuItem
     {
-        get => GetValue(ListDetailsMenuItemProperty) as SampleOrder;
+        get => GetValue(ListDetailsMenuItemProperty) as User;
         set => SetValue(ListDetailsMenuItemProperty, value);
     }
 
-    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(SampleOrder), typeof(UsersDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
+    public static readonly DependencyProperty ListDetailsMenuItemProperty = DependencyProperty.Register("ListDetailsMenuItem", typeof(User), typeof(UsersDetailControl), new PropertyMetadata(null, OnListDetailsMenuItemPropertyChanged));
 
     public UsersDetailControl()
     {
