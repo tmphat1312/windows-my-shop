@@ -7,7 +7,6 @@ namespace MyShop.ViewModels;
 
 public partial class BooksDetailViewModel : ObservableRecipient, INavigationAware
 {
-    //private Book? _book;
     public Book? Item
     {
         get; set;
