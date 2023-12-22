@@ -13,26 +13,46 @@
         <controls:AdaptiveGridView
             animations:Connected.ListItemElementName="itemThumbnail"
             animations:Connected.ListItemKey="animationKeyContentGrid"
-            DesiredWidth="180"
-            ItemHeight="160"
+            DesiredWidth="200"
             IsItemClickEnabled="True"
             ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
             ItemsSource="{x:Bind ViewModel.Source,Mode=OneWay}"
             SelectionMode="None"
             StretchContentForSingleRow="False">
+
+            <controls:AdaptiveGridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="Margin" Value="6, 8, 6, 8"/>
+                </Style>
+            </controls:AdaptiveGridView.ItemContainerStyle>
+
             <controls:AdaptiveGridView.ItemTemplate>
                 <DataTemplate x:DataType="models:Book">
-                    <Grid
-                        x:Name="itemThumbnail"
-                        Padding="{StaticResource XSmallLeftTopRightBottomMargin}">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock
-                                Margin="{StaticResource XXSmallTopMargin}"
-                                HorizontalAlignment="Center"
-                                Style="{ThemeResource BodyTextStyle}"
-                                Text="{x:Bind Name}" />
-                        </StackPanel>
-                    </Grid>
+                    <Border Background="White" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" BorderThickness="1" CornerRadius="8">
+                        <Grid
+                             x:Name="itemThumbnail"
+                             Padding="12">
+                            <StackPanel>
+                                <Border CornerRadius="6" HorizontalAlignment="Center">
+                                    <Image Source="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" Width="127" Height="127" />
+                                </Border>
+                                <TextBlock 
+                                    Text="{x:Bind Name}"
+                                    Style="{ThemeResource BodyTextStyle}"
+                                    Margin="0, 16, 0, 0"
+                                    TextWrapping="Wrap" 
+                                    TextTrimming="CharacterEllipsis" 
+                                    LineStackingStrategy="BlockLineHeight"
+                                    LineHeight="20"
+                                    MaxHeight="40"
+                                    />
+                                <TextBlock Style="{ThemeResource BodyTextStyle}" FontWeight="SemiBold" Margin="{StaticResource XXSmallTopMargin}">
+                                    <Run Text="{x:Bind SellingPrice}" />
+                                    <Run Text="VND" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </controls:AdaptiveGridView.ItemTemplate>
         </controls:AdaptiveGridView>
