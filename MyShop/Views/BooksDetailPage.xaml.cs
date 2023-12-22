@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Animations;
-
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
 using MyShop.Contracts.Services;
@@ -24,7 +22,7 @@ public sealed partial class BooksDetailPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
+        //this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
