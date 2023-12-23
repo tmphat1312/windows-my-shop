@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
+using MyShop.Helpers;
 
 namespace MyShop.ViewModels;
 
@@ -80,7 +80,7 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
 
     private void GoToFirstPage()
     {
-        
+
         CurrentPage = 1;
 
         UpdateUserPageForCurrentPageAsync();
@@ -99,14 +99,14 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
 
     public void UpdateUserPageForCurrentPageAsync()
     {
-        var startIndex = (CurrentPage - 1) * ItemsPerPage; 
+        var startIndex = (CurrentPage - 1) * ItemsPerPage;
 
-        var pageItems = UserItems.Skip(startIndex).Take(ItemsPerPage).ToList(); 
+        var pageItems = UserItems.Skip(startIndex).Take(ItemsPerPage).ToList();
 
-        UserPage.Clear(); 
+        UserPage.Clear();
         foreach (var item in pageItems)
         {
-            UserPage.Add(item); 
+            UserPage.Add(item);
         }
 
         EnsureItemSelected();
