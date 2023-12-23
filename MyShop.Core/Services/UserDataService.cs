@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
 
 namespace MyShop.Core.Services;
 public class UserDataService : IUserDataService
 {
+    private readonly IUserRepository _userRepository;
     private List<User> _allUsers;
 
-    public UserDataService()
+    public UserDataService(IUserRepository userRepository)
     {
+        _userRepository = userRepository;
     }
 
     private static IEnumerable<User> AllUsers()
@@ -27,11 +30,9 @@ public class UserDataService : IUserDataService
                 ID = i,
                 Name = $"User{i}",
                 Email = $"user{i}@example.com",
-                Password = $"Password{i}!",
                 Role = "Member",
                 Image = "Assets/user.png",
                 CreateAt = DateTime.Now,
-                PasswordUpdateAt = DateTime.Now.AddDays(-30) // Giả sử mật khẩu được cập nhật 30 ngày trước
             });
         }
 
@@ -41,6 +42,8 @@ public class UserDataService : IUserDataService
     public async Task<IEnumerable<User>> GetListUserDetailsDataAsync()
     {
         _allUsers ??= new List<User>(AllUsers());
+
+        var test = await _userRepository.GetAllUsersAsync();
 
         await Task.CompletedTask;
         return _allUsers;
