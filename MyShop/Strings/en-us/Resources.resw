@@ -189,4 +189,7 @@
   <data name="Settings_RowsPerPage.Text" xml:space="preserve">
     <value>Rows per page</value>
   </data>
+  <data name="Shell_AddBook.Content" xml:space="preserve">
+    <value>AddBook</value>
+  </data>
 </root>

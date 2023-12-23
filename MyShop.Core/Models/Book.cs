@@ -18,12 +18,12 @@ public class Book
         get; set;
     }
 
-    public decimal PurchasePrice
+    public double PurchasePrice
     {
         get; set;
     }
 
-    public decimal SellingPrice
+    public double SellingPrice
     {
         get; set;
     }
@@ -39,7 +39,7 @@ public class Book
         get; set;
     }
 
-    public decimal RatingsAverage
+    public double RatingsAverage
     {
         get; set;
     }

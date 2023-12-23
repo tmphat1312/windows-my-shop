@@ -6,103 +6,129 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:MyShop.Core.Models"
+    xmlns:behaviors="using:MyShop.Behaviors"
+    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        <TextBlock Text="{x:Bind ViewModel.Item.Name}" />
-        <TextBlock Text="{x:Bind ViewModel.Item.Description}" />
-        <!--<VisualStateManager.VisualStateGroups>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+            <Style x:Key="BookTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontWeight" Value="Medium" />
+                <Setter Property="Margin" Value="0,0,0,20" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+            </Style>
+            <Style x:Key="BookDescriptionStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Margin" Value="0,0,0,10" />
+            </Style>
+            <Style x:Key="BookPosterStyle" TargetType="Image">
+                <Setter Property="MaxWidth" Value="300" />
+                <Setter Property="Height" Value="Auto" />   
+            </Style>
+            <Style x:Key="PosterBorderStyle" TargetType="Border">
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Margin" Value="0,0,40,10" />
+            </Style>
+        </Grid.Resources>
+
+        <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
-                        --><!--641 is the default CompactModeThresholdWidth in NavigationView --><!--
-                        <AdaptiveTrigger MinWindowWidth="641" />
+                        <AdaptiveTrigger MinWindowWidth="600" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="propertiesGroup1.(RelativePanel.RightOf)" Value="itemHero" />
-                        <Setter Target="propertiesGroup1.(RelativePanel.Below)" Value="title" />
-                        <Setter Target="propertiesGroup2.(RelativePanel.RightOf)" Value="propertiesGroup1" />
-                        <Setter Target="propertiesGroup2.(RelativePanel.Below)" Value="title" />
-                        <Setter Target="propertiesGroup1.Width" Value="200" />
+                        <Setter Target="includePosterGroup.Orientation" Value="Horizontal" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        </VisualStateManager.VisualStateGroups>
 
-        <!--<ScrollViewer
-            IsTabStop="True">
-            <StackPanel
-                x:Name="contentPanel">
-                <RelativePanel>
-                    <Grid
-                        x:Name="itemHero"
-                        Width="200"
-                        Height="200"
-                        Margin="{StaticResource SmallRightMargin}"
-                        Padding="{StaticResource XSmallLeftTopRightBottomMargin}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        RelativePanel.AlignTopWithPanel="True"
-                        RelativePanel.AlignLeftWithPanel="True">
-                        <FontIcon
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="70"
-                            Glyph="{x:Bind ViewModel.Item.Symbol}"
-                            AutomationProperties.Name="{x:Bind ViewModel.Item.SymbolName}" />
-                    </Grid>
+        <ScrollViewer IsTabStop="True">
+            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}">
+                <TextBlock Style="{StaticResource BookTitleStyle}" Text="{x:Bind ViewModel.Item.Name}" />
 
-                    <TextBlock
-                        x:Name="title"
-                        Margin="{StaticResource XXSmallTopMargin}"
-                        RelativePanel.AlignTopWithPanel="True"
-                        RelativePanel.RightOf="itemHero"
-                        Style="{ThemeResource TitleTextBlockStyle}"
-                        Text="{x:Bind ViewModel.Item.Company, Mode=OneWay}" />
+                <RelativePanel x:Name="includePosterGroup">
+                    <StackPanel x:Name="itemPosterContainer">
+                        <Border Style="{StaticResource PosterBorderStyle}">
+                            <Image 
+                                x:Name="itemPoster" 
+                                Style="{StaticResource BookPosterStyle}"
+                                Source="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" />
+                        </Border>
 
-                    <StackPanel x:Name="propertiesGroup1" RelativePanel.Below="itemHero">
-                        <StackPanel x:Name="statusGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Status" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.Status}" />
-                        </StackPanel>
-
-                        <StackPanel x:Name="orderDateGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order date" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.OrderDate}" />
-                        </StackPanel>
+                        <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                            <AppBarButton Icon="Edit" Label="Edit"/>
+                            <AppBarButton Icon="Delete" Label="Delete"/>
+                        </CommandBar>
                     </StackPanel>
 
-                    <StackPanel x:Name="propertiesGroup2" RelativePanel.Below="propertiesGroup1">
-                        <StackPanel x:Name="shipToGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Ship to" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.ShipTo}" />
-                        </StackPanel>
+                    <StackPanel x:Name="bookInfoGroup" RelativePanel.RightOf="itemPosterContainer">
+                        <StackPanel.Resources>
+                            <Style x:Key="LabelStyle" TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="12" />
+                                <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondary}" />
+                            </Style>
+                            <Style x:Key="ContentStyle" TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="18" />
+                                <Setter Property="FontWeight" Value="Medium" />
+                            </Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Margin" Value="0,0,0,8" />
+                            </Style>
+                        </StackPanel.Resources>
 
-                        <StackPanel x:Name="orderTotalGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order total" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.OrderTotal}" />
+                        <StackPanel x:Name="bookName">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Name: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Name}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookDescription">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Description: " />
+                            <RichTextBlock Grid.Column="0" TextAlignment="Justify">
+                                <Paragraph>
+                                    <Run Text="{Binding Description}" />
+                                </Paragraph>
+                            </RichTextBlock>
+                        </StackPanel>
+                        
+                        <StackPanel x:Name="bookAuthor">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Author: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Author}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookSellingPrice">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="SellingPrice: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookPurchasePrice">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="PurchasePrice: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookCategory">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Category: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding CategoryId}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookPublishedYear">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Published Year: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PublishedYear}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookRatingsAverage" HorizontalAlignment="Left">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Ratings Average: " />
+                            <RatingControl 
+                                IsClearEnabled="True"
+                                IsReadOnly="True" 
+                                PlaceholderValue="{Binding RatingsAverage}"
+                                Caption="{Binding RatingsAverage}"/>
                         </StackPanel>
                     </StackPanel>
-
                 </RelativePanel>
 
-                <TextBlock
-                    Margin="{StaticResource SmallTopMargin}"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                    Text="Note 1" />
-                <TextBlock
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis hendrerit nulla, vel molestie libero. In nec ultricies magna, ultricies molestie ipsum. Mauris non dignissim velit. Etiam malesuada blandit mauris eu maximus. Quisque ornare, felis nec scelerisque mollis, risus dolor posuere magna, in gravida quam mi id nisi. Nullam mattis consequat ex. Cras nulla neque, dictum ac urna et, vestibulum feugiat ex. Pellentesque malesuada accumsan ligula, vel fringilla lacus facilisis sit amet. Proin convallis tempor arcu, ac placerat libero pretium ut. Praesent hendrerit nisl at lobortis viverra. Fusce vitae velit odio. Nam ut tortor sed purus finibus sollicitudin quis at ante. Ut sodales dolor vel eros mollis suscipit. Donec eu nulla id urna ultricies consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;" />
+                <TextBlock>Customer reviews</TextBlock>
 
-                <TextBlock
-                    Margin="{StaticResource SmallTopMargin}"
-                    Style="{ThemeResource SubtitleTextBlockStyle}"
-                    Text="Note 2" />
-                <TextBlock
-                    Margin="{StaticResource MediumBottomMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis quis hendrerit nulla, vel molestie libero. In nec ultricies magna, ultricies molestie ipsum. Mauris non dignissim velit. Etiam malesuada blandit mauris eu maximus. Quisque ornare, felis nec scelerisque mollis, risus dolor posuere magna, in gravida quam mi id nisi. Nullam mattis consequat ex. Cras nulla neque, dictum ac urna et, vestibulum feugiat ex. Pellentesque malesuada accumsan ligula, vel fringilla lacus facilisis sit amet. Proin convallis tempor arcu, ac placerat libero pretium ut. Praesent hendrerit nisl at lobortis viverra. Fusce vitae velit odio. Nam ut tortor sed purus finibus sollicitudin quis at ante. Ut sodales dolor vel eros mollis suscipit. Donec eu nulla id urna ultricies consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;" />
             </StackPanel>
-        </ScrollViewer>-->
+        </ScrollViewer>
     </Grid>
 </Page>
