@@ -42,11 +42,11 @@
                     Style="{StaticResource DetailSubTitleStyle}" />
                 <TextBlock Text="{x:Bind ListDetailsMenuItem.CreateAt, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
 
-                <TextBlock
+                <!--<TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Text="Password Update Time:"
                     Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.PasswordUpdateAt, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                <TextBlock Text="{x:Bind ListDetailsMenuItem.PasswordUpdateAt, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />-->
                 <!--<TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Text="Order total"

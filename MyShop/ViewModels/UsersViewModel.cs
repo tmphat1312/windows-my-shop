@@ -67,16 +67,14 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
     private void GoToLastPage()
     {
         CurrentPage = _totalPages;
-        UpdateUserItemsForCurrentPageAsync();
-        UpdateCommands();
+        UpdateUserPageForCurrentPageAsync();
 
     }
     private void GoToNextPage()
     {
 
         CurrentPage++;
-        UpdateUserItemsForCurrentPageAsync();
-        UpdateCommands();
+        UpdateUserPageForCurrentPageAsync();
 
     }
 
@@ -85,8 +83,7 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         
         CurrentPage = 1;
 
-        UpdateUserItemsForCurrentPageAsync();
-        UpdateCommands();
+        UpdateUserPageForCurrentPageAsync();
 
     }
 
@@ -95,13 +92,12 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
 
         CurrentPage--;
 
-        UpdateUserItemsForCurrentPageAsync();
-        UpdateCommands();
+        UpdateUserPageForCurrentPageAsync();
 
 
     }
 
-    public void UpdateUserItemsForCurrentPageAsync()
+    public void UpdateUserPageForCurrentPageAsync()
     {
         var startIndex = (CurrentPage - 1) * ItemsPerPage; 
 
@@ -114,6 +110,8 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         }
 
         EnsureItemSelected();
+        UpdateCommands();
+
     }
 
 
@@ -138,7 +136,7 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         }
 
 
-        UpdateUserItemsForCurrentPageAsync();
+        UpdateUserPageForCurrentPageAsync();
     }
 
     public void OnNavigatedFrom()
@@ -147,6 +145,7 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
 
     public void EnsureItemSelected()
     {
-        Selected ??= UserPage.First();
+        Selected = UserPage.Any() ? UserPage.First() : null;
+
     }
 }
