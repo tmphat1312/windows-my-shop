@@ -128,9 +128,7 @@
 
                 <TextBlock>Customer reviews</TextBlock>
 
-                <TextBlock>Related books</TextBlock>
             </StackPanel>
-
         </ScrollViewer>
     </Grid>
 </Page>

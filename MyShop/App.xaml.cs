@@ -12,6 +12,7 @@ using MyShop.Models;
 using MyShop.Services;
 using MyShop.ViewModels;
 using MyShop.Views;
+
 using Windows.Services.Maps;
 
 namespace MyShop;
@@ -74,6 +75,8 @@ public partial class App : Application
             services.AddSingleton<IBookDataService, BookDataService>();
 
             // Views and ViewModels
+            services.AddTransient<AddBookViewModel>();
+            services.AddTransient<AddBookPage>();
             services.AddTransient<OrdersViewModel>();
             services.AddTransient<OrdersPage>();
             services.AddTransient<AccountViewModel>();

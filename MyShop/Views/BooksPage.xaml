@@ -7,23 +7,53 @@
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:MyShop.Core.Models"
+    xmlns:myControls="using:MyShop.Controls"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
         <ScrollViewer IsTabStop="True">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 0, 20">
-                    <StackPanel Orientation="Horizontal" Spacing="2">
-                        <TextBox Width="180" PlaceholderText="Find a book" />
-                        <Button>
-                            <FontIcon Glyph="&#xE721;" />
-                        </Button>
-                    </StackPanel>
+            <StackPanel Spacing="16">
+                <StackPanel 
+                    Orientation="Horizontal" 
+                    Spacing="12" 
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right">
+                    <myControls:FilterByComboBoxControl />
+                    <myControls:SortComboBoxControl />
+                    <myControls:SearchBoxControl />
+                    
+                    <Button VerticalAlignment="Bottom">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+                            <FontIcon Glyph="&#xE71C;"  FontSize="16" />
+                            <TextBlock Text="Apply" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
+                <Expander
+                     Width="240"
+                     ExpandDirection="Down"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Right">
+                    <Expander.Header>
+                        <TextBlock Text="Search box with filters" />
+                    </Expander.Header>
+                    
+                    <StackPanel Spacing="12" HorizontalAlignment="Left">
+                        <myControls:SearchBoxControl />
+                        <myControls:SortComboBoxControl />
+                        <myControls:FilterByComboBoxControl />
+                        
+                        <Button HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+                                <FontIcon Glyph="&#xE71C;"  FontSize="16" />
+                                <TextBlock Text="Apply" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Expander>
+
                 <controls:AdaptiveGridView
-                    animations:Connected.ListItemElementName="itemThumbnail"
-                    animations:Connected.ListItemKey="animationKeyContentGrid"
                     DesiredWidth="200"
                     IsItemClickEnabled="True"
                     ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
@@ -39,27 +69,37 @@
 
                     <controls:AdaptiveGridView.ItemTemplate>
                         <DataTemplate x:DataType="models:Book">
-                            <Border Background="White" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" BorderThickness="1" CornerRadius="8">
+                            <Border x:Name="BookBorder" Background="White" BorderThickness="1" CornerRadius="4">
                                 <Grid
-                             x:Name="itemThumbnail"
-                             Padding="12">
+                                     x:Name="itemThumbnail"
+                                     Padding="12">
+                                    <Grid.Resources>
+                                        <Style TargetType="Image" x:Key="BookPosterStyle">
+                                            <Setter Property="Width" Value="127" />
+                                            <Setter Property="Height" Value="127" />
+                                            <Setter Property="Source" Value="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" />
+                                        </Style>
+                                        
+                                        <Style TargetType="TextBlock" x:Key="BookTitleStyle">
+                                            <Setter Property="Margin" Value="0, 16, 0, 0" />
+                                            <Setter Property="TextWrapping" Value="Wrap" />
+                                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                            <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                                            <Setter Property="LineHeight" Value="20" />
+                                            <Setter Property="MaxHeight" Value="40" />
+                                        </Style>
+                                    </Grid.Resources>
+
                                     <StackPanel>
                                         <Border CornerRadius="6" HorizontalAlignment="Center">
-                                            <Image Source="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" Width="127" Height="127" />
+                                            <Image Style="{StaticResource BookPosterStyle}" />
                                         </Border>
                                         <TextBlock 
-                                    Text="{x:Bind Name}"
-                                    Style="{ThemeResource BodyTextStyle}"
-                                    Margin="0, 16, 0, 0"
-                                    TextWrapping="Wrap" 
-                                    TextTrimming="CharacterEllipsis" 
-                                    LineStackingStrategy="BlockLineHeight"
-                                    LineHeight="20"
-                                    MaxHeight="40"
-                                    />
+                                            Text="{x:Bind Name}"
+                                            Style="{StaticResource BookTitleStyle}" />
                                         <TextBlock Style="{ThemeResource BodyTextStyle}" FontWeight="SemiBold" Margin="{StaticResource XXSmallTopMargin}">
-                                    <Run Text="{x:Bind SellingPrice}" />
-                                    <Run Text="VND" />
+                                            <Run Text="{x:Bind SellingPrice}" />
+                                            <Run Text="VND" />
                                         </TextBlock>
                                     </StackPanel>
                                 </Grid>
@@ -68,15 +108,7 @@
                     </controls:AdaptiveGridView.ItemTemplate>
                 </controls:AdaptiveGridView>
 
-                <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="10" Padding="16, 8, 16, 8" HorizontalAlignment="Center" Margin="0, 20, 0, 0">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
-                        <TextBlock VerticalAlignment="Center">Display 1 --> 10 of 36 results</TextBlock>
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <Button>Prev</Button>
-                            <Button>Next</Button>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                <myControls:PaginationControl />
             </StackPanel>
         </ScrollViewer>
     </Grid>
