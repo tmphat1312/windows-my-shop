@@ -8,27 +8,36 @@
     xmlns:models="using:MyShop.Core.Models"
     xmlns:views="using:MyShop.Views"
     xmlns:behaviors="using:MyShop.Behaviors"
+    xmlns:helpers="using:MyShop.Helpers"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="ItemTemplate" x:DataType="models:SampleOrder">
+      
+        
+        <DataTemplate x:Key="ItemTemplate" x:DataType="models:User">
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <FontIcon
+                <!--<FontIcon
                     Grid.Column="0"
                     VerticalAlignment="Center"
                     FontSize="32"
                     Glyph="{x:Bind Symbol}"
-                    AutomationProperties.Name="{x:Bind SymbolName}" />
+                    AutomationProperties.Name="{x:Bind SymbolName}" />-->
+                <Image Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Source="{x:Bind Image, Mode=OneWay}"
+                       Width="32"
+                       Height="32" />       
+
                 <StackPanel
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Text="{x:Bind Company}" Style="{StaticResource ListTitleStyle}" />
-                    <TextBlock Text="{x:Bind Status}" Style="{StaticResource ListSubTitleStyle}" />
+                    <TextBlock Text="{x:Bind Name}" Style="{StaticResource ListTitleStyle}" />
+                    <TextBlock Text="{x:Bind Role}" Style="{StaticResource ListSubTitleStyle}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -90,11 +99,19 @@
             Background="Transparent"
             BorderBrush="Transparent"
             DetailsTemplate="{StaticResource DetailsTemplate}"
-            ItemsSource="{x:Bind ViewModel.SampleItems}"
+            ItemsSource="{x:Bind ViewModel.UserPage}"
             ItemTemplate="{StaticResource ItemTemplate}"
             ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
             NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
             ViewStateChanged="OnViewStateChanged"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
+            <Button Content= "&lt;&lt;" Command="{x:Bind ViewModel.GoToFirstPageCommand}" />
+            <Button Content= "&lt;" Command="{x:Bind ViewModel.GoToPreviousPageCommand}" />
+            <TextBlock Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" Margin="8,0" VerticalAlignment="Center" />
+            <Button Content= ">" Command="{x:Bind ViewModel.GoToNextPageCommand}" />
+            <Button Content= ">>" Command="{x:Bind ViewModel.GoToLastPageCommand}" />
+        </StackPanel>
     </Grid>
 </Page>

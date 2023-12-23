@@ -4,12 +4,15 @@ using Microsoft.UI.Xaml;
 
 using MyShop.Activation;
 using MyShop.Contracts.Services;
+using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Contracts.Services;
+using MyShop.Core.Repository;
 using MyShop.Core.Services;
 using MyShop.Models;
 using MyShop.Services;
 using MyShop.ViewModels;
 using MyShop.Views;
+using Windows.Services.Maps;
 
 namespace MyShop;
 
@@ -51,6 +54,9 @@ public partial class App : Application
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
             // Other Activation Handlers
+            // Repositories
+            services.AddHttpClient<IUserRepository, UserRepository>();
+
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -63,6 +69,7 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<ISampleDataService, SampleDataService>();
+            services.AddSingleton<IUserDataService, UserDataService>();
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IBookDataService, BookDataService>();
 
