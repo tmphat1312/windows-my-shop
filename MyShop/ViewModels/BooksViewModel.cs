@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -14,13 +13,16 @@ public partial class BooksViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IBookDataService _bookDataService;
+    private readonly IResourcePagingService _resourcePagingService;
+    public IResourcePagingService ResourcePagingService => _resourcePagingService;
 
     public ObservableCollection<Book> Source { get; } = new ObservableCollection<Book>();
 
-    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService)
+    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService, IResourcePagingService resourcePagingService)
     {
         _navigationService = navigationService;
         _bookDataService = bookDataService;
+        _resourcePagingService = resourcePagingService;
     }
 
     public async void OnNavigatedTo(object parameter)
@@ -28,6 +30,7 @@ public partial class BooksViewModel : ObservableRecipient, INavigationAware
         Source.Clear();
 
         var data = await _bookDataService.GetContentGridDataAsync();
+
         foreach (var item in data)
         {
             Source.Add(item);

@@ -25,20 +25,6 @@
             </Style>
         </Grid.Resources>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="600" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="PagingTextFull.Visibility" Value="Visible" />
-                        <Setter Target="PagingTextCompact.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <Border Style="{StaticResource BorderStyle}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel.Resources>
@@ -50,7 +36,7 @@
                     </Style>
                 </StackPanel.Resources>
                 
-                <TextBlock VerticalAlignment="Center" x:Name="PagingTextFull" Visibility="Collapsed">
+                <TextBlock VerticalAlignment="Center" x:Name="PagingTextFull">
                     <Run Text="Display"/>
                     <Run Text="1" FontWeight="Medium" />
                     <Run Text="to" />
@@ -62,9 +48,9 @@
                 
                 <TextBlock VerticalAlignment="Center" x:Name="PagingTextCompact">
                     <Run Text="Page"/>  
-                    <Run Text="1" FontWeight="Medium" />
+                    <Run Text="{x:Bind CurrentPage}" FontWeight="Medium" />
                     <Run Text="/" />
-                    <Run Text="10" FontWeight="Medium" />
+                    <Run Text="{x:Bind TotalPages}" FontWeight="Medium" />
                 </TextBlock>
                     
                 <StackPanel Orientation="Horizontal" Spacing="12">

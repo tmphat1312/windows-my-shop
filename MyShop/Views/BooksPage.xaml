@@ -12,48 +12,48 @@
 
     <Grid x:Name="ContentArea">
         <ScrollViewer IsTabStop="True">
-            <StackPanel Spacing="16">
-                <StackPanel 
-                    Orientation="Horizontal" 
-                    Spacing="12" 
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right">
-                    <myControls:FilterByComboBoxControl />
-                    <myControls:SortComboBoxControl />
-                    <myControls:SearchBoxControl />
-                    
-                    <Button VerticalAlignment="Bottom">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
-                            <FontIcon Glyph="&#xE71C;"  FontSize="16" />
-                            <TextBlock Text="Apply" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+            <StackPanel>
+                <Grid>
+                    <Grid.Resources>
+                        <Style x:Key="FiltersAndSearchPanelStyle" TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                            <Setter Property="Spacing" Value="12" />
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
 
-                <Expander
-                     Width="240"
-                     ExpandDirection="Down"
-                     VerticalAlignment="Top"
-                     HorizontalAlignment="Right">
-                    <Expander.Header>
-                        <TextBlock Text="Search box with filters" />
-                    </Expander.Header>
-                    
-                    <StackPanel Spacing="12" HorizontalAlignment="Left">
-                        <myControls:SearchBoxControl />
-                        <myControls:SortComboBoxControl />
+                        <Style x:Key="SmallFiltersAndSearchPanelStyle" TargetType="Expander">
+                            <Setter Property="Width" Value="240" />
+                            <Setter Property="ExpandDirection" Value="Down" />
+                            <Setter Property="VerticalAlignment" Value="Top" />
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                        </Style>
+                    </Grid.Resources>
+
+                    <StackPanel 
+                        x:Name="FiltersAndSearchPanel" 
+                        Style="{StaticResource FiltersAndSearchPanelStyle}">
                         <myControls:FilterByComboBoxControl />
-                        
-                        <Button HorizontalAlignment="Right">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
-                                <FontIcon Glyph="&#xE71C;"  FontSize="16" />
-                                <TextBlock Text="Apply" />
-                            </StackPanel>
-                        </Button>
+                        <myControls:SortComboBoxControl />
+                        <myControls:SearchBoxControl />
+                        <myControls:ApplyButton VerticalAlignment="Bottom" />
                     </StackPanel>
-                </Expander>
+
+                    <Expander
+                        Header="Search box with filters"
+                        x:Name="SmallFiltersAndSearchPanel"
+                        Style="{StaticResource SmallFiltersAndSearchPanelStyle}">
+                        <StackPanel Spacing="12" HorizontalAlignment="Left">
+                            <myControls:SearchBoxControl />
+                            <myControls:SortComboBoxControl />
+                            <myControls:FilterByComboBoxControl />
+                            <myControls:ApplyButton HorizontalAlignment="Right" />
+                        </StackPanel>
+                    </Expander>
+                </Grid>
 
                 <controls:AdaptiveGridView
+                    Margin="0, 16, 0, 16"
                     DesiredWidth="200"
                     IsItemClickEnabled="True"
                     ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
@@ -79,7 +79,7 @@
                                             <Setter Property="Height" Value="127" />
                                             <Setter Property="Source" Value="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" />
                                         </Style>
-                                        
+
                                         <Style TargetType="TextBlock" x:Key="BookTitleStyle">
                                             <Setter Property="Margin" Value="0, 16, 0, 0" />
                                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -108,7 +108,9 @@
                     </controls:AdaptiveGridView.ItemTemplate>
                 </controls:AdaptiveGridView>
 
-                <myControls:PaginationControl />
+                <myControls:PaginationControl 
+                    TotalPages="{x:Bind ViewModel.ResourcePagingService.TotalPages}" 
+                    CurrentPage="{x:Bind ViewModel.ResourcePagingService.CurrentPage}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
