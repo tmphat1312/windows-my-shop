@@ -72,6 +72,7 @@ public partial class App : Application
             services.AddSingleton<IUserDataService, UserDataService>();
             services.AddSingleton<IFileService, FileService>();
 
+
             // Views and ViewModels
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<AddUserPage>();
