@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MyShop.Core.Models;
 public class User
 {
     [JsonProperty("_id")]
-    public int ID
+    public string ID
     {
         get; set;
     }
@@ -32,7 +27,7 @@ public class User
     //    get; set;
 
     //}
-
+    
     [JsonProperty("role")]
     public string Role
     {
@@ -41,13 +36,13 @@ public class User
     }
 
     [JsonProperty("image")]
-    public string Image
-    {
-        get;set;
-    }
+    public string Image { get; set; } = "noimage";
 
-    [JsonProperty("createAt")]
-    public DateTime CreateAt
+    [JsonProperty("password")]
+    public string Password { get; set; }
+
+    [JsonProperty("createdAt")]
+    public DateTime CreatedAt
     {
         get; set;
     }

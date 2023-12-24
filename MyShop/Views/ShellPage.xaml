@@ -49,6 +49,16 @@
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE716;"/>
                     </NavigationViewItem.Icon>
+
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Create a User" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddUserViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82E;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+       
+                    </NavigationViewItem.MenuItems>
+                    
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Categories" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.CategoriesViewModel">
                     <NavigationViewItem.Icon>
@@ -70,6 +80,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC25;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+               
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
