@@ -16,6 +16,7 @@ public class UserDataService : IUserDataService
     public UserDataService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
+        _allUsers = new List<User>();
     }
 
     private static IEnumerable<User> AllUsers()
@@ -27,12 +28,12 @@ public class UserDataService : IUserDataService
         {
             allUsers.Add(new User
             {
-                ID = i,
+                ID = $"{i}",
                 Name = $"User{i}",
                 Email = $"user{i}@example.com",
                 Role = "Member",
-                Image = "Assets/user.png",
-                CreateAt = DateTime.Now,
+                Image = null,
+                CreatedAt = DateTime.Now,
             });
         }
 
@@ -41,11 +42,10 @@ public class UserDataService : IUserDataService
 
     public async Task<IEnumerable<User>> GetListUserDetailsDataAsync()
     {
-        _allUsers ??= new List<User>(AllUsers());
-
-        var test = await _userRepository.GetAllUsersAsync();
+        _allUsers =  await _userRepository.GetAllUsersAsync();
 
         await Task.CompletedTask;
         return _allUsers;
+       
     }
 }

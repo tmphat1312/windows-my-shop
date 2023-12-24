@@ -73,6 +73,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<AddUserViewModel>();
+            services.AddTransient<AddUserPage>();
             services.AddTransient<OrdersViewModel>();
             services.AddTransient<OrdersPage>();
             services.AddTransient<AccountViewModel>();

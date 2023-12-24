@@ -8,12 +8,11 @@
     xmlns:models="using:MyShop.Core.Models"
     xmlns:views="using:MyShop.Views"
     xmlns:behaviors="using:MyShop.Behaviors"
-    xmlns:helpers="using:MyShop.Helpers"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
     <Page.Resources>
+
       
-        
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:User">
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
@@ -105,6 +104,32 @@
             NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
             ViewStateChanged="OnViewStateChanged"/>
+
+        <StackPanel 
+        Orientation="Horizontal" 
+        HorizontalAlignment="Left" 
+        VerticalAlignment="Bottom" 
+        Margin="0,0,0,40" 
+        Grid.Row="1">
+
+            <!-- Nút Thêm (Add) với màu nền xanh -->
+            <Button 
+            Content="ADD" 
+            Command="{x:Bind ViewModel.AddUserCommand}"
+            Background="#FF4CAF50"  
+                Margin="10,0" />
+
+                <!-- Nút Xóa (Delete) với màu nền đỏ -->
+            <Button 
+            Content="DELETE" 
+            Command="{x:Bind ViewModel.DeleteUserCommand}"
+            Background="#FFF44336"  />
+            <Button 
+            Content="EDIT" 
+            Command="{x:Bind ViewModel.EditUserCommand}"
+            Background="#FFFFEB3B"
+                        Margin="10,0" />
+        </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
             <Button Content= "&lt;&lt;" Command="{x:Bind ViewModel.GoToFirstPageCommand}" />
