@@ -12,8 +12,8 @@ public class User
     [JsonProperty("name")]
     public string Name
     {
-        get; set; 
-    }
+        get; set;
+    } = "";
 
     [JsonProperty("email")]
     public string Email
@@ -22,24 +22,24 @@ public class User
     }
 
 
-    //public string Password
-    //{
-    //    get; set;
+    public string Password
+    {
+        get; set;
 
-    //}
-    
+    } = "";
+
     [JsonProperty("role")]
     public string Role
     {
 
         get; set;
-    }
+    } = "customer";
 
     [JsonProperty("image")]
     public string Image { get; set; } = "noimage";
 
-    [JsonProperty("password")]
-    public string Password { get; set; }
+    public byte[] ImageBytes { get; set; } = null;
+
 
     [JsonProperty("createdAt")]
     public DateTime CreatedAt

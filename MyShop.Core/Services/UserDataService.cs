@@ -40,12 +40,14 @@ public class UserDataService : IUserDataService
         return allUsers;
     }
 
-    public async Task<IEnumerable<User>> GetListUserDetailsDataAsync()
+    public async Task<(bool isSuccess, string Message, int ErrorCode)> CreateUserAsync(User user)
     {
-        _allUsers =  await _userRepository.GetAllUsersAsync();
+        return await _userRepository.CreateUserAsync(user);
+    }
 
-        await Task.CompletedTask;
-        return _allUsers;
+    public async Task<(bool isSuccess, IEnumerable<User> Data, string Message, int ErrorCode)> GetListUserDetailsDataAsync()
+    {
+        return  await _userRepository.GetAllUsersAsync();
        
     }
 }

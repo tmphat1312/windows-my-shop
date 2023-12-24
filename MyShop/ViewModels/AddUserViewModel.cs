@@ -1,7 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using MyShop.Contracts.Services;
+using MyShop.Core.Contracts.Services;
+using MyShop.Core.Models;
 using MyShop.Helpers;
+using MyShop.Views;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
@@ -10,12 +14,27 @@ namespace MyShop.ViewModels;
 
 public partial class AddUserViewModel : ObservableRecipient
 {
+    private readonly IUserDataService _userDataService;
 
-    private StorageFile selectedImageFile;
+    private INavigationService _navigationService;
+
+    [ObservableProperty]
+    private string message;
+
+    [ObservableProperty]
+    private User newUser;
+
+    [ObservableProperty]
+    private string selectedImageName;
 
     public RelayCommand SelectImageButtonCommand
     {
         get;set;
+    }
+
+    public RelayCommand RemoveImageButtonCommand
+    {
+        get; set;
     }
 
     public RelayCommand CreateUserButtonCommand
@@ -23,10 +42,16 @@ public partial class AddUserViewModel : ObservableRecipient
         get; set;
     }
 
-    public AddUserViewModel()
+    public AddUserViewModel(IUserDataService userDataService,INavigationService navigationService)
     {
+        this._userDataService = userDataService;
+        this._navigationService = navigationService;
+
+        newUser = new User();
         SelectImageButtonCommand = new RelayCommand(SelectImageButton);
         CreateUserButtonCommand = new RelayCommand(CreateUser);
+        RemoveImageButtonCommand = new RelayCommand(() => { newUser.ImageBytes = null; SelectedImageName = null; });
+                                     
     }
 
     public async void SelectImageButton()
@@ -42,12 +67,31 @@ public partial class AddUserViewModel : ObservableRecipient
         IntPtr hwnd = WindowNative.GetWindowHandle(App.MainWindow);
         InitializeWithWindow.Initialize(picker, hwnd);
 
-        selectedImageFile = await picker.PickSingleFileAsync();
+        var file = await picker.PickSingleFileAsync();
+        if (file != null)
+        {
+            SelectedImageName = file.Name;
+            using (var stream = await file.OpenStreamForReadAsync())
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    newUser.ImageBytes = memoryStream.ToArray();
+                }
+            }
+        }
     }
 
-    public void CreateUser()
+    public async void CreateUser()
     {
+        Message = "Processing!!!";
+        var respone = await _userDataService.CreateUserAsync(newUser);
+        Message = respone.Message;
 
+        if(respone.ErrorCode==201)
+        {
+            _navigationService.NavigateTo("MyShop.ViewModels.UsersViewModel");
+        }
     }
 
 

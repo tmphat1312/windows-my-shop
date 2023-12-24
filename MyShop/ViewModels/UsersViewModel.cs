@@ -159,13 +159,17 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         UserItems.Clear();
 
         // TODO: Replace with real data.
-        var data = await _userDataService.GetListUserDetailsDataAsync();
+        var respone = await _userDataService.GetListUserDetailsDataAsync();
 
-        foreach (var item in data)
+        if(respone.isSuccess)
         {
-            UserItems.Add(item);
+            foreach (var item in respone.Data)
+            {
+                UserItems.Add(item);
 
+            }
         }
+       
 
         _totalPages = UserItems.Count / ItemsPerPage;
         if (UserItems.Count % ItemsPerPage != 0)
