@@ -13,8 +13,6 @@ using MyShop.Services;
 using MyShop.ViewModels;
 using MyShop.Views;
 
-using Windows.Services.Maps;
-
 namespace MyShop;
 
 public partial class App : Application
@@ -41,6 +39,8 @@ public partial class App : Application
     {
         get; set;
     }
+
+    public const string ServerBaseAddress = "http://localhost:8080/api/v1";
 
     public App()
     {
@@ -69,10 +69,12 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IResourcePagingService, ResourcePagingService>();
             services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IUserDataService, UserDataService>();
-            services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IBookDataService, BookDataService>();
+            services.AddSingleton<IBookRepository, BookRepository>();
 
             // Views and ViewModels
             services.AddTransient<AddBookViewModel>();

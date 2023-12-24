@@ -11,8 +11,8 @@
     <Grid>
         <Grid.Resources>
             <Style TargetType="Border" x:Key="BorderStyle">
-                <Setter Property="BorderBrush" Value="{ThemeResource AccentAAFillColorDefaultBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#e2e8f0" />
+                <Setter Property="BorderThickness" Value="2" />
                 <Setter Property="CornerRadius" Value="6" />
                 <Setter Property="Padding" Value="16, 8, 16, 8" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
@@ -38,19 +38,19 @@
                 
                 <TextBlock VerticalAlignment="Center" x:Name="PagingTextFull">
                     <Run Text="Display"/>
-                    <Run Text="1" FontWeight="Medium" />
+                    <Run Text="1" />
                     <Run Text="to" />
-                    <Run Text="10" FontWeight="Medium" />
+                    <Run Text="10" />
                     <Run Text="of" />
-                    <Run Text="100" FontWeight="Medium" />
+                    <Run Text="100" />
                     <Run Text="items" />
                 </TextBlock>
                 
                 <TextBlock VerticalAlignment="Center" x:Name="PagingTextCompact">
                     <Run Text="Page"/>  
-                    <Run Text="{x:Bind CurrentPage}" FontWeight="Medium" />
+                    <Run Text="{x:Bind CurrentPage}"/>
                     <Run Text="/" />
-                    <Run Text="{x:Bind TotalPages}" FontWeight="Medium" />
+                    <Run Text="{x:Bind TotalPages}"/>
                 </TextBlock>
                     
                 <StackPanel Orientation="Horizontal" Spacing="12">

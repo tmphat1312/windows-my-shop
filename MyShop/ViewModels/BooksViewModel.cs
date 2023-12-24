@@ -1,15 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using MyShop.Contracts.Services;
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
+using MyShop.Services;
 
 namespace MyShop.ViewModels;
 
-public partial class BooksViewModel : ObservableRecipient, INavigationAware
+public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IBookDataService _bookDataService;
@@ -27,13 +27,32 @@ public partial class BooksViewModel : ObservableRecipient, INavigationAware
 
     public async void OnNavigatedTo(object parameter)
     {
-        Source.Clear();
-
-        var data = await _bookDataService.GetContentGridDataAsync();
-
-        foreach (var item in data)
+        if (Source.Count == 0)
         {
-            Source.Add(item);
+            IsLoading = true;
+            IsReady = !IsLoading;
+            ErrorMessage = string.Empty;
+            InfoMessage = string.Empty;
+
+            Source.Clear();
+
+            var (data, totalItems, message, ERROR_CODE) = await Task.Run(async () =>
+            {
+                var data = await _bookDataService.LoadBookAsync();
+                return data;
+            });
+
+            if (data is not null)
+            {
+                foreach (var item in data)
+                {
+                    Source.Add(item);
+                }
+
+                IsLoading = false;
+                IsReady = !IsLoading;
+                TotalItems = totalItems;
+            }
         }
     }
 

@@ -11,32 +11,60 @@
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
+        <Grid.Resources>
+            <Style x:Key="FiltersAndSearchPanelStyle" TargetType="StackPanel">
+                <Setter Property="Orientation" Value="Horizontal" />
+                <Setter Property="Spacing" Value="12" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Margin" Value="0, 0, 0, 20" />
+            </Style>
+
+            <Style x:Key="SmallFiltersAndSearchPanelStyle" TargetType="Expander">
+                <Setter Property="Width" Value="240" />
+                <Setter Property="ExpandDirection" Value="Down" />
+                <Setter Property="VerticalAlignment" Value="Top" />
+                <Setter Property="HorizontalAlignment" Value="Right" />
+                <Setter Property="Margin" Value="0, 0, 0, 20" />
+            </Style>
+
+            <Style TargetType="Image" x:Key="BookPosterStyle">
+                <Setter Property="Width" Value="127" />
+                <Setter Property="Height" Value="127" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="BookTitleStyle">
+                <Setter Property="Margin" Value="0, 16, 0, 0" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="Height" Value="40" />
+                <Setter Property="MaxHeight" Value="40" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="BookPriceStyle">
+                <Setter Property="Margin" Value="0, 8, 0, 0" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="MaxHeight" Value="40" />
+            </Style>
+        </Grid.Resources>
+        
         <ScrollViewer IsTabStop="True">
             <StackPanel>
+                <!--Filters and Search-->
                 <Grid>
-                    <Grid.Resources>
-                        <Style x:Key="FiltersAndSearchPanelStyle" TargetType="StackPanel">
-                            <Setter Property="Orientation" Value="Horizontal" />
-                            <Setter Property="Spacing" Value="12" />
-                            <Setter Property="VerticalAlignment" Value="Top" />
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                        </Style>
-
-                        <Style x:Key="SmallFiltersAndSearchPanelStyle" TargetType="Expander">
-                            <Setter Property="Width" Value="240" />
-                            <Setter Property="ExpandDirection" Value="Down" />
-                            <Setter Property="VerticalAlignment" Value="Top" />
-                            <Setter Property="HorizontalAlignment" Value="Right" />
-                        </Style>
-                    </Grid.Resources>
-
                     <StackPanel 
                         x:Name="FiltersAndSearchPanel" 
                         Style="{StaticResource FiltersAndSearchPanelStyle}">
                         <myControls:FilterByComboBoxControl />
                         <myControls:SortComboBoxControl />
                         <myControls:SearchBoxControl />
-                        <myControls:ApplyButton VerticalAlignment="Bottom" />
+                        <myControls:ApplyButton VerticalAlignment="Bottom" IsEnabled="False" />
                     </StackPanel>
 
                     <Expander
@@ -47,70 +75,60 @@
                             <myControls:SearchBoxControl />
                             <myControls:SortComboBoxControl />
                             <myControls:FilterByComboBoxControl />
-                            <myControls:ApplyButton HorizontalAlignment="Right" />
+                            <myControls:ApplyButton HorizontalAlignment="Right" IsEnabled="False" />
                         </StackPanel>
                     </Expander>
                 </Grid>
 
-                <controls:AdaptiveGridView
-                    Margin="0, 16, 0, 16"
-                    DesiredWidth="200"
-                    IsItemClickEnabled="True"
-                    ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
-                    ItemsSource="{x:Bind ViewModel.Source,Mode=OneWay}"
-                    SelectionMode="None"
-                    StretchContentForSingleRow="False">
+                <!--Loading-->
+                <ProgressRing 
+                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                    Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                    Width="60"
+                    Margin="0, 20, 0, 20"
+                    Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
 
-                    <controls:AdaptiveGridView.ItemContainerStyle>
-                        <Style TargetType="GridViewItem">
-                            <Setter Property="Margin" Value="6, 8, 6, 8"/>
-                        </Style>
-                    </controls:AdaptiveGridView.ItemContainerStyle>
+                <!--Books-->
+                <StackPanel Spacing="20" Visibility="{x:Bind ViewModel.IsReady, Mode=OneWay}">
+                    <controls:AdaptiveGridView
+                        Margin="0, 16, 0, 16"
+                        DesiredWidth="200"
+                        IsItemClickEnabled="True"
+                        ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
+                        ItemsSource="{x:Bind ViewModel.Source,Mode=OneWay}"
+                        SelectionMode="None"
+                        StretchContentForSingleRow="False">
 
-                    <controls:AdaptiveGridView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Book">
-                            <Border x:Name="BookBorder" Background="White" BorderThickness="1" CornerRadius="4">
-                                <Grid
-                                     x:Name="itemThumbnail"
-                                     Padding="12">
-                                    <Grid.Resources>
-                                        <Style TargetType="Image" x:Key="BookPosterStyle">
-                                            <Setter Property="Width" Value="127" />
-                                            <Setter Property="Height" Value="127" />
-                                            <Setter Property="Source" Value="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" />
-                                        </Style>
+                        <controls:AdaptiveGridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="Margin" Value="6, 8, 6, 8"/>
+                            </Style>
+                        </controls:AdaptiveGridView.ItemContainerStyle>
 
-                                        <Style TargetType="TextBlock" x:Key="BookTitleStyle">
-                                            <Setter Property="Margin" Value="0, 16, 0, 0" />
-                                            <Setter Property="TextWrapping" Value="Wrap" />
-                                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                                            <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
-                                            <Setter Property="LineHeight" Value="20" />
-                                            <Setter Property="MaxHeight" Value="40" />
-                                        </Style>
-                                    </Grid.Resources>
-
-                                    <StackPanel>
+                        <controls:AdaptiveGridView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Book">
+                                <Border x:Name="BookBorder" Background="White" BorderBrush="#e2e8f0" BorderThickness="4" CornerRadius="6">
+                                    <StackPanel x:Name="itemThumbnail" Padding="12">
                                         <Border CornerRadius="6" HorizontalAlignment="Center">
-                                            <Image Style="{StaticResource BookPosterStyle}" />
+                                            <Image Style="{StaticResource BookPosterStyle}" Source="{x:Bind Image}" />
                                         </Border>
-                                        <TextBlock 
-                                            Text="{x:Bind Name}"
-                                            Style="{StaticResource BookTitleStyle}" />
-                                        <TextBlock Style="{ThemeResource BodyTextStyle}" FontWeight="SemiBold" Margin="{StaticResource XXSmallTopMargin}">
-                                            <Run Text="{x:Bind SellingPrice}" />
-                                            <Run Text="VND" />
+                                        <TextBlock Text="{x:Bind Name}" Style="{StaticResource BookTitleStyle}" />
+                                        <TextBlock Text="{x:Bind SellingPrice}"  Style="{StaticResource BookPriceStyle}">
                                         </TextBlock>
                                     </StackPanel>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </controls:AdaptiveGridView.ItemTemplate>
-                </controls:AdaptiveGridView>
+                                </Border>
+                            </DataTemplate>
+                        </controls:AdaptiveGridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
 
-                <myControls:PaginationControl 
-                    TotalPages="{x:Bind ViewModel.ResourcePagingService.TotalPages}" 
-                    CurrentPage="{x:Bind ViewModel.ResourcePagingService.CurrentPage}"/>
+                    <myControls:PaginationControl 
+                        TotalPages="{x:Bind ViewModel.TotalItems, Mode=OneWay}" 
+                        CurrentPage="{x:Bind ViewModel.CurrentPage}"
+                        TotalItems="{x:Bind ViewModel.TotalItems}"
+                        ItemsPerPage="{x:Bind ViewModel.ItemsPerPage}"
+                        />
+                </StackPanel>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

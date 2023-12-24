@@ -16,10 +16,12 @@
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
             <Style x:Key="BookTitleStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontSize" Value="28" />
                 <Setter Property="FontWeight" Value="Medium" />
-                <Setter Property="Margin" Value="0,0,0,20" />
+                <Setter Property="Margin" Value="0,0,0,28" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextAlignment" Value="Center" />
             </Style>
             <Style x:Key="BookDescriptionStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="14" />
@@ -32,25 +34,14 @@
             <Style x:Key="PosterBorderStyle" TargetType="Border">
                 <Setter Property="CornerRadius" Value="10" />
                 <Setter Property="Margin" Value="0,0,40,10" />
+                <Setter Property="BorderBrush" Value="#e2e8f0" />
+                <Setter Property="BorderThickness" Value="2" />
             </Style>
         </Grid.Resources>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="600" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="includePosterGroup.Orientation" Value="Horizontal" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <ScrollViewer IsTabStop="True">
             <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}">
-                <TextBlock Style="{StaticResource BookTitleStyle}" Text="{x:Bind ViewModel.Item.Name}" />
+                <TextBlock Style="{StaticResource BookTitleStyle}" Text="{Binding Name}" />
 
                 <RelativePanel x:Name="includePosterGroup">
                     <StackPanel x:Name="itemPosterContainer">
@@ -58,7 +49,7 @@
                             <Image 
                                 x:Name="itemPoster" 
                                 Style="{StaticResource BookPosterStyle}"
-                                Source="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" />
+                                Source="{Binding Image}" />
                         </Border>
 
                         <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
@@ -107,10 +98,10 @@
                             <TextBlock Style="{StaticResource LabelStyle}" Text="PurchasePrice: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice}" />
                         </StackPanel>
-                        <StackPanel x:Name="bookCategory">
+                        <!--<StackPanel x:Name="bookCategory">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Category: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding CategoryId}" />
-                        </StackPanel>
+                        </StackPanel>-->
                         <StackPanel x:Name="bookPublishedYear">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Published Year: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PublishedYear}" />

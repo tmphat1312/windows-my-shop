@@ -19,6 +19,7 @@
     <Content Remove="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Controls\ApplyButton.xaml" />
     <None Remove="Controls\FilterByComboBoxControl.xaml" />
     <None Remove="Controls\PaginationControl.xaml" />
     <None Remove="Controls\SearchBoxControl.xaml" />
@@ -56,6 +57,9 @@
     <None Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\ApplyButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Controls\FilterByComboBoxControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
