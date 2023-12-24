@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MyShop.Core.Repository;
 public class UserRepository : IUserRepository
@@ -23,6 +22,8 @@ public class UserRepository : IUserRepository
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
+    public Task<string> CreateUserAsync(User user) => throw new NotImplementedException();
+
     public async Task<List<User>> GetAllUsersAsync()
     {
         List<User> result = new List<User>();
@@ -34,52 +35,14 @@ public class UserRepository : IUserRepository
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
-                var jsonObject = JObject.Parse(jsonString);
-                result = jsonObject["data"].ToObject<List<User>>();
+                return (List<User>)JsonConvert.DeserializeObject<IEnumerable<User>>(jsonString);
             }
-            return result;
+            else
+            {
+                return new List<User>();
+            }
         }
         catch (Exception ex)
-        {
-            // Log lỗi hoặc xử lý ngoại lệ ở đây
-            Console.WriteLine(ex.Message);
-            return result;
-        }
-    }
-
-    public async Task<string> CreateUserAsync(User user)
-    {
-        string result = "";
-        var apiUrl = "http://localhost:8080/api/v1/users";
-        try
-        {
-            //using (var content = new MultipartFormDataContent())
-            //{
-            //    content.Add(new StringContent(user.Name), "name");
-            //    content.Add(new StringContent(user.Image), "email");
-            //    content.Add(new StringContent(user.Password), "password");
-            //    content.Add(new StringContent(user.Role), "role");
-
-            //    var selectedImageFile = null
-            //    if (selectedImageFile != null)
-            //    {
-            //        var streamContent = new StreamContent(await selectedImageFile.OpenStreamForReadAsync());
-            //        content.Add(streamContent, "image", selectedImageFile.Name);
-            //    }
-
-            //    HttpResponseMessage response = await _httpClient.PostAsync(apiUrl, content);
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        return "User created successfully";
-            //    }
-            //    else
-            //    {
-            //        return "Error: " + await response.Content.ReadAsStringAsync();
-            //    }
-            //}
-            return result;
-        }
-        catch(Exception ex)
         {
             Console.WriteLine(ex.Message);
             return result;
