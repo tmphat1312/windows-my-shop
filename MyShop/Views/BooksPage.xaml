@@ -88,8 +88,31 @@
                     Margin="0, 20, 0, 20"
                     Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
 
+                <!--Error & Info-->
+                <InfoBarPanel>
+                    <InfoBar 
+                        x:Name="ErrorInfoBar"
+                        Title="Error Loading Books"
+                        Severity="Error"
+                        IsClosable="False"
+                        IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                        Margin="0, 20, 0, 20"
+                        />
+
+                    <InfoBar
+                        x:Name="InfoInfoBar"
+                        Title="Info"
+                        Severity="Warning"
+                        IsClosable="False"
+                        IsOpen="{x:Bind ViewModel.HasInfo, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.InfoMessage, Mode=OneWay}"
+                        Margin="0, 20, 0, 20"
+                        />
+                </InfoBarPanel>
+                
                 <!--Books-->
-                <StackPanel Spacing="20" Visibility="{x:Bind ViewModel.IsReady, Mode=OneWay}">
+                <StackPanel Spacing="20" Visibility="{x:Bind ViewModel.ContentIsReady, Mode=OneWay}">
                     <controls:AdaptiveGridView
                         Margin="0, 16, 0, 16"
                         DesiredWidth="200"
@@ -119,13 +142,21 @@
                                 </Border>
                             </DataTemplate>
                         </controls:AdaptiveGridView.ItemTemplate>
-                    </controls:AdaptiveGridView>
+                    </controls:AdaptiveGridView>    
 
+                    <!--Pagination-->
                     <myControls:PaginationControl 
-                        TotalPages="{x:Bind ViewModel.TotalItems, Mode=OneWay}" 
-                        CurrentPage="{x:Bind ViewModel.CurrentPage}"
-                        TotalItems="{x:Bind ViewModel.TotalItems}"
-                        ItemsPerPage="{x:Bind ViewModel.ItemsPerPage}"
+                        Visibility="{x:Bind ViewModel.ShowPagination, Mode=OneWay}"
+                        TotalPages="{x:Bind ViewModel.TotalPages, Mode=OneWay}" 
+                        CurrentPage="{x:Bind ViewModel.CurrentPage, Mode=OneWay}"
+                        TotalItems="{x:Bind ViewModel.TotalItems, Mode=OneWay}"
+                        ItemsPerPage="{x:Bind ViewModel.ItemsPerPage, Mode=OneWay}"
+                        From="{x:Bind ViewModel.From, Mode=OneWay}"
+                        To="{x:Bind ViewModel.To, Mode=OneWay}"
+                        HasPreviousPage="{x:Bind ViewModel.HasPreviousPage, Mode=OneWay}"
+                        HasNextPage="{x:Bind ViewModel.HasNextPage, Mode=OneWay}"
+                        GoToPreviousPageCommand="{x:Bind ViewModel.GoToPreviousPageCommand}"
+                        GoToNextPageCommand="{x:Bind ViewModel.GoToNextPageCommand}"
                         />
                 </StackPanel>
 

@@ -53,8 +53,15 @@ public partial class App : Application
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
             // Other Activation Handlers
+
             // Repositories
             services.AddHttpClient<IUserRepository, UserRepository>();
+
+            // Http clients
+            services.AddHttpClient("Backend", client =>
+            {
+                client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
+            });
 
 
             // Services

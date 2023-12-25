@@ -13,46 +13,58 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IBookDataService _bookDataService;
-    private readonly IResourcePagingService _resourcePagingService;
-    public IResourcePagingService ResourcePagingService => _resourcePagingService;
 
     public ObservableCollection<Book> Source { get; } = new ObservableCollection<Book>();
 
-    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService, IResourcePagingService resourcePagingService)
+    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService)
     {
         _navigationService = navigationService;
         _bookDataService = bookDataService;
-        _resourcePagingService = resourcePagingService;
+        FunctionOnCommand = LoadData;
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public async void LoadData()
     {
-        if (Source.Count == 0)
-        {
-            IsLoading = true;
-            IsReady = !IsLoading;
-            ErrorMessage = string.Empty;
-            InfoMessage = string.Empty;
+        IsLoading = true;
+        NotfifyChanges();
 
+        _bookDataService.SearchParams = BuildSearchParams();
+        _bookDataService.IsDirty = true;
+
+        await Task.Run(async () => await _bookDataService.LoadDataAsync());
+
+        var (data, totalItems, message, ERROR_CODE) = _bookDataService.GetData();
+
+        if (data is not null)
+        {
             Source.Clear();
 
-            var (data, totalItems, message, ERROR_CODE) = await Task.Run(async () =>
+            foreach (var item in data)
             {
-                var data = await _bookDataService.LoadBookAsync();
-                return data;
-            });
-
-            if (data is not null)
-            {
-                foreach (var item in data)
-                {
-                    Source.Add(item);
-                }
-
-                IsLoading = false;
-                IsReady = !IsLoading;
-                TotalItems = totalItems;
+                Source.Add(item);
             }
+
+            IsLoading = false;
+            TotalItems = totalItems;
+            if (TotalItems == 0)
+            {
+                InfoMessage = "No books found";
+            }
+        }
+
+        if (ERROR_CODE != 0)
+        {
+            ErrorMessage = message;
+        }
+
+        NotfifyChanges();
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        if (Source.Count <= 0)
+        {
+            LoadData();
         }
     }
 

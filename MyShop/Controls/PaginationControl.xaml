@@ -37,27 +37,27 @@
                 </StackPanel.Resources>
                 
                 <TextBlock VerticalAlignment="Center" x:Name="PagingTextFull">
-                    <Run Text="Display"/>
-                    <Run Text="1" />
+                    <Run Text="Display from"/>
+                    <Run Text="{x:Bind From, Mode=OneWay}" />
                     <Run Text="to" />
-                    <Run Text="10" />
+                    <Run Text="{x:Bind To, Mode=OneWay}" />
                     <Run Text="of" />
-                    <Run Text="100" />
+                    <Run Text="{x:Bind TotalItems, Mode=OneWay}" />
                     <Run Text="items" />
                 </TextBlock>
                 
                 <TextBlock VerticalAlignment="Center" x:Name="PagingTextCompact">
                     <Run Text="Page"/>  
-                    <Run Text="{x:Bind CurrentPage}"/>
+                    <Run Text="{x:Bind CurrentPage, Mode=OneWay}"/>
                     <Run Text="/" />
-                    <Run Text="{x:Bind TotalPages}"/>
+                    <Run Text="{x:Bind TotalPages, Mode=OneWay}"/>
                 </TextBlock>
                     
                 <StackPanel Orientation="Horizontal" Spacing="12">
-                    <Button>
+                    <Button Command="{x:Bind GoToPreviousPageCommand, Mode=OneWay}" IsEnabled="{x:Bind HasPreviousPage, Mode=OneWay}">
                         <FontIcon Glyph="&#xE892;" />
                     </Button>
-                    <Button>
+                    <Button Command="{x:Bind GoToNextPageCommand, Mode=OneWay}" IsEnabled="{x:Bind HasNextPage, Mode=OneWay}">
                         <FontIcon Glyph="&#xE893;" />
                     </Button>
                 </StackPanel>

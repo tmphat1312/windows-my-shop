@@ -5,36 +5,41 @@ using MyShop.Core.Models;
 namespace MyShop.Core.Services;
 public class BookDataService : IBookDataService
 {
-    private List<Book> _books;
-    private (IEnumerable<Book>, int, string, int) _bookDataTuple;
     private readonly IBookRepository _bookRepository;
+
+    // (books, totalItems, errorMessage, currentPage)
+    private (IEnumerable<Book>, int, string, int) _bookDataTuple;
+
+    public bool IsInitialized => _bookDataTuple.Item1 is not null;
+    public bool IsDirty { get; set; } = true;
+
+    private string _searchParams;
+    public string SearchParams
+    {
+
+        get => _searchParams;
+        set
+        {
+            _searchParams = value;
+            IsDirty = true;
+        }
+    }
+
+    public (IEnumerable<Book>, int, string, int) GetData() => _bookDataTuple;
 
     public BookDataService(IBookRepository bookRepository)
     {
         _bookRepository = bookRepository;
     }
 
-    public async Task<(IEnumerable<Book>, int, string, int)> GetContentGridDataAsync()
+    public async Task<(IEnumerable<Book>, int, string, int)> LoadDataAsync()
     {
-        if (_books is null)
+        if (!IsInitialized || IsDirty)
         {
-            _bookDataTuple = await _bookRepository.GetAllBooksAsync();
-            _books = new List<Book>(_bookDataTuple.Item1);
+            _bookDataTuple = await _bookRepository.GetAllBooksAsync(SearchParams);
+            IsDirty = false;
         }
 
         return _bookDataTuple;
     }
-
-    public async Task<(IEnumerable<Book>, int, string, int)> LoadBookAsync()
-    {
-        if (_books is null)
-        {
-            _bookDataTuple = await _bookRepository.GetAllBooksAsync();
-            _books = new List<Book>(_bookDataTuple.Item1);
-        }
-
-        return _bookDataTuple;
-    }
-
-    public (IEnumerable<Book>, int, string, int) GetData() => _bookDataTuple;
 }
