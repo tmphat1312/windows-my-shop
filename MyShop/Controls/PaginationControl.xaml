@@ -11,8 +11,8 @@
     <Grid>
         <Grid.Resources>
             <Style TargetType="Border" x:Key="BorderStyle">
-                <Setter Property="BorderBrush" Value="{ThemeResource AccentAAFillColorDefaultBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="#e2e8f0" />
+                <Setter Property="BorderThickness" Value="2" />
                 <Setter Property="CornerRadius" Value="6" />
                 <Setter Property="Padding" Value="16, 8, 16, 8" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
@@ -25,20 +25,6 @@
             </Style>
         </Grid.Resources>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="600" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="PagingTextFull.Visibility" Value="Visible" />
-                        <Setter Target="PagingTextCompact.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <Border Style="{StaticResource BorderStyle}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel.Resources>
@@ -50,28 +36,28 @@
                     </Style>
                 </StackPanel.Resources>
                 
-                <TextBlock VerticalAlignment="Center" x:Name="PagingTextFull" Visibility="Collapsed">
-                    <Run Text="Display"/>
-                    <Run Text="1" FontWeight="Medium" />
+                <TextBlock VerticalAlignment="Center" x:Name="PagingTextFull">
+                    <Run Text="Display from"/>
+                    <Run Text="{x:Bind From, Mode=OneWay}" />
                     <Run Text="to" />
-                    <Run Text="10" FontWeight="Medium" />
+                    <Run Text="{x:Bind To, Mode=OneWay}" />
                     <Run Text="of" />
-                    <Run Text="100" FontWeight="Medium" />
+                    <Run Text="{x:Bind TotalItems, Mode=OneWay}" />
                     <Run Text="items" />
                 </TextBlock>
                 
                 <TextBlock VerticalAlignment="Center" x:Name="PagingTextCompact">
                     <Run Text="Page"/>  
-                    <Run Text="1" FontWeight="Medium" />
+                    <Run Text="{x:Bind CurrentPage, Mode=OneWay}"/>
                     <Run Text="/" />
-                    <Run Text="10" FontWeight="Medium" />
+                    <Run Text="{x:Bind TotalPages, Mode=OneWay}"/>
                 </TextBlock>
                     
                 <StackPanel Orientation="Horizontal" Spacing="12">
-                    <Button>
+                    <Button Command="{x:Bind GoToPreviousPageCommand, Mode=OneWay}" IsEnabled="{x:Bind HasPreviousPage, Mode=OneWay}">
                         <FontIcon Glyph="&#xE892;" />
                     </Button>
-                    <Button>
+                    <Button Command="{x:Bind GoToNextPageCommand, Mode=OneWay}" IsEnabled="{x:Bind HasNextPage, Mode=OneWay}">
                         <FontIcon Glyph="&#xE893;" />
                     </Button>
                 </StackPanel>

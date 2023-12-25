@@ -15,10 +15,11 @@ public class User
         get; set;
     } = "";
 
+
     [JsonProperty("email")]
     public string Email
     {
-        get; set; 
+        get; set;
     }
 
 
@@ -36,10 +37,10 @@ public class User
     } = "customer";
 
     [JsonProperty("image")]
+
     public string Image { get; set; } = "noimage";
 
     public byte[] ImageBytes { get; set; } = null;
-
 
     [JsonProperty("createdAt")]
     public DateTime CreatedAt

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UserControl
-    x:Class="MyShop.Controls.SortComboBoxControl"
+    x:Class="MyShop.Controls.ApplyButton"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MyShop.Controls"
@@ -8,10 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <ComboBox Header="Sort by" PlaceholderText="Default" Width="200">
-        <x:String>Blue</x:String>
-        <x:String>Green</x:String>
-        <x:String>Red</x:String>
-        <x:String>Yellow</x:String>
-    </ComboBox>
+    <Button>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+            <FontIcon Glyph="&#xE71C;"  FontSize="16" />
+            <TextBlock Text="Apply" />
+        </StackPanel>
+    </Button>
 </UserControl>

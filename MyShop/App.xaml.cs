@@ -13,8 +13,6 @@ using MyShop.Services;
 using MyShop.ViewModels;
 using MyShop.Views;
 
-using Windows.Services.Maps;
-
 namespace MyShop;
 
 public partial class App : Application
@@ -55,8 +53,15 @@ public partial class App : Application
             services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
             // Other Activation Handlers
+
             // Repositories
             services.AddHttpClient<IUserRepository, UserRepository>();
+
+            // Http clients
+            services.AddHttpClient("Backend", client =>
+            {
+                client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
+            });
 
 
             // Services
@@ -68,10 +73,14 @@ public partial class App : Application
             services.AddSingleton<INavigationService, NavigationService>();
 
             // Core Services
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IResourcePagingService, ResourcePagingService>();
             services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IUserDataService, UserDataService>();
-            services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IBookDataService, BookDataService>();
+            services.AddSingleton<IBookRepository, BookRepository>();
+            services.AddSingleton<IReviewDataService, ReviewDataService>();
+            services.AddSingleton<IReviewRepository, ReviewRepository>();
 
 
             // Views and ViewModels

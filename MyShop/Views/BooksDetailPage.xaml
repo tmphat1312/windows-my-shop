@@ -8,7 +8,11 @@
     xmlns:models="using:MyShop.Core.Models"
     xmlns:behaviors="using:MyShop.Behaviors"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    xmlns:helpers="using:MyShop.Helpers"
     mc:Ignorable="d">
+    <Page.Resources>
+        <helpers:VietnamesePriceConverter x:Key="VietnamesePriceConverter"/>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <Grid.Resources>
@@ -16,49 +20,41 @@
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
             <Style x:Key="BookTitleStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontSize" Value="28" />
                 <Setter Property="FontWeight" Value="Medium" />
-                <Setter Property="Margin" Value="0,0,0,20" />
+                <Setter Property="Margin" Value="0,16,0,28" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextAlignment" Value="Center" />
             </Style>
             <Style x:Key="BookDescriptionStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="Margin" Value="0,0,0,10" />
+                <Setter Property="TextWrapping" Value="Wrap" />
             </Style>
             <Style x:Key="BookPosterStyle" TargetType="Image">
                 <Setter Property="MaxWidth" Value="300" />
-                <Setter Property="Height" Value="Auto" />   
+                <Setter Property="Height" Value="Auto" />
             </Style>
             <Style x:Key="PosterBorderStyle" TargetType="Border">
                 <Setter Property="CornerRadius" Value="10" />
                 <Setter Property="Margin" Value="0,0,40,10" />
+                <Setter Property="BorderBrush" Value="#e2e8f0" />
+                <Setter Property="BorderThickness" Value="2" />
             </Style>
         </Grid.Resources>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="600" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="includePosterGroup.Orientation" Value="Horizontal" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <ScrollViewer IsTabStop="True">
-            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}">
-                <TextBlock Style="{StaticResource BookTitleStyle}" Text="{x:Bind ViewModel.Item.Name}" />
+            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}" Spacing="12" HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource BookTitleStyle}" Text="{Binding Name}" />
 
-                <RelativePanel x:Name="includePosterGroup">
-                    <StackPanel x:Name="itemPosterContainer">
+                <StackPanel x:Name="DetailPanel" Orientation="Horizontal">
+                    <StackPanel x:Name="itemPosterContainer" HorizontalAlignment="Center">
                         <Border Style="{StaticResource PosterBorderStyle}">
                             <Image 
                                 x:Name="itemPoster" 
                                 Style="{StaticResource BookPosterStyle}"
-                                Source="https://images-na.ssl-images-amazon.com/images/W/MEDIAX_792452-T2/images/I/81YkqyaFVEL._AC_UL254_SR254,254_.jpg" />
+                                Source="{Binding Image}" />
                         </Border>
 
                         <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
@@ -67,7 +63,7 @@
                         </CommandBar>
                     </StackPanel>
 
-                    <StackPanel x:Name="bookInfoGroup" RelativePanel.RightOf="itemPosterContainer">
+                    <StackPanel x:Name="bookInfoGroup">
                         <StackPanel.Resources>
                             <Style x:Key="LabelStyle" TargetType="TextBlock">
                                 <Setter Property="FontSize" Value="12" />
@@ -84,36 +80,39 @@
 
                         <StackPanel x:Name="bookName">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Name: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Name}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" TextWrapping="Wrap" MaxWidth="640" HorizontalAlignment="Left" Text="{Binding Name}" />
                         </StackPanel>
                         <StackPanel x:Name="bookDescription">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Description: " />
-                            <RichTextBlock Grid.Column="0" TextAlignment="Justify">
+                            <RichTextBlock TextAlignment="Justify" MaxWidth="640" HorizontalAlignment="Left">
                                 <Paragraph>
                                     <Run Text="{Binding Description}" />
                                 </Paragraph>
                             </RichTextBlock>
                         </StackPanel>
-                        
                         <StackPanel x:Name="bookAuthor">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Author: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Author}" />
                         </StackPanel>
                         <StackPanel x:Name="bookSellingPrice">
-                            <TextBlock Style="{StaticResource LabelStyle}" Text="SellingPrice: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice}" />
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Selling Price: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
                         <StackPanel x:Name="bookPurchasePrice">
-                            <TextBlock Style="{StaticResource LabelStyle}" Text="PurchasePrice: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice}" />
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Purchase Price: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
                         <StackPanel x:Name="bookCategory">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Category: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding CategoryId}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Category.Name}" />
                         </StackPanel>
                         <StackPanel x:Name="bookPublishedYear">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Published Year: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PublishedYear}" />
+                        </StackPanel>
+                        <StackPanel x:Name="bookRemaningQuantity">
+                            <TextBlock Style="{StaticResource LabelStyle}" Text="Remaining quantity: " />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Quantity}" />
                         </StackPanel>
                         <StackPanel x:Name="bookRatingsAverage" HorizontalAlignment="Left">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Ratings Average: " />
@@ -124,10 +123,80 @@
                                 Caption="{Binding RatingsAverage}"/>
                         </StackPanel>
                     </StackPanel>
-                </RelativePanel>
+                </StackPanel>
 
-                <TextBlock>Customer reviews</TextBlock>
+                <StackPanel>
+                    <!--Reviews-->
+                    <TextBlock FontSize="18" FontWeight="Medium">Customer reviews</TextBlock>
 
+                    <!--Loading reviews-->
+                    <ProgressRing 
+                        IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                        Width="60"
+                        Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                    <!--Error & Info-->
+                    <InfoBarPanel>
+                        <InfoBar 
+                        x:Name="ErrorInfoBar"
+                        Title="Error Loading reviews"
+                        Severity="Error"
+                        IsClosable="False"
+                        IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                        />
+
+                        <InfoBar
+                        x:Name="InfoInfoBar"
+                        Title="Info"
+                        Severity="Warning"
+                        IsClosable="False"
+                        IsOpen="{x:Bind ViewModel.HasInfo, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.InfoMessage, Mode=OneWay}"
+                        />
+                    </InfoBarPanel>
+
+                    <controls:AdaptiveGridView
+                        x:Name="ContentGridView"
+                        ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                        IsItemClickEnabled="False"
+                        DesiredWidth="300"  
+                        AllowDrop="False"
+                        CanReorderItems="False"
+                        SelectionMode="None"
+                        FlowDirection="LeftToRight">
+
+                        <controls:AdaptiveGridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="Margin" Value="6, 8, 6, 8"/>
+                            </Style>
+                        </controls:AdaptiveGridView.ItemContainerStyle>
+
+                        <controls:AdaptiveGridView.ItemTemplate>
+                            <DataTemplate x:DataType='models:Review'>
+                                <Border BorderBrush="Blue" BorderThickness="2" Padding="12" CornerRadius="4" MaxWidth="360">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding User.Name}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding User.Email}" TextWrapping="Wrap" />
+                                        <StackPanel>
+                                            <TextBlock Text="Content: " />
+                                            <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Left">
+                                            <TextBlock Text="Rating: " />
+                                            <RatingControl 
+                                                IsClearEnabled="True"
+                                                IsReadOnly="True" 
+                                                PlaceholderValue="{Binding Rating}"
+                                                Caption="{Binding Rating}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </controls:AdaptiveGridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>
