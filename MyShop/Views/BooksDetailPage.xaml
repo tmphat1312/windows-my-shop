@@ -13,10 +13,9 @@
     <Page.Resources>
         <helpers:VietnamesePriceConverter x:Key="VietnamesePriceConverter"/>
     </Page.Resources>
-    
+
     <Grid x:Name="ContentArea">
         <Grid.Resources>
-
             <Style TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
@@ -126,8 +125,78 @@
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock>Customer reviews</TextBlock>
+                <StackPanel>
+                    <!--Reviews-->
+                    <TextBlock FontSize="18" FontWeight="Medium">Customer reviews</TextBlock>
 
+                    <!--Loading reviews-->
+                    <ProgressRing 
+                        IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                        Width="60"
+                        Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                    <!--Error & Info-->
+                    <InfoBarPanel>
+                        <InfoBar 
+                        x:Name="ErrorInfoBar"
+                        Title="Error Loading reviews"
+                        Severity="Error"
+                        IsClosable="False"
+                        IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                        />
+
+                        <InfoBar
+                        x:Name="InfoInfoBar"
+                        Title="Info"
+                        Severity="Warning"
+                        IsClosable="False"
+                        IsOpen="{x:Bind ViewModel.HasInfo, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.InfoMessage, Mode=OneWay}"
+                        />
+                    </InfoBarPanel>
+
+                    <controls:AdaptiveGridView
+                        x:Name="ContentGridView"
+                        ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                        IsItemClickEnabled="False"
+                        DesiredWidth="300"  
+                        AllowDrop="False"
+                        CanReorderItems="False"
+                        SelectionMode="None"
+                        FlowDirection="LeftToRight">
+
+                        <controls:AdaptiveGridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="Margin" Value="6, 8, 6, 8"/>
+                            </Style>
+                        </controls:AdaptiveGridView.ItemContainerStyle>
+
+                        <controls:AdaptiveGridView.ItemTemplate>
+                            <DataTemplate x:DataType='models:Review'>
+                                <Border BorderBrush="Blue" BorderThickness="2" Padding="12" CornerRadius="4" MaxWidth="360">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding User.Name}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding User.Email}" TextWrapping="Wrap" />
+                                        <StackPanel>
+                                            <TextBlock Text="Content: " />
+                                            <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Left">
+                                            <TextBlock Text="Rating: " />
+                                            <RatingControl 
+                                                IsClearEnabled="True"
+                                                IsReadOnly="True" 
+                                                PlaceholderValue="{Binding Rating}"
+                                                Caption="{Binding Rating}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </controls:AdaptiveGridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

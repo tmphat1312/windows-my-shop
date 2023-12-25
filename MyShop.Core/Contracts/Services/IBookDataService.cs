@@ -13,5 +13,4 @@ public interface IBookDataService
     }
     public Task<(IEnumerable<Book>, int, string, int)> LoadDataAsync();
     public (IEnumerable<Book>, int, string, int) GetData();
-
 }

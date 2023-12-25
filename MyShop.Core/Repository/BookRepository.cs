@@ -56,7 +56,7 @@ public class BookRepository : IBookRepository
     public async Task<(IEnumerable<Book>, int, string, int)> GetAllBooksAsync(string searchParams)
     {
         var books = new List<Book>();
-        var totalBooks = 0;
+        var totalItems = 0;
         var message = string.Empty;
         var ERROR_CODE = 0;
 
@@ -68,9 +68,9 @@ public class BookRepository : IBookRepository
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                var bookResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Book>>(content);
-                books = bookResponse.Data.ToList();
-                totalBooks = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
+                var httpResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Book>>(content);
+                books = httpResponse.Data.ToList();
+                totalItems = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }
             else
             {
@@ -84,6 +84,6 @@ public class BookRepository : IBookRepository
             ERROR_CODE = -1;
         }
 
-        return (books, totalBooks, message, ERROR_CODE);
+        return (books, totalItems, message, ERROR_CODE);
     }
 }

@@ -7,7 +7,7 @@ public class BookDataService : IBookDataService
 {
     private readonly IBookRepository _bookRepository;
 
-    // (books, totalItems, errorMessage, currentPage)
+    // (books, totalItems, errorMessage, ErrorCode)
     private (IEnumerable<Book>, int, string, int) _bookDataTuple;
 
     public bool IsInitialized => _bookDataTuple.Item1 is not null;
@@ -34,11 +34,7 @@ public class BookDataService : IBookDataService
 
     public async Task<(IEnumerable<Book>, int, string, int)> LoadDataAsync()
     {
-        if (!IsInitialized || IsDirty)
-        {
-            _bookDataTuple = await _bookRepository.GetAllBooksAsync(SearchParams);
-            IsDirty = false;
-        }
+        _bookDataTuple = await _bookRepository.GetAllBooksAsync(SearchParams);
 
         return _bookDataTuple;
     }

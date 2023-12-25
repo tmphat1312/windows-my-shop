@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyShop.Core.Contracts.Repository;
+﻿using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
 
@@ -27,7 +22,7 @@ public class UserDataService : IUserDataService
         {
             allUsers.Add(new User
             {
-                ID = i,
+                ID = i.ToString(),
                 Name = $"User{i}",
                 Email = $"user{i}@example.com",
                 Role = "Member",

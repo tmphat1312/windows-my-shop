@@ -80,6 +80,8 @@ public partial class App : Application
             services.AddSingleton<IUserDataService, UserDataService>();
             services.AddSingleton<IBookDataService, BookDataService>();
             services.AddSingleton<IBookRepository, BookRepository>();
+            services.AddSingleton<IReviewDataService, ReviewDataService>();
+            services.AddSingleton<IReviewRepository, ReviewRepository>();
 
             // Views and ViewModels
             services.AddTransient<AddBookViewModel>();
