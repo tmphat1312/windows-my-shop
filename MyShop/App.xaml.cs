@@ -40,8 +40,6 @@ public partial class App : Application
         get; set;
     }
 
-    public const string ServerBaseAddress = "http://localhost:8080/api/v1";
-
     public App()
     {
         InitializeComponent();
