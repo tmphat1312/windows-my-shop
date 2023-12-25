@@ -80,6 +80,18 @@
                     <StackPanel 
                         x:Name="FiltersAndSearchPanel" 
                         Style="{StaticResource FiltersAndSearchPanelStyle}">
+                        <TextBox 
+                            x:Name="SearchTextBox"
+                            TextChanged="SearchTextBox_TextChanged"
+                            KeyDown="SearchTextBox_KeyDown"
+                            Header="Search"
+                            PlaceholderText="Book title"
+                            AutomationProperties.Name="multi-line TextBox"
+                            IsSpellCheckEnabled="True"
+                            SelectionHighlightColor="Green" 
+                            MinWidth="140"
+                            MaxWidth="280" />
+
                         <ComboBox 
                             SelectionChanged="SortByComboBox_SelectionChanged"
                             ItemsSource="{x:Bind ViewModel.SortOptions}"

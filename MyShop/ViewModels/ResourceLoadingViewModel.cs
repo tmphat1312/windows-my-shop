@@ -33,6 +33,14 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     {
         get; set;
     }
+    public string SearchQuery
+    {
+        get; set;
+    } = string.Empty;
+    public List<HttpFilterObject> FilterOptions
+    {
+        get; set;
+    } = new List<HttpFilterObject>();
 
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
     public bool HasNextPage => CurrentPage < TotalPages;
@@ -46,6 +54,7 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
 
     [ObservableProperty]
     public bool isDirty = false;
+
 
     public Action FunctionOnCommand { get; set; } = () => { };
 
@@ -77,6 +86,11 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         if (SelectedSortOption is not null)
         {
             paramBuilder.Append("sort", SelectedSortOption.SortString);
+        }
+
+        if (!string.IsNullOrEmpty(SearchQuery))
+        {
+            paramBuilder.Append("q", SearchQuery);
         }
 
         return paramBuilder.GetQueryString();
@@ -122,6 +136,11 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     {
         if (sortOption.Value == "default")
         {
+            if (SelectedSortOption?.Value != sortOption.Value)
+            {
+                IsDirty = true;
+            }
+
             SelectedSortOption = null;
         }
         else
@@ -129,5 +148,22 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
             SelectedSortOption = sortOption;
             IsDirty = true;
         }
+    }
+
+    public virtual void Search(string query)
+    {
+        if (string.IsNullOrEmpty(query))
+        {
+            if (!string.IsNullOrEmpty(SearchQuery))
+            {
+                IsDirty = true;
+            }
+
+            SearchQuery = string.Empty;
+            return;
+        }
+
+        SearchQuery = query;
+        IsDirty = true;
     }
 }

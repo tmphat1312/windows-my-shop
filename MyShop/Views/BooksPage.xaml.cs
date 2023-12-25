@@ -47,4 +47,30 @@ public sealed partial class BooksPage : Page
             ViewModel.SelectSortOption(selectedItem);
         }
     }
+
+
+    private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var text = (sender as TextBox)?.Text;
+
+        if (text is not null)
+        {
+            ViewModel.Search(text);
+        }
+    }
+
+    private void SearchTextBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+
+            var text = (sender as TextBox)?.Text;
+
+            if (text is not null)
+            {
+                ViewModel.Search(text);
+                ViewModel.LoadData();
+            }
+        }
+    }
 }

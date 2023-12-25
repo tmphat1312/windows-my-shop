@@ -7,8 +7,11 @@ public class HttpFilterObject
         get; set;
     }
 
-    public object Value
+    public string Value
     {
         get; set;
     }
+
+
+    public string FilterString => Value;
 }
