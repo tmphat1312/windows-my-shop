@@ -65,9 +65,15 @@ public class Book
         get; set;
     }
 
-    //[JsonPropertyName("categoryId")]
-    //public string CategoryId
-    //{
-    //    get; set;
-    //}
+    [JsonPropertyName("categoryId")]
+    public string CategoryId
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("category")]
+    public Category Category
+    {
+        get; set;
+    }
 }

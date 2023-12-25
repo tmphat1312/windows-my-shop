@@ -103,10 +103,10 @@
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Purchase Price: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
-                        <!--<StackPanel x:Name="bookCategory">
+                        <StackPanel x:Name="bookCategory">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Category: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding CategoryId}" />
-                        </StackPanel>-->
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Category.Name}" />
+                        </StackPanel>
                         <StackPanel x:Name="bookPublishedYear">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Published Year: " />
                             <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PublishedYear}" />
