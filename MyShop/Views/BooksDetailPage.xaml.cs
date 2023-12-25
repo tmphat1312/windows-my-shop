@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
 using MyShop.Contracts.Services;
@@ -17,12 +18,30 @@ public sealed partial class BooksDetailPage : Page
     {
         ViewModel = App.GetService<BooksDetailViewModel>();
         InitializeComponent();
+        Loaded += UpdateVisualState;
+        SizeChanged += UpdateVisualState;
     }
+
+    // Responsive 
+
+    private void UpdateVisualState(object sender, RoutedEventArgs e)
+    {
+        var windowWidth = App.MainWindow.Width;
+
+        if (windowWidth < 960)
+        {
+            DetailPanel.Orientation = Orientation.Vertical;
+        }
+        else
+        {
+            DetailPanel.Orientation = Orientation.Horizontal;
+        }
+    }
+
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        //this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
