@@ -53,6 +53,20 @@
                 <Setter Property="LineHeight" Value="20" />
                 <Setter Property="MaxHeight" Value="40" />
             </Style>
+
+            <Style TargetType="TextBlock" x:Key="BookPYStyle">
+                <Setter Property="Margin" Value="0, 8, 0, 0" />
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="BookAuthorStyle">
+                <Setter Property="Margin" Value="0, 8, 0, 0" />
+                <Setter Property="FontStyle" Value="Italic" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                <Setter Property="LineHeight" Value="20" />
+                <Setter Property="MaxHeight" Value="20" />
+            </Style>
         </Grid.Resources>
         
         <ScrollViewer IsTabStop="True">
@@ -138,7 +152,7 @@
                 <StackPanel Spacing="20" Visibility="{x:Bind ViewModel.ContentIsReady, Mode=OneWay}">
                     <controls:AdaptiveGridView
                         Margin="0, 16, 0, 16"
-                        DesiredWidth="200"
+                        DesiredWidth="240"
                         IsItemClickEnabled="True"
                         ItemClickCommand="{x:Bind ViewModel.ItemClickCommand}"
                         ItemsSource="{x:Bind ViewModel.Source,Mode=OneWay}"
@@ -159,6 +173,12 @@
                                             <Image Style="{StaticResource BookPosterStyle}" Source="{x:Bind Image}" />
                                         </Border>
                                         <TextBlock Text="{x:Bind Name}" Style="{StaticResource BookTitleStyle}" />
+                                        <TextBlock Style="{StaticResource BookPYStyle}">
+                                            <Run Text="(" />
+                                            <Run Text="{x:Bind PublishedYear}" />
+                                            <Run Text=")" />
+                                        </TextBlock>
+                                        <TextBlock Text="{x:Bind Author}" Style="{StaticResource BookAuthorStyle}" />
                                         <TextBlock Text="{x:Bind SellingPrice}"  Style="{StaticResource BookPriceStyle}">
                                         </TextBlock>
                                     </StackPanel>
