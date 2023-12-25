@@ -44,6 +44,20 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         get;
     }
 
+    public RelayCommand AddUserCommand
+    {
+        get; 
+    }
+
+    public RelayCommand DeleteUserCommand
+    {
+        get;
+     }
+
+    public RelayCommand EditUserCommand
+    {
+        get;
+    }
     public UsersViewModel(IUserDataService userDataService)
     {
         _userDataService = userDataService;
@@ -54,6 +68,10 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         GoToPreviousPageCommand = new RelayCommand(GoToPreviousPage, () => CurrentPage > 1);
         GoToNextPageCommand = new RelayCommand(GoToNextPage, () => CurrentPage < _totalPages);
         GoToLastPageCommand = new RelayCommand(GoToLastPage, () => CurrentPage < _totalPages);
+
+        AddUserCommand = new RelayCommand(AddUser);
+        DeleteUserCommand = new RelayCommand(DeleteUser,() => Selected != null);
+        EditUserCommand = new RelayCommand(EditUser, () => Selected != null);
     }
 
     private void UpdateCommands()
@@ -62,6 +80,24 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         GoToPreviousPageCommand.RaiseCanExecuteChanged();
         GoToNextPageCommand.RaiseCanExecuteChanged();
         GoToLastPageCommand.RaiseCanExecuteChanged();
+
+        DeleteUserCommand.RaiseCanExecuteChanged();
+        EditUserCommand.RaiseCanExecuteChanged();
+    }
+
+    private void AddUser()
+    {
+       
+    }
+
+    private void DeleteUser()
+    {
+
+    }
+
+    private void EditUser()
+    {
+
     }
 
     private void GoToLastPage()
@@ -121,13 +157,17 @@ public partial class UsersViewModel : ObservableRecipient, INavigationAware
         UserItems.Clear();
 
         // TODO: Replace with real data.
-        var data = await _userDataService.GetListUserDetailsDataAsync();
+        var respone = await _userDataService.GetListUserDetailsDataAsync();
 
-        foreach (var item in data)
+        if(respone.isSuccess)
         {
-            UserItems.Add(item);
+            foreach (var item in respone.Data)
+            {
+                UserItems.Add(item);
 
+            }
         }
+       
 
         _totalPages = UserItems.Count / ItemsPerPage;
         if (UserItems.Count % ItemsPerPage != 0)
