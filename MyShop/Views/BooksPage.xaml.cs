@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-
+using MyShop.Core.Http;
 using MyShop.ViewModels;
 
 namespace MyShop.Views;
@@ -16,22 +16,11 @@ public sealed partial class BooksPage : Page
     {
         ViewModel = App.GetService<BooksViewModel>();
         InitializeComponent();
-        Loaded += BooksPage_Loaded;
-        SizeChanged += BooksPage_SizeChanged;
+        Loaded += UpdateVisualState;
+        SizeChanged += UpdateVisualState;
     }
 
-
-    private void BooksPage_Loaded(object sender, RoutedEventArgs e)
-    {
-        UpdateVisualState();
-    }
-
-    private void BooksPage_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        UpdateVisualState();
-    }
-
-    private void UpdateVisualState()
+    private void UpdateVisualState(object sender, RoutedEventArgs e)
     {
         var windowWidth = App.MainWindow.Width;
 
@@ -46,6 +35,16 @@ public sealed partial class BooksPage : Page
         {
             FiltersAndSearchPanel.Visibility = Visibility.Visible;
             SmallFiltersAndSearchPanel.Visibility = Visibility.Collapsed;
+        }
+    }
+
+    private void SortByComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedItem = (sender as ComboBox)?.SelectedItem as HttpSortObject;
+
+        if (selectedItem is not null)
+        {
+            ViewModel.SelectSortOption(selectedItem);
         }
     }
 }

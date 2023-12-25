@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using MyShop.Contracts.Services;
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
+using MyShop.Core.Http;
 using MyShop.Core.Models;
 using MyShop.Services;
 
@@ -21,11 +22,26 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
         _navigationService = navigationService;
         _bookDataService = bookDataService;
         FunctionOnCommand = LoadData;
+
+        SortOptions = new List<HttpSortObject>
+        {
+            new() { Name = "Default", Value = "default", IsAscending = true },
+            new() { Name = "Title (A-Z)", Value = "name", IsAscending = true },
+            new() { Name = "Title (Z-A)", Value="name", IsAscending = false },
+            new() { Name = "Price (Low - High)", Value="sellingPrice", IsAscending = true },
+            new() { Name = "Price (High - Low)", Value="sellingPrice", IsAscending = false },
+            new() { Name = "PublishYear (Past)", Value="publishedYear", IsAscending = true },
+            new() { Name = "PublishYear (Recent)", Value="publishedYear", IsAscending = false },
+        };
+        SelectedSortOption = SortOptions[0];
     }
 
     public async void LoadData()
     {
+        IsDirty = false;
         IsLoading = true;
+        InfoMessage = string.Empty;
+        ErrorMessage = string.Empty;
         NotfifyChanges();
 
         _bookDataService.SearchParams = BuildSearchParams();
@@ -46,15 +62,18 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
 
             IsLoading = false;
             TotalItems = totalItems;
+
             if (TotalItems == 0)
             {
                 InfoMessage = "No books found";
             }
         }
-
-        if (ERROR_CODE != 0)
+        else
         {
-            ErrorMessage = message;
+            if (ERROR_CODE != 0)
+            {
+                ErrorMessage = message;
+            }
         }
 
         NotfifyChanges();
@@ -80,5 +99,11 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
             _navigationService.SetListDataItemForNextConnectedAnimation(clickedItem);
             _navigationService.NavigateTo(typeof(BooksDetailViewModel).FullName!, clickedItem);
         }
+    }
+
+    [RelayCommand]
+    private void OnApplyFiltersAndSearch()
+    {
+        LoadData();
     }
 }

@@ -20,10 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controls\ApplyButton.xaml" />
-    <None Remove="Controls\FilterByComboBoxControl.xaml" />
     <None Remove="Controls\PaginationControl.xaml" />
     <None Remove="Controls\SearchBoxControl.xaml" />
-    <None Remove="Controls\SortComboBoxControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,12 +56,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Page Update="Controls\ApplyButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\FilterByComboBoxControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="Controls\SortComboBoxControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Controls\PaginationControl.xaml">

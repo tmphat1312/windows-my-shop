@@ -8,6 +8,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:models="using:MyShop.Core.Models"
     xmlns:myControls="using:MyShop.Controls"
+    xmlns:http="using:MyShop.Core.Http"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -61,21 +62,43 @@
                     <StackPanel 
                         x:Name="FiltersAndSearchPanel" 
                         Style="{StaticResource FiltersAndSearchPanelStyle}">
-                        <myControls:FilterByComboBoxControl />
-                        <myControls:SortComboBoxControl />
-                        <myControls:SearchBoxControl />
-                        <myControls:ApplyButton VerticalAlignment="Bottom" IsEnabled="False" />
+                        <ComboBox 
+                            SelectionChanged="SortByComboBox_SelectionChanged"
+                            ItemsSource="{x:Bind ViewModel.SortOptions}"
+                            DisplayMemberPath="Name"
+                            SelectedIndex="0"
+                            Header="SortBy" 
+                            x:Name="SortByComboBox"
+                            Width="200"/>
+
+                        <Button  VerticalAlignment="Bottom" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+                                <FontIcon Glyph="&#xE71C;"  FontSize="16" />
+                                <TextBlock Text="Apply" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
+                    <!--I have code duplication, but huhhuhuhuhu-->
                     <Expander
                         Header="Search box with filters"
                         x:Name="SmallFiltersAndSearchPanel"
                         Style="{StaticResource SmallFiltersAndSearchPanelStyle}">
                         <StackPanel Spacing="12" HorizontalAlignment="Left">
-                            <myControls:SearchBoxControl />
-                            <myControls:SortComboBoxControl />
-                            <myControls:FilterByComboBoxControl />
-                            <myControls:ApplyButton HorizontalAlignment="Right" IsEnabled="False" />
+                            <ComboBox 
+                                SelectionChanged="SortByComboBox_SelectionChanged"
+                                ItemsSource="{Binding ElementName=SortByComboBox,Path=ItemsSource}"
+                                SelectedIndex="{Binding ElementName=SortByComboBox,Path=SelectedIndex}"
+                                DisplayMemberPath="Name"
+                                Header="Sort by" 
+                                Width="200"/>
+
+                            <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+                                    <FontIcon Glyph="&#xE71C;"  FontSize="16" />
+                                    <TextBlock Text="Apply" />
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </Expander>
                 </Grid>

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MyShop.Core.Helpers;
+using MyShop.Core.Http;
 
 namespace MyShop.Services;
 
@@ -24,6 +25,15 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     [ObservableProperty]
     public int itemsPerPage = 10;
 
+    public List<HttpSortObject> SortOptions
+    {
+        get; set;
+    } = new List<HttpSortObject>();
+    public HttpSortObject? SelectedSortOption
+    {
+        get; set;
+    }
+
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
     public bool HasNextPage => CurrentPage < TotalPages;
     public bool HasPreviousPage => CurrentPage > 1;
@@ -33,6 +43,9 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     public int From => (CurrentPage - 1) * ItemsPerPage + 1;
     public int To => Math.Min(CurrentPage * ItemsPerPage, TotalItems);
     public bool ShowPagination => TotalPages > 1;
+
+    [ObservableProperty]
+    public bool isDirty = false;
 
     public Action FunctionOnCommand { get; set; } = () => { };
 
@@ -46,11 +59,12 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         get;
     }
 
+
     public ResourceLoadingViewModel()
     {
         GoToNextPageCommand = new RelayCommand(GoToNextPage, () => HasNextPage);
         GoToPreviousPageCommand = new RelayCommand(GoToPreviousPage, () => HasPreviousPage);
-        ItemsPerPage = 2; // TODO: get from settings
+        ItemsPerPage = 10; // TODO: get from settings
     }
 
     protected string BuildSearchParams()
@@ -59,6 +73,11 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
 
         paramBuilder.Append("page", CurrentPage);
         paramBuilder.Append("limit", ItemsPerPage);
+
+        if (SelectedSortOption is not null)
+        {
+            paramBuilder.Append("sort", SelectedSortOption.SortString);
+        }
 
         return paramBuilder.GetQueryString();
     }
@@ -96,6 +115,19 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
             CurrentPage--;
             NotfifyChanges();
             FunctionOnCommand();
+        }
+    }
+
+    public virtual void SelectSortOption(HttpSortObject sortOption)
+    {
+        if (sortOption.Value == "default")
+        {
+            SelectedSortOption = null;
+        }
+        else
+        {
+            SelectedSortOption = sortOption;
+            IsDirty = true;
         }
     }
 }
