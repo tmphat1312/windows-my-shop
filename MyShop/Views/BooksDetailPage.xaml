@@ -8,17 +8,22 @@
     xmlns:models="using:MyShop.Core.Models"
     xmlns:behaviors="using:MyShop.Behaviors"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    xmlns:helpers="using:MyShop.Helpers"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <helpers:VietnamesePriceConverter x:Key="VietnamesePriceConverter"/>
+    </Page.Resources>
+    
     <Grid x:Name="ContentArea">
         <Grid.Resources>
+
             <Style TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap"/>
             </Style>
             <Style x:Key="BookTitleStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="28" />
                 <Setter Property="FontWeight" Value="Medium" />
-                <Setter Property="Margin" Value="0,36,0,28" />
+                <Setter Property="Margin" Value="0,16,0,28" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="TextWrapping" Value="Wrap" />
                 <Setter Property="TextAlignment" Value="Center" />
@@ -41,7 +46,7 @@
         </Grid.Resources>
 
         <ScrollViewer IsTabStop="True">
-            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}" Spacing="12" HorizontalAlignment="Center">
                 <TextBlock Style="{StaticResource BookTitleStyle}" Text="{Binding Name}" />
 
                 <StackPanel x:Name="DetailPanel" Orientation="Horizontal">
@@ -92,11 +97,11 @@
                         </StackPanel>
                         <StackPanel x:Name="bookSellingPrice">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Selling Price: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
                         <StackPanel x:Name="bookPurchasePrice">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Purchase Price: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
                         <!--<StackPanel x:Name="bookCategory">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Category: " />

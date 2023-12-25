@@ -9,7 +9,11 @@
     xmlns:models="using:MyShop.Core.Models"
     xmlns:myControls="using:MyShop.Controls"
     xmlns:http="using:MyShop.Core.Http"
+    xmlns:helpers="using:MyShop.Helpers"
     mc:Ignorable="d">
+    <Page.Resources>
+        <helpers:VietnamesePriceConverter x:Key="VietnamesePriceConverter"/>
+    </Page.Resources>
 
     <Grid x:Name="ContentArea">
         <Grid.Resources>
@@ -179,7 +183,7 @@
                                             <Run Text=")" />
                                         </TextBlock>
                                         <TextBlock Text="{x:Bind Author}" Style="{StaticResource BookAuthorStyle}" />
-                                        <TextBlock Text="{x:Bind SellingPrice}"  Style="{StaticResource BookPriceStyle}">
+                                        <TextBlock Text="{x:Bind SellingPrice, Converter={StaticResource VietnamesePriceConverter}}"  Style="{StaticResource BookPriceStyle}">
                                         </TextBlock>
                                     </StackPanel>
                                 </Border>
