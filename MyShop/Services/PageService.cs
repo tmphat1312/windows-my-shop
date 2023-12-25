@@ -24,6 +24,7 @@ public class PageService : IPageService
         Configure<AccountViewModel, AccountPage>();
         Configure<OrdersViewModel, OrdersPage>();
         Configure<AddUserViewModel, AddUserPage>();
+        Configure<AddBookViewModel, AddBookPage>();
     }
 
     public Type GetPageType(string key)

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+
+namespace MyShop.Helpers;
 
 public class RelayCommand : ICommand
 {

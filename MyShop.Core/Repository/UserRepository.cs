@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+﻿using System.Net.Http.Headers;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Models;
 using Newtonsoft.Json;
@@ -17,7 +19,9 @@ namespace MyShop.Core.Repository;
 public class UserRepository : IUserRepository
 {
     private readonly HttpClient _httpClient;
-    private string accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzQ1MTE0NywiZXhwIjoxNzAzNDUyOTQ3fQ.tK3ucqI9hp5jNyWyhQVDaKm0WI6oA7TJBYsbwb88MLA";
+
+    private string accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzM0MDY4MSwiZXhwIjoxNzAzMzQyNDgxfQ.0iwXc6kXE836SzkahPQkzuw7KyTmaNuifrRYK3h4T3M";
+
     public UserRepository(HttpClient httpClient)
     {
         _httpClient = httpClient;
