@@ -8,5 +8,7 @@ using MyShop.Core.Models;
 namespace MyShop.Core.Contracts.Repository;
 public interface IUserRepository
 {
-    Task<IEnumerable<User>> GetAllUsersAsync();
+    Task<(bool isSuccess, List<User> Data, string Message, int ErrorCode)> GetAllUsersAsync();
+
+    Task<(bool isSuccess, string Message, int ErrorCode)> CreateUserAsync(User user);
 }

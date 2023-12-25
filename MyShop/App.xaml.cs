@@ -68,7 +68,6 @@ public partial class App : Application
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
-
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
@@ -83,7 +82,10 @@ public partial class App : Application
             services.AddSingleton<IReviewDataService, ReviewDataService>();
             services.AddSingleton<IReviewRepository, ReviewRepository>();
 
+
             // Views and ViewModels
+            services.AddTransient<AddUserViewModel>();
+            services.AddTransient<AddUserPage>();
             services.AddTransient<AddBookViewModel>();
             services.AddTransient<AddBookPage>();
             services.AddTransient<OrdersViewModel>();
