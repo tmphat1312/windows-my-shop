@@ -57,4 +57,22 @@ public sealed partial class BooksDetailPage : Page
             }
         }
     }
+
+    private async void DeleteItemButton_Click(object sender, RoutedEventArgs e)
+    {
+        var deleteFileDialog = new ContentDialog
+        {
+            Title = "Delete book permanently?",
+            Content = "If you delete this book, you won't be able to recover it. Do you want to delete it?",
+            PrimaryButtonText = "Delete",
+            CloseButtonText = "Cancel",
+            XamlRoot = DetailPanel.XamlRoot
+        };
+        var result = await deleteFileDialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            ViewModel.DeleteBook();
+        }
+    }
 }

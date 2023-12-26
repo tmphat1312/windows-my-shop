@@ -112,4 +112,35 @@ public class BookRepository : IBookRepository
 
         return (books, totalItems, message, ERROR_CODE);
     }
+
+    public async Task<(string, int)> DeleteBookAsync(Book book)
+    {
+        var message = string.Empty;
+        var ERROR_CODE = 0;
+
+        try
+        {
+            using var client = _httpClientFactory.CreateClient("Backend");
+            using var response = await client.DeleteAsync($"books/{book.Id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                message = "Book deleted successfully.";
+            }
+            else
+            {
+                var content = response.Content.ReadAsStringAsync().Result;
+                var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<Book>>(content);
+                message = httpResponse.Error.Message;
+                ERROR_CODE = (int)response.StatusCode;
+            }
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
+
+        return (message, ERROR_CODE);
+    }
 }

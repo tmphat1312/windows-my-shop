@@ -16,4 +16,6 @@ public interface IBookDataService
     public (IEnumerable<Book>, int, string, int) GetData();
 
     public Task<(Book, string, int)> CreateBookAsync(Book book);
+
+    public Task<(string, int)> DeleteBookAsync(Book book);
 }

@@ -59,7 +59,7 @@
 
                         <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                             <AppBarButton Icon="Edit" Label="Edit"/>
-                            <AppBarButton Icon="Delete" Label="Delete"/>
+                            <AppBarButton Icon="Delete" Label="Delete" x:Name="DeleteItemButton" Click="DeleteItemButton_Click"/>
                         </CommandBar>
                     </StackPanel>
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using MyShop.Contracts.Services;
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
@@ -9,12 +10,24 @@ namespace MyShop.ViewModels;
 public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigationAware
 {
     private readonly IReviewDataService _reviewDataService;
+    private readonly IBookDataService _bookDataService;
+    private readonly INavigationService _navigationService;
+
 
     public ObservableCollection<Review> Source { get; } = new ObservableCollection<Review>();
 
-    public BooksDetailViewModel(IReviewDataService reviewDataService)
+    //public RelayCommand EditItemButtonCommand
+    //{
+    //    get; set;
+    //}
+
+    public BooksDetailViewModel(IReviewDataService reviewDataService, IBookDataService bookDataService, INavigationService navigationService)
     {
         _reviewDataService = reviewDataService;
+        _bookDataService = bookDataService;
+        _navigationService = navigationService;
+
+        //DeleteItemButtonCommand = new RelayCommand(DeleteBook);
     }
 
     public Book? Item
@@ -61,6 +74,20 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
         }
 
         NotfifyChanges();
+    }
+
+    public async void DeleteBook()
+    {
+        var (message, ERROR_CODE) = await _bookDataService.DeleteBookAsync(Item);
+
+        if (ERROR_CODE == 0)
+        {
+            _navigationService.GoBack();
+        }
+        else
+        {
+            ErrorMessage = message;
+        }
     }
 
     public void OnNavigatedTo(object parameter)
