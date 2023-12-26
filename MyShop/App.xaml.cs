@@ -62,7 +62,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU5NjgyOCwiZXhwIjoxNzAzNTk4NjI4fQ.YsKTD5Z6hmBV4mL_Qkh7dBb2ho6M_eLVOXLROHHSS70";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU5OTEyOSwiZXhwIjoxNzAzNjAwOTI5fQ.NiugQeLUSws9PGsA7D3v_XeQwcg87UruiiPntFfkOEo";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
