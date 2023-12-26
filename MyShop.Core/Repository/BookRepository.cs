@@ -25,10 +25,10 @@ public class BookRepository : IBookRepository
             using var client = _httpClientFactory.CreateClient("Backend");
             using var content = new MultipartFormDataContent
             {
-                { new StringContent(newBook.Name), "name" },
-                { new StringContent(newBook.Description), "description" },
-                { new StringContent(newBook.Author), "author" },
-                { new StringContent(newBook.CategoryId), "category" },
+                { new StringContent(newBook.Name ?? ""), "name" },
+                { new StringContent(newBook.Description ?? ""), "description" },
+                { new StringContent(newBook.Author ?? ""), "author" },
+                { new StringContent(newBook.CategoryId ?? ""), "category" },
                 { new StringContent(newBook.SellingPrice.ToString()), "sellingPrice" },
                 { new StringContent(newBook.PurchasePrice.ToString()), "purchasePrice" },
                 { new StringContent(newBook.Quantity.ToString()), "quantity" },
