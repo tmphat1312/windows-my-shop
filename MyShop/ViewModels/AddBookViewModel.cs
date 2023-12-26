@@ -21,9 +21,6 @@ public partial class AddBookViewModel : ObservableRecipient
         SellingPrice = 1000,
         PublishedYear = DateTime.Now.Year,
         CategoryId = "6585555f703fca1356f60b91",
-        Author = "John Doe",
-        Name = "Book Name",
-        Description = "Book Description"
     };
 
     [ObservableProperty]
@@ -58,6 +55,11 @@ public partial class AddBookViewModel : ObservableRecipient
         get; set;
     }
 
+    public RelayCommand ResetButtonCommand
+    {
+        get; set;
+    }
+
     public AddBookViewModel(IBookDataService bookDataService)
     {
         _bookDataService = bookDataService;
@@ -65,6 +67,7 @@ public partial class AddBookViewModel : ObservableRecipient
         SelectImageButtonCommand = new RelayCommand(SelectImage, () => !IsImageSelected);
         RemoveImageButtonCommand = new RelayCommand(RemoveImage, () => IsImageSelected);
         AddBookButtonCommand = new RelayCommand(AddBook, () => !IsLoading);
+        ResetButtonCommand = new RelayCommand(Reset, () => !IsLoading);
     }
 
     public async void SelectImage()
@@ -125,6 +128,12 @@ public partial class AddBookViewModel : ObservableRecipient
         NotfifyChanges();
     }
 
+    public void Reset()
+    {
+        NewBook = new Book();
+        SelectedImageName = string.Empty;
+        NotfifyChanges();
+    }
     public void NotfifyChanges()
     {
         SelectImageButtonCommand.NotifyCanExecuteChanged();

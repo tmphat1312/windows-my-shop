@@ -50,8 +50,8 @@
                         />
 
                     <InfoBar
-                        Title="Info"
-                        Severity="Warning"
+                        Title="Ting"
+                        Severity="Success"
                         IsOpen="{x:Bind ViewModel.HasSuccess, Mode=OneWay}"
                         Message="{x:Bind ViewModel.SuccessMessage, Mode=OneWay}"
                         />
@@ -59,7 +59,7 @@
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="12">
                     <Button Style="{StaticResource AccentButtonStyle}" Content="Add book" Command="{x:Bind ViewModel.AddBookButtonCommand}" />
-                    <Button Content="Reset" Command="{x:Bind ViewModel.AddBookButtonCommand}" />
+                    <Button Content="Reset" Command="{x:Bind ViewModel.ResetButtonCommand}" />
                 </StackPanel>
             </StackPanel>
         </Grid>
