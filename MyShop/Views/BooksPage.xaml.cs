@@ -73,4 +73,30 @@ public sealed partial class BooksPage : Page
             }
         }
     }
+
+    private void MinPriceTextBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+        if (sender.Value > MaxPriceTextBox?.Value)
+        {
+            sender.Value = MaxPriceTextBox.Value;
+            ViewModel.SetMinPrice((int)sender.Value);
+        }
+        else
+        {
+            ViewModel.SetMinPrice((int)sender.Value);
+        }
+    }
+
+    private void MaxPriceTextBox_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+    {
+        if (sender.Value < MinPriceTextBox?.Value)
+        {
+            sender.Value = MinPriceTextBox.Value;
+            ViewModel.SetMaxPrice((int)sender.Value);
+        }
+        else
+        {
+            ViewModel.SetMaxPrice((int)sender.Value);
+        }
+    }
 }
