@@ -14,4 +14,16 @@ public class Category
     {
         get; set;
     }
+
+    [JsonPropertyName("description")]
+    public string Description
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("created_at")]
+    public string CreatedAt
+    {
+        get; set;
+    }
 }

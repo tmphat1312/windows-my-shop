@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using MyShop.Core.Http;
+using MyShop.Core.Models;
 using MyShop.ViewModels;
 
 namespace MyShop.Views;
@@ -97,6 +98,16 @@ public sealed partial class BooksPage : Page
         else
         {
             ViewModel.SetMaxPrice((int)sender.Value);
+        }
+    }
+
+    private void CategoryCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedItem = (sender as ComboBox)?.SelectedItem as Category;
+
+        if (selectedItem is not null)
+        {
+            ViewModel.SelectCategory(selectedItem);
         }
     }
 }

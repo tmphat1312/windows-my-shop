@@ -62,7 +62,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU5MTg3MCwiZXhwIjoxNzAzNTkzNjcwfQ.OOQZMMxPMbaVIpy8iru0fuaVe9HhQV8GZjGqK2oeaMA";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU5NjgyOCwiZXhwIjoxNzAzNTk4NjI4fQ.YsKTD5Z6hmBV4mL_Qkh7dBb2ho6M_eLVOXLROHHSS70";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -85,7 +85,8 @@ public partial class App : Application
             services.AddSingleton<IBookRepository, BookRepository>();
             services.AddSingleton<IReviewDataService, ReviewDataService>();
             services.AddSingleton<IReviewRepository, ReviewRepository>();
-
+            services.AddSingleton<ICategoryDataService, CategoryDataService>();
+            services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             // Views and ViewModels
             services.AddTransient<AddUserViewModel>();

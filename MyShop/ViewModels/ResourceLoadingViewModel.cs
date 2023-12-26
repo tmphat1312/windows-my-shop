@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MyShop.Core.Helpers;
 using MyShop.Core.Http;
+using MyShop.Core.Models;
 
 namespace MyShop.Services;
 
@@ -50,6 +51,13 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         get; set;
     }
 
+    [ObservableProperty]
+    public List<Category> categoryFilters = new() { new() { Id = "all", Name = "All" } };
+    public Category? SelectedCategory
+    {
+        get; set;
+    }
+
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
     public bool HasNextPage => CurrentPage < TotalPages;
     public bool HasPreviousPage => CurrentPage > 1;
@@ -62,7 +70,6 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
 
     [ObservableProperty]
     public bool isDirty = false;
-
 
     public Action FunctionOnCommand { get; set; } = () => { };
 
@@ -109,6 +116,11 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         if (MaxPrice > 0)
         {
             paramBuilder.Append("sellingPrice[lte]", MaxPrice);
+        }
+
+        if (SelectedCategory is not null)
+        {
+            paramBuilder.Append("category", SelectedCategory.Id);
         }
 
         return paramBuilder.GetQueryString();
@@ -164,6 +176,24 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         else
         {
             SelectedSortOption = sortOption;
+            IsDirty = true;
+        }
+    }
+
+    public virtual void SelectCategory(Category category)
+    {
+        if (category.Id == "all")
+        {
+            if (SelectedCategory?.Name != category.Name)
+            {
+                IsDirty = true;
+            }
+
+            SelectedCategory = null;
+        }
+        else
+        {
+            SelectedCategory = category;
             IsDirty = true;
         }
     }

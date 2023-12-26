@@ -14,13 +14,15 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
 {
     private readonly INavigationService _navigationService;
     private readonly IBookDataService _bookDataService;
+    private readonly ICategoryDataService _categoryDataService;
 
     public ObservableCollection<Book> Source { get; } = new ObservableCollection<Book>();
 
-    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService)
+    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService, ICategoryDataService categoryDataService)
     {
         _navigationService = navigationService;
         _bookDataService = bookDataService;
+        _categoryDataService = categoryDataService;
         FunctionOnCommand = LoadData;
 
         SortOptions = new List<HttpSortObject>
@@ -40,6 +42,21 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
             new() { Value = "all", Key = "category" },
             new() { Value = "fiction", Key = "category" },
         };
+    }
+
+    public async void LoadCategories()
+    {
+        await Task.Run(async () => await _categoryDataService.LoadDataAsync());
+        var (categories, _, _) = _categoryDataService.GetData();
+
+        if (categories is not null)
+        {
+            foreach (var category in categories)
+            {
+                CategoryFilters.Add(category);
+            }
+        }
+
     }
 
     public async void LoadData()
@@ -90,6 +107,7 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
         if (Source.Count <= 0)
         {
             LoadData();
+            LoadCategories();
         }
     }
 
