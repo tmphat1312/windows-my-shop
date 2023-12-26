@@ -143,4 +143,73 @@ public class BookRepository : IBookRepository
 
         return (message, ERROR_CODE);
     }
+
+    public async Task<(Book, string, int)> UpdateBookAsync(Book book)
+    {
+        var returnedBook = new Book();
+        var message = string.Empty;
+        var ERROR_CODE = 0;
+
+        try
+        {
+            using var client = _httpClientFactory.CreateClient("Backend");
+            using var content = new MultipartFormDataContent
+            {
+                { new StringContent(book.Name ?? ""), "name" },
+                { new StringContent(book.Description ?? ""), "description" },
+                { new StringContent(book.Author ?? ""), "author" },
+                //{ new StringContent(book.CategoryId ?? ""), "category" },
+                { new StringContent(book.SellingPrice.ToString()), "sellingPrice" },
+                { new StringContent(book.PurchasePrice.ToString()), "purchasePrice" },
+                { new StringContent(book.Quantity.ToString()), "quantity" },
+                { new StringContent(book.PublishedYear.ToString()), "publishedYear" }
+            };
+
+            if (book.ImageBytes != null)
+            {
+                var memoryStream = new MemoryStream(book.ImageBytes);
+                var streamContent = new StreamContent(memoryStream);
+                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                content.Add(streamContent, "image", "filename.jpg");
+            }
+
+            var response = await client.PatchAsync($"books/{book.Id}", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<Book>>(responseContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                returnedBook = httpResponse.Data;
+                message = "Book updated successfully.";
+            }
+            else
+            {
+                ERROR_CODE = (int)response.StatusCode;
+
+                if (ERROR_CODE == 400)
+                {
+                    message = httpResponse.Error?.Message;
+                }
+                else if (ERROR_CODE == 500)
+                {
+                    message = httpResponse.Message;
+                }
+                else if (ERROR_CODE == 401)
+                {
+                    message = "Your login session is expired.";
+                }
+                else
+                {
+                    message = "Something broke!!!";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
+
+        return (returnedBook, message, ERROR_CODE);
+    }
 }

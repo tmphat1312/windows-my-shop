@@ -45,7 +45,7 @@
         </Grid.Resources>
 
         <ScrollViewer IsTabStop="True">
-            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}" Spacing="12">
+            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item, Mode=TwoWay}" Spacing="12">
                 <TextBlock Style="{StaticResource BookTitleStyle}" Text="{Binding Name}" />
 
                 <StackPanel x:Name="DetailPanel" Orientation="Horizontal">
@@ -54,16 +54,16 @@
                             <Image 
                                 x:Name="itemPoster" 
                                 Style="{StaticResource BookPosterStyle}"
-                                Source="{Binding Image}" />
+                                Source="{Binding Image, Mode=TwoWay}" />
                         </Border>
 
-                        <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
-                            <AppBarButton Icon="Edit" Label="Edit"/>
-                            <AppBarButton Icon="Delete" Label="Delete" x:Name="DeleteItemButton" Click="DeleteItemButton_Click"/>
+                        <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Visibility="{x:Bind ViewModel.IsEditButtonVisible, Mode=OneWay}">
+                            <AppBarButton Icon="Edit" Label="Edit" Command="{x:Bind ViewModel.SetEditItemSessionButtonCommand}"/>
+                            <AppBarButton Icon="Delete" Label="Delete" x:Name="DeleteItemButton" Click="DeleteItemButton_Click" />
                         </CommandBar>
                     </StackPanel>
 
-                    <StackPanel x:Name="bookInfoGroup">
+                    <StackPanel x:Name="bookInfoGroup"  Visibility="{x:Bind ViewModel.IsEditButtonVisible, Mode=OneWay}">
                         <StackPanel.Resources>
                             <Style x:Key="LabelStyle" TargetType="TextBlock">
                                 <Setter Property="FontSize" Value="12" />
@@ -80,54 +80,102 @@
 
                         <StackPanel x:Name="bookName">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Name: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" TextWrapping="Wrap" MaxWidth="640" HorizontalAlignment="Left" Text="{Binding Name}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" TextWrapping="Wrap" MaxWidth="640" HorizontalAlignment="Left" Text="{Binding Name, Mode=TwoWay}" />
                         </StackPanel>
                         <StackPanel x:Name="bookDescription">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Description: " />
                             <RichTextBlock TextAlignment="Justify" MaxWidth="640" HorizontalAlignment="Left">
                                 <Paragraph>
-                                    <Run Text="{Binding Description}" />
+                                    <Run Text="{Binding Description, Mode=TwoWay}" />
                                 </Paragraph>
                             </RichTextBlock>
                         </StackPanel>
                         <StackPanel x:Name="bookAuthor">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Author: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Author}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Author, Mode=TwoWay}" />
                         </StackPanel>
                         <StackPanel x:Name="bookSellingPrice">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Selling Price: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice, Converter={StaticResource VietnamesePriceConverter}}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding SellingPrice, Mode=TwoWay, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
                         <StackPanel x:Name="bookPurchasePrice">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Purchase Price: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice, Converter={StaticResource VietnamesePriceConverter}}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PurchasePrice, Mode=TwoWay, Converter={StaticResource VietnamesePriceConverter}}" />
                         </StackPanel>
                         <StackPanel x:Name="bookCategory">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Category: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Category.Name}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Category.Name, Mode=TwoWay}" />
                         </StackPanel>
                         <StackPanel x:Name="bookPublishedYear">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Published Year: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PublishedYear}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding PublishedYear, Mode=TwoWay}" />
                         </StackPanel>
                         <StackPanel x:Name="bookRemaningQuantity">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Remaining quantity: " />
-                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Quantity}" />
+                            <TextBlock Style="{StaticResource ContentStyle}" Text="{Binding Quantity, Mode=TwoWay}" />
                         </StackPanel>
                         <StackPanel x:Name="bookRatingsAverage" HorizontalAlignment="Left">
                             <TextBlock Style="{StaticResource LabelStyle}" Text="Ratings Average: " />
                             <RatingControl 
                                 IsClearEnabled="True"
                                 IsReadOnly="True" 
-                                PlaceholderValue="{Binding RatingsAverage}"
-                                Caption="{Binding RatingsAverage}"/>
+                                PlaceholderValue="{Binding RatingsAverage, Mode=TwoWay}"
+                                Caption="{Binding RatingsAverage, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Spacing="16" x:Name="EditBookStackPanel" Visibility="{x:Bind ViewModel.IsEditSession, Mode=OneWay}">
+                        
+                        <TextBox Header="Book title" PlaceholderText="Title" Text="{x:Bind ViewModel.EditBook.Name, Mode=TwoWay}" />
+                        <TextBox Header="Author" PlaceholderText="Author name" Text="{x:Bind ViewModel.EditBook.Author, Mode=TwoWay}" />
+                        <NumberBox Header="Published year" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.EditBook.PublishedYear, Mode=TwoWay}" />
+                        <NumberBox Header="Available quantity" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.EditBook.Quantity, Mode=TwoWay}"/>
+                        <TextBox Header="Description" Height="120" PlaceholderText="Write book description" Text="{x:Bind ViewModel.EditBook.Description, Mode=TwoWay}" />
+                        <NumberBox Header="Purchase price" Value="{x:Bind ViewModel.EditBook.PurchasePrice, Mode=TwoWay}" SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
+                        <NumberBox Header="Selling price" Value="{x:Bind ViewModel.EditBook.SellingPrice, Mode=TwoWay}"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
+                        <ComboBox Header="Category" Width="200">
+                            <x:String>Green</x:String>
+                            <x:String>Red</x:String>
+                            <x:String>Yellow</x:String>
+                        </ComboBox>
+                        <StackPanel VerticalAlignment="Top">
+                            <TextBlock Text="Book photo" Margin="0,0,0,10"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button  Content="Select a picture" Command="{x:Bind ViewModel.SelectImageButtonCommand}" />
+                                <TextBlock FontWeight="Medium" Text="{x:Bind ViewModel.SelectedImageName, Mode=OneWay}" TextWrapping="Wrap" Padding="20,5,0,0"/>
+                                <Button VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsImageSelected, Mode=OneWay}" Margin="4,0,0,0" Command="{x:Bind ViewModel.RemoveImageButtonCommand}">
+                                    <FontIcon Glyph="&#xE8BB;" FontSize="12" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+
+
+                        <!--Loading-->
+                        <ProgressRing 
+                            IsActive="{x:Bind ViewModel.IsEditLoading, Mode=OneWay}" 
+                            Visibility="{x:Bind ViewModel.IsEditLoading, Mode=OneWay}" 
+                            Width="60"
+                            Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                        <!--Error & Info-->
+                        <InfoBarPanel>
+                            <InfoBar 
+                                Title="Error Editing Book"
+                                Severity="Error"
+                                IsOpen="{x:Bind ViewModel.HasEditError, Mode=OneWay}"
+                                Message="{x:Bind ViewModel.EditErrorMessage, Mode=OneWay}"/>
+                        </InfoBarPanel>
+
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="12">
+                            <Button Style="{StaticResource AccentButtonStyle}" Content="Save changes" Command="{x:Bind ViewModel.EditBookButtonCommand}"  />
+                            <Button Content="Cancel" Command="{x:Bind ViewModel.CancelButtonCommand}" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
                 <StackPanel>
                     <!--Reviews-->
-                    <TextBlock FontSize="18" FontWeight="Medium">Customer reviews</TextBlock>
+                    <TextBlock FontSize="18" FontWeight="Medium" Margin="0,0,0,10">Customer reviews</TextBlock>
 
                     <!--Loading reviews-->
                     <ProgressRing 

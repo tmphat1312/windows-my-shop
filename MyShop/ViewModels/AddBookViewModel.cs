@@ -141,6 +141,7 @@ public partial class AddBookViewModel : ObservableRecipient
         SelectedImageName = string.Empty;
         NotfifyChanges();
     }
+
     public void NotfifyChanges()
     {
         SelectImageButtonCommand.NotifyCanExecuteChanged();

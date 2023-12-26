@@ -31,10 +31,12 @@ public sealed partial class BooksDetailPage : Page
         if (windowWidth < 960)
         {
             DetailPanel.Orientation = Orientation.Vertical;
+            EditBookStackPanel.MinWidth = 300;
         }
         else
         {
             DetailPanel.Orientation = Orientation.Horizontal;
+            EditBookStackPanel.MinWidth = 600;
         }
     }
 

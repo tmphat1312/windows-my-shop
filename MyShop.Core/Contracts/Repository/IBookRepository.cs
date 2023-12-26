@@ -36,4 +36,6 @@ public interface IBookRepository
     /// int: error code. 0 means no error. -1 means exception.
     /// </returns>
     Task<(string, int)> DeleteBookAsync(Book book);
+
+    Task<(Book, string, int)> UpdateBookAsync(Book book);
 }
