@@ -76,4 +76,9 @@ public class Book
     {
         get; set;
     }
+
+    public byte[] ImageBytes
+    {
+        get; set;
+    }
 }

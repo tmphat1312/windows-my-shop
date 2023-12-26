@@ -1,12 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using MyShop.Contracts.Services;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
 using MyShop.Helpers;
-using MyShop.Views;
-using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
@@ -16,7 +12,7 @@ public partial class AddUserViewModel : ObservableRecipient
 {
     private readonly IUserDataService _userDataService;
 
-    private INavigationService _navigationService;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     private string message;
@@ -29,7 +25,7 @@ public partial class AddUserViewModel : ObservableRecipient
 
     public RelayCommand SelectImageButtonCommand
     {
-        get;set;
+        get; set;
     }
 
     public RelayCommand RemoveImageButtonCommand
@@ -42,7 +38,7 @@ public partial class AddUserViewModel : ObservableRecipient
         get; set;
     }
 
-    public AddUserViewModel(IUserDataService userDataService,INavigationService navigationService)
+    public AddUserViewModel(IUserDataService userDataService, INavigationService navigationService)
     {
         this._userDataService = userDataService;
         this._navigationService = navigationService;
@@ -51,7 +47,6 @@ public partial class AddUserViewModel : ObservableRecipient
         SelectImageButtonCommand = new RelayCommand(SelectImageButton);
         CreateUserButtonCommand = new RelayCommand(CreateUser);
         RemoveImageButtonCommand = new RelayCommand(() => { newUser.ImageBytes = null; SelectedImageName = null; });
-                                     
     }
 
     public async void SelectImageButton()
@@ -88,7 +83,7 @@ public partial class AddUserViewModel : ObservableRecipient
         var respone = await _userDataService.CreateUserAsync(newUser);
         Message = respone.Message;
 
-        if(respone.ErrorCode==201)
+        if (respone.ErrorCode == 201)
         {
             _navigationService.NavigateTo("MyShop.ViewModels.UsersViewModel");
         }

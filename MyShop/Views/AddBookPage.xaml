@@ -6,7 +6,38 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-		<TextBlock Text="Add a Book" />
-    </Grid>
+    <ScrollViewer Margin="0,0,0,40">
+        <Grid>
+            <StackPanel x:Name="ContentArea" Spacing="16" MaxWidth="600" Padding="0, 20, 0, 20">
+                <TextBox Header="Book title" PlaceholderText="Title" />
+                <TextBox Header="Author" PlaceholderText="Author name" />
+                <NumberBox Header="Published year" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" />
+                <NumberBox Header="Available quantity" Value="1" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" />
+                <RichEditBox Header="Description" Height="120"/>
+                <NumberBox Header="Purchase price" Value="1000"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
+                <NumberBox Header="Selling price" Value="1000"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
+                <ComboBox Header="Category" Width="200" SelectedIndex="0">
+                    <x:String>6585555f703fca1356f60b91</x:String>
+                    <x:String>Green</x:String>
+                    <x:String>Red</x:String>
+                    <x:String>Yellow</x:String>
+                </ComboBox>
+                <StackPanel VerticalAlignment="Top">
+                    <TextBlock Text="Book photo" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button  Content="Select a picture" Command="{x:Bind ViewModel.SelectImageButtonCommand}" />
+                        <TextBlock FontWeight="Medium" Text="{x:Bind ViewModel.SelectedImageName, Mode=OneWay}" TextWrapping="Wrap" Padding="20,5,0,0"/>
+                        <Button VerticalAlignment="Center" Visibility="{x:Bind ViewModel.IsImageSelected, Mode=OneWay}" Margin="4,0,0,0" Command="{x:Bind ViewModel.RemoveImageButtonCommand}">
+                            <FontIcon Glyph="&#xE8BB;" FontSize="12" />
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="12">
+                    <Button Style="{StaticResource AccentButtonStyle}" Content="Add book" Command="{x:Bind ViewModel.AddBookButtonCommand}" />
+                    <Button Content="Reset" Command="{x:Bind ViewModel.AddBookButtonCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>
