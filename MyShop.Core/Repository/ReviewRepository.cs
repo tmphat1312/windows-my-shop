@@ -24,11 +24,11 @@ public class ReviewRepository : IReviewRepository
         {
             var client = _httpClientFactory.CreateClient("Backend");
             var response = await client.GetAsync($"reviews?book={bookId}");
+            var content = response.Content.ReadAsStringAsync().Result;
+            var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Review>>>(content);
 
             if (response.IsSuccessStatusCode)
             {
-                var content = response.Content.ReadAsStringAsync().Result;
-                var httpResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Review>>(content);
                 reviews = httpResponse.Data.ToList();
                 totalItems = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }

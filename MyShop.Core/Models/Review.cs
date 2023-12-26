@@ -1,6 +1,22 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace MyShop.Core.Models;
+
+public class ReviewUser
+{
+    [JsonPropertyName("name")]
+    public string Name
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("email")]
+    public string Email
+    {
+        get; set;
+    }
+}
+
 public class Review
 {
     [JsonPropertyName("id")]
@@ -46,7 +62,7 @@ public class Review
     }
 
     [JsonPropertyName("user")]
-    public User User
+    public ReviewUser User
     {
         get; set;
     }

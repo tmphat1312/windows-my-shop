@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Net.Http.Headers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
@@ -60,7 +61,10 @@ public partial class App : Application
             // Http clients
             services.AddHttpClient("Backend", client =>
             {
+                //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU3ODM4OCwiZXhwIjoxNzAzNTgwMTg4fQ.wAOvlXTkcswpJqpe2LMIRLyYrIVp-z6VM1z1SS0wo9k";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
 
 

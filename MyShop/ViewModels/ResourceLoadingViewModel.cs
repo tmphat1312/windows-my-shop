@@ -41,6 +41,14 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     {
         get; set;
     } = new List<HttpFilterObject>();
+    public int MinPrice
+    {
+        get; set;
+    }
+    public int MaxPrice
+    {
+        get; set;
+    }
 
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
     public bool HasNextPage => CurrentPage < TotalPages;
@@ -91,6 +99,16 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         if (!string.IsNullOrEmpty(SearchQuery))
         {
             paramBuilder.Append("q", SearchQuery);
+        }
+
+        if (MinPrice > 0)
+        {
+            paramBuilder.Append("sellingPrice[gte]", MinPrice);
+        }
+
+        if (MaxPrice > 0)
+        {
+            paramBuilder.Append("sellingPrice[lte]", MaxPrice);
         }
 
         return paramBuilder.GetQueryString();
@@ -164,6 +182,42 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         }
 
         SearchQuery = query;
+        IsDirty = true;
+    }
+
+    public virtual void ClearFilters()
+    {
+        if (SelectedSortOption is not null)
+        {
+
+            IsDirty = true;
+        }
+
+        SelectedSortOption = null;
+        SearchQuery = string.Empty;
+        MinPrice = 0;
+        MaxPrice = 0;
+    }
+
+    public virtual void SetMinPrice(int price)
+    {
+        if (price == MinPrice)
+        {
+            return;
+        }
+
+        MinPrice = price;
+        IsDirty = true;
+    }
+
+    public virtual void SetMaxPrice(int price)
+    {
+        if (price == MaxPrice)
+        {
+            return;
+        }
+
+        MaxPrice = price;
         IsDirty = true;
     }
 }

@@ -20,7 +20,7 @@ public class Book
     public string Image
     {
         get; set;
-    }
+    } = "https://via.placeholder.com/300";
 
     [JsonPropertyName("purchasePrice")]
     public double PurchasePrice
@@ -73,6 +73,11 @@ public class Book
 
     [JsonPropertyName("category")]
     public Category Category
+    {
+        get; set;
+    }
+
+    public byte[] ImageBytes
     {
         get; set;
     }

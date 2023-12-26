@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Xaml.Controls;
-
 using MyShop.ViewModels;
 
 namespace MyShop.Views;
