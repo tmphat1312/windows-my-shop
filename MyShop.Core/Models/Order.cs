@@ -1,45 +1,58 @@
-﻿namespace MyShop.Core.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace MyShop.Core.Models;
 
 public class Order
 {
+    [JsonPropertyName("id")]
     public string Id
     {
         get; set;
     }
 
-    public string UserId
+    [JsonPropertyName("user")]
+    public User User
     {
-        get; set;
+    
+           get; set;
     }
 
+    [JsonPropertyName("orderDate")]
     public DateTime OrderDate
     {
 
         get; set;
     }
 
+    [JsonPropertyName("status")]
     public string Status
     {
         get; set;
     }
 
+    [JsonPropertyName("description")]
     public string Description
     {
         get; set;
     }
 
-    public decimal TotalPrice
+    [JsonPropertyName("totalPrice")]
+    public double TotalPrice
     {
         get; set;
     }
 
-    public decimal FinalPrice
+    [JsonPropertyName("finalPrice")]
+    public double FinalPrice
     {
         get; set;
     }
 
+    [JsonPropertyName("orderDetails")]
     public ICollection<OrderDetail> Details
     {
         get; set;
     }
+
+    
 }

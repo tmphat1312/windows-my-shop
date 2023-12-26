@@ -21,10 +21,11 @@ public class PageService : IPageService
         Configure<CategoriesDetailViewModel, CategoriesDetailPage>();
         Configure<BooksViewModel, BooksPage>();
         Configure<BooksDetailViewModel, BooksDetailPage>();
-        Configure<AccountViewModel, AccountPage>();
-        Configure<OrdersViewModel, OrdersPage>();
+        Configure<AccountViewModel, AccountPage>();    
         Configure<AddUserViewModel, AddUserPage>();
         Configure<AddBookViewModel, AddBookPage>();
+        Configure<OrdersViewModel, OrdersPage>();
+        Configure<AddOrderViewModel, AddOrderPage>();
     }
 
     public Type GetPageType(string key)

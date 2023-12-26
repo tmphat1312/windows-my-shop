@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Net.Http.Headers;
+
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
@@ -60,9 +62,11 @@ public partial class App : Application
             // Http clients
             services.AddHttpClient("Backend", client =>
             {
+                //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzYzMTA0MSwiZXhwIjoxNzAzNjMyODQxfQ.8PP5P-eweefgBQ1EJmI-XzV7yFG2qz-vlf1VjMkUB00";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
-
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -81,15 +85,19 @@ public partial class App : Application
             services.AddSingleton<IBookRepository, BookRepository>();
             services.AddSingleton<IReviewDataService, ReviewDataService>();
             services.AddSingleton<IReviewRepository, ReviewRepository>();
+            services.AddSingleton<IOrderDataService, OrderDataService>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
 
 
             // Views and ViewModels
+            services.AddTransient<AddOrderViewModel>();
+            services.AddTransient<AddOrderPage>();
+            services.AddTransient<OrdersViewModel>();
+            services.AddTransient<OrdersPage>();
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<AddUserPage>();
             services.AddTransient<AddBookViewModel>();
             services.AddTransient<AddBookPage>();
-            services.AddTransient<OrdersViewModel>();
-            services.AddTransient<OrdersPage>();
             services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountPage>();
             services.AddTransient<BooksDetailViewModel>();

@@ -59,6 +59,11 @@ public class Book
         get; set;
     }
 
+    public int OrderQuantity
+    {
+        get; set;
+    } = 0;
+
     [JsonPropertyName("description")]
     public string Description
     {

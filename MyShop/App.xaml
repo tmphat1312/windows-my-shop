@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <helpers:ComboxBoxContentToString x:Key="ComboBoxContentToStringConverter" />
+            <helpers:VietnamesePriceConverter x:Key="VietnamesePriceConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

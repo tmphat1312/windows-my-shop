@@ -1,21 +1,53 @@
-﻿using MyShop.Core.Models;
+﻿using MyShop.Core.Contracts.Repository;
+using MyShop.Core.Contracts.Services;
+using MyShop.Core.Models;
 
 namespace MyShop.Core.Services;
-public class OrderDataService
+public class OrderDataService : IOrderDataService
 {
-    private List<Order> _orders;
+    private readonly IOrderRepository _orderRepository;
 
-    private static IEnumerable<Order> Orders()
+    // (orders, totalItems, errorMessage, ErrorCode)
+    private (IEnumerable<Order>, int, string, int) _orderDataTuple;
+
+    public bool IsInitialized => _orderDataTuple.Item1 is not null;
+    public bool IsDirty { get; set; } = true;
+
+    private string _searchParams;
+    public string SearchParams
     {
-        var sampleOrders = new List<Order>()
-           {
-                new(),
-                new(),
-                new(),
-                new(),
-                new(),
-            };
 
-        return sampleOrders;
+        get => _searchParams;
+        set
+        {
+            _searchParams = value;
+            IsDirty = true;
+        }
+    }
+
+    public (IEnumerable<Order>, int, string, int) GetData() => _orderDataTuple;
+
+    public OrderDataService(IOrderRepository orderRepository)
+    {
+        _orderRepository = orderRepository;
+    }
+
+    public async Task<(IEnumerable<Order>, int, string, int)> LoadDataAsync()
+    {
+        _orderDataTuple = await _orderRepository.GetAllOrdersAsync();
+
+        return _orderDataTuple;
+    }
+
+    public async Task<(Order, string, int)> CreateAOrderAsync(List<AddOrderDetail> addOrderDetail)
+    {
+        string userId = "65889e531ceae159d7937a4e";
+        var addOrder = new AddOrder
+        {
+            UserId = userId,
+            OrderDetails = addOrderDetail
+        };
+
+        return await _orderRepository.CreateAOrderAsync(addOrder);
     }
 }

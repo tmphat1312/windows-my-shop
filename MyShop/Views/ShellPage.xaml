@@ -74,11 +74,22 @@
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+                
                 <NavigationViewItem Content="Orders" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.OrdersViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE92;"/>
                     </NavigationViewItem.Icon>
+
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Add a order" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddOrderViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDC6;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                  
                 </NavigationViewItem>
+               
             </NavigationView.MenuItems>
             
             <NavigationView.FooterMenuItems>
