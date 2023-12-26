@@ -157,38 +157,38 @@
                         />
                     </InfoBarPanel>
 
-                    <GridView
-                        x:Name="ContentGridView"
-                        ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-                        IsItemClickEnabled="False"
-                        AllowDrop="False"
-                        CanReorderItems="False"
-                        SelectionMode="None"
-                        HorizontalAlignment="Left">
+                    <ScrollViewer IsTabStop="True">
+                        <ListView x:Name="ContentListView"
+                            SelectionMode="None"
+                            Height="400"
+                            ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                            IsItemClickEnabled="False">
 
-                        <GridView.ItemContainerStyle>
-                            <Style TargetType="GridViewItem">
-                                <Setter Property="Margin" Value="6, 8, 6, 8"/>
-                            </Style>
-                        </GridView.ItemContainerStyle>
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType='models:Review'>
-                                <Border BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="2" Padding="12" CornerRadius="4">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding UserId}" TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
-                                        <RatingControl 
-                                            HorizontalAlignment="Left"
-                                            IsClearEnabled="True"
-                                            IsReadOnly="True" 
-                                            PlaceholderValue="{Binding Rating}" 
-                                            Caption="{Binding Rating}"/>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                    </GridView>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType='models:Review'>
+                                    <Border BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="2" Padding="12" CornerRadius="4" Margin="0, 8, 0, 0">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Text="{Binding User.Name}" FontWeight="Medium" TextWrapping="Wrap" />
+                                            <TextBlock Grid.Row="1" Text="{Binding Content}" TextWrapping="Wrap" />
+                                            <RatingControl 
+                                                Grid.Row="2"
+                                                HorizontalAlignment="Left"
+                                                IsClearEnabled="True"
+                                                IsReadOnly="True" 
+                                                PlaceholderValue="{Binding Rating}" 
+                                                Caption="{Binding Rating}"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollViewer>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
