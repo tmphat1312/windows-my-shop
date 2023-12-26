@@ -16,11 +16,12 @@
                 <TextBox Header="Description" Height="120" PlaceholderText="Write book description" Text="{x:Bind ViewModel.NewBook.Description, Mode=TwoWay}" />
                 <NumberBox Header="Purchase price" Value="{x:Bind ViewModel.NewBook.PurchasePrice, Mode=TwoWay}" SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
                 <NumberBox Header="Selling price" Value="{x:Bind ViewModel.NewBook.SellingPrice, Mode=TwoWay}"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
-                <ComboBox Header="Category" Width="200">
-                    <x:String>Green</x:String>
-                    <x:String>Red</x:String>
-                    <x:String>Yellow</x:String>
-                </ComboBox>
+                <ComboBox 
+                    x:Name="CategoryCombobox" 
+                    SelectionChanged="CategoryCombobox_SelectionChanged" 
+                    Header="Category" Width="200" 
+                    ItemsSource="{x:Bind ViewModel.CategoryOptions, Mode=OneWay}"
+                    DisplayMemberPath="Name"  />
                 <StackPanel VerticalAlignment="Top">
                     <TextBlock Text="Book photo" Margin="0,0,0,10"/>
                     <StackPanel Orientation="Horizontal">
@@ -50,8 +51,8 @@
                         />
 
                     <InfoBar
-                        Title="Info"
-                        Severity="Warning"
+                        Title="Ting"
+                        Severity="Success"
                         IsOpen="{x:Bind ViewModel.HasSuccess, Mode=OneWay}"
                         Message="{x:Bind ViewModel.SuccessMessage, Mode=OneWay}"
                         />
@@ -59,7 +60,7 @@
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="12">
                     <Button Style="{StaticResource AccentButtonStyle}" Content="Add book" Command="{x:Bind ViewModel.AddBookButtonCommand}" />
-                    <Button Content="Reset" Command="{x:Bind ViewModel.AddBookButtonCommand}" />
+                    <Button Content="Reset" Command="{x:Bind ViewModel.ResetButtonCommand}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

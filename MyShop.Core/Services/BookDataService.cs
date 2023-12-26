@@ -43,4 +43,14 @@ public class BookDataService : IBookDataService
     {
         return await Task.Run(async () => await _bookRepository.CreateABookAsync(book));
     }
+
+    public async Task<(string, int)> DeleteBookAsync(Book book)
+    {
+        return await Task.Run(async () => await _bookRepository.DeleteBookAsync(book));
+    }
+
+    public async Task<(Book, string, int)> UpdateBookAsync(Book book)
+    {
+        return await Task.Run(async () => await _bookRepository.UpdateBookAsync(book));
+    }
 }

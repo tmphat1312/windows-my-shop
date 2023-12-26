@@ -80,6 +80,14 @@
                     <StackPanel 
                         x:Name="FiltersAndSearchPanel" 
                         Style="{StaticResource FiltersAndSearchPanelStyle}">
+                        <ComboBox 
+                            x:Name="CategoryCombobox" 
+                            SelectionChanged="CategoryCombobox_SelectionChanged" 
+                            Header="Category" Width="200" 
+                            ItemsSource="{x:Bind ViewModel.CategoryFilters, Mode=OneWay}"
+                            DisplayMemberPath="Name" 
+                            SelectedIndex="0" />
+
                         <NumberBox 
                             x:Name="MinPriceTextBox"
                             Header="Min Price"

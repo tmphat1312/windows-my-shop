@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
 using Windows.Storage.Pickers;
@@ -7,10 +8,10 @@ using WinRT.Interop;
 
 namespace MyShop.ViewModels;
 
-public partial class AddBookViewModel : ObservableRecipient
+public partial class AddBookViewModel : ObservableRecipient, INavigationAware
 {
     private readonly IBookDataService _bookDataService;
-
+    private readonly ICategoryDataService _categoryDataService;
 
     [ObservableProperty]
     private Book newBook = new()
@@ -20,11 +21,10 @@ public partial class AddBookViewModel : ObservableRecipient
         PurchasePrice = 1000,
         SellingPrice = 1000,
         PublishedYear = DateTime.Now.Year,
-        CategoryId = "6585555f703fca1356f60b91",
-        Author = "John Doe",
-        Name = "Book Name",
-        Description = "Book Description"
     };
+
+    [ObservableProperty]
+    public List<Category> categoryOptions = new();
 
     [ObservableProperty]
     private bool isLoading = false;
@@ -58,13 +58,20 @@ public partial class AddBookViewModel : ObservableRecipient
         get; set;
     }
 
-    public AddBookViewModel(IBookDataService bookDataService)
+    public RelayCommand ResetButtonCommand
+    {
+        get; set;
+    }
+
+    public AddBookViewModel(IBookDataService bookDataService, ICategoryDataService categoryDataService)
     {
         _bookDataService = bookDataService;
+        _categoryDataService = categoryDataService;
 
         SelectImageButtonCommand = new RelayCommand(SelectImage, () => !IsImageSelected);
         RemoveImageButtonCommand = new RelayCommand(RemoveImage, () => IsImageSelected);
         AddBookButtonCommand = new RelayCommand(AddBook, () => !IsLoading);
+        ResetButtonCommand = new RelayCommand(Reset, () => !IsLoading);
     }
 
     public async void SelectImage()
@@ -113,8 +120,7 @@ public partial class AddBookViewModel : ObservableRecipient
         if (ERROR_CODE == 0)
         {
             SuccessMessage = message;
-            NewBook = new Book();
-            SelectedImageName = string.Empty;
+            Reset();
         }
         else
         {
@@ -122,6 +128,32 @@ public partial class AddBookViewModel : ObservableRecipient
         }
 
         IsLoading = false;
+        NotfifyChanges();
+    }
+
+    public async void LoadCategories()
+    {
+        await Task.Run(async () => await _categoryDataService.LoadDataAsync());
+        var (categories, _, _) = _categoryDataService.GetData();
+
+        if (categories is not null)
+        {
+            CategoryOptions = (List<Category>)categories;
+        }
+    }
+
+    public void Reset()
+    {
+        NewBook = new()
+        {
+            Quantity = 1,
+            RatingsAverage = 0,
+            PurchasePrice = 1000,
+            SellingPrice = 1000,
+            PublishedYear = DateTime.Now.Year,
+            CategoryId = "6585555f703fca1356f60b91",
+        };
+        SelectedImageName = string.Empty;
         NotfifyChanges();
     }
 
@@ -133,5 +165,14 @@ public partial class AddBookViewModel : ObservableRecipient
         OnPropertyChanged(nameof(IsImageSelected));
         OnPropertyChanged(nameof(HasError));
         OnPropertyChanged(nameof(HasSuccess));
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        LoadCategories();
+    }
+
+    public void OnNavigatedFrom()
+    {
     }
 }

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MyShop.Core.Helpers;
 using MyShop.Core.Http;
+using MyShop.Core.Models;
 
 namespace MyShop.Services;
 
@@ -37,15 +38,19 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     {
         get; set;
     } = string.Empty;
-    public List<HttpFilterObject> FilterOptions
-    {
-        get; set;
-    } = new List<HttpFilterObject>();
+
     public int MinPrice
     {
         get; set;
     }
     public int MaxPrice
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
+    public List<Category> categoryFilters = new() { new() { Id = "all", Name = "All" } };
+    public Category? SelectedCategory
     {
         get; set;
     }
@@ -62,7 +67,6 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
 
     [ObservableProperty]
     public bool isDirty = false;
-
 
     public Action FunctionOnCommand { get; set; } = () => { };
 
@@ -91,7 +95,7 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         paramBuilder.Append("page", CurrentPage);
         paramBuilder.Append("limit", ItemsPerPage);
 
-        if (SelectedSortOption is not null)
+        if (SelectedSortOption is not null && SelectedSortOption.Value != "default")
         {
             paramBuilder.Append("sort", SelectedSortOption.SortString);
         }
@@ -109,6 +113,11 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         if (MaxPrice > 0)
         {
             paramBuilder.Append("sellingPrice[lte]", MaxPrice);
+        }
+
+        if (SelectedCategory is not null && SelectedCategory.Id != "all")
+        {
+            paramBuilder.Append("category", SelectedCategory.Id);
         }
 
         return paramBuilder.GetQueryString();
@@ -164,6 +173,24 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         else
         {
             SelectedSortOption = sortOption;
+            IsDirty = true;
+        }
+    }
+
+    public virtual void SelectCategory(Category category)
+    {
+        if (category.Id == "all")
+        {
+            if (SelectedCategory?.Name != category.Name)
+            {
+                IsDirty = true;
+            }
+
+            SelectedCategory = null;
+        }
+        else
+        {
+            SelectedCategory = category;
             IsDirty = true;
         }
     }
