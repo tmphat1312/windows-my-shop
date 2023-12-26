@@ -39,7 +39,7 @@
             <Style x:Key="PosterBorderStyle" TargetType="Border">
                 <Setter Property="CornerRadius" Value="10" />
                 <Setter Property="Margin" Value="0,0,40,10" />
-                <Setter Property="BorderBrush" Value="#e2e8f0" />
+                <Setter Property="BorderBrush" Value="{ThemeResource CardBorderBrush}" />
                 <Setter Property="BorderThickness" Value="2" />
             </Style>
         </Grid.Resources>
@@ -157,45 +157,38 @@
                         />
                     </InfoBarPanel>
 
-                    <controls:AdaptiveGridView
+                    <GridView
                         x:Name="ContentGridView"
                         ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
                         IsItemClickEnabled="False"
-                        DesiredWidth="300"  
                         AllowDrop="False"
                         CanReorderItems="False"
                         SelectionMode="None"
-                        FlowDirection="LeftToRight">
+                        HorizontalAlignment="Left">
 
-                        <controls:AdaptiveGridView.ItemContainerStyle>
+                        <GridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="Margin" Value="6, 8, 6, 8"/>
                             </Style>
-                        </controls:AdaptiveGridView.ItemContainerStyle>
+                        </GridView.ItemContainerStyle>
 
-                        <controls:AdaptiveGridView.ItemTemplate>
+                        <GridView.ItemTemplate>
                             <DataTemplate x:DataType='models:Review'>
-                                <Border BorderBrush="Blue" BorderThickness="2" Padding="12" CornerRadius="4" MaxWidth="360">
+                                <Border BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="2" Padding="12" CornerRadius="4">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding User.Name}" TextWrapping="Wrap" />
-                                        <TextBlock Text="{Binding User.Email}" TextWrapping="Wrap" />
-                                        <StackPanel>
-                                            <TextBlock Text="Content: " />
-                                            <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
-                                        </StackPanel>
-                                        <StackPanel HorizontalAlignment="Left">
-                                            <TextBlock Text="Rating: " />
-                                            <RatingControl 
-                                                IsClearEnabled="True"
-                                                IsReadOnly="True" 
-                                                PlaceholderValue="{Binding Rating}"
-                                                Caption="{Binding Rating}"/>
-                                        </StackPanel>
+                                        <TextBlock Text="{Binding UserId}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Content}" TextWrapping="Wrap" />
+                                        <RatingControl 
+                                            HorizontalAlignment="Left"
+                                            IsClearEnabled="True"
+                                            IsReadOnly="True" 
+                                            PlaceholderValue="{Binding Rating}" 
+                                            Caption="{Binding Rating}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
-                        </controls:AdaptiveGridView.ItemTemplate>
-                    </controls:AdaptiveGridView>
+                        </GridView.ItemTemplate>
+                    </GridView>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

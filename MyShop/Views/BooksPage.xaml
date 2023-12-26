@@ -183,7 +183,7 @@
 
                         <controls:AdaptiveGridView.ItemTemplate>
                             <DataTemplate x:DataType="models:Book">
-                                <Border x:Name="BookBorder" Background="White" BorderBrush="#e2e8f0" BorderThickness="4" CornerRadius="6">
+                                <Border x:Name="BookBorder" Background="White" BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="4" CornerRadius="6">
                                     <StackPanel x:Name="itemThumbnail" Padding="12">
                                         <Border CornerRadius="6" HorizontalAlignment="Center">
                                             <Image Style="{StaticResource BookPosterStyle}" Source="{x:Bind Image}" />
