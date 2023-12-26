@@ -9,15 +9,14 @@
     <ScrollViewer Margin="0,0,0,40">
         <Grid>
             <StackPanel x:Name="ContentArea" Spacing="16" MaxWidth="600" Padding="0, 20, 0, 20">
-                <TextBox Header="Book title" PlaceholderText="Title" />
-                <TextBox Header="Author" PlaceholderText="Author name" />
-                <NumberBox Header="Published year" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" />
-                <NumberBox Header="Available quantity" Value="1" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" />
-                <RichEditBox Header="Description" Height="120"/>
-                <NumberBox Header="Purchase price" Value="1000"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
-                <NumberBox Header="Selling price" Value="1000"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
-                <ComboBox Header="Category" Width="200" SelectedIndex="0">
-                    <x:String>6585555f703fca1356f60b91</x:String>
+                <TextBox Header="Book title" PlaceholderText="Title" Text="{x:Bind ViewModel.NewBook.Name, Mode=TwoWay}" />
+                <TextBox Header="Author" PlaceholderText="Author name" Text="{x:Bind ViewModel.NewBook.Author, Mode=TwoWay}" />
+                <NumberBox Header="Published year" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.NewBook.PublishedYear, Mode=TwoWay}" />
+                <NumberBox Header="Available quantity" SmallChange="1" LargeChange="10" SpinButtonPlacementMode="Inline" Value="{x:Bind ViewModel.NewBook.Quantity, Mode=TwoWay}"/>
+                <TextBox Header="Description" Height="120" PlaceholderText="Write book description" Text="{x:Bind ViewModel.NewBook.Description, Mode=TwoWay}" />
+                <NumberBox Header="Purchase price" Value="{x:Bind ViewModel.NewBook.PurchasePrice, Mode=TwoWay}" SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
+                <NumberBox Header="Selling price" Value="{x:Bind ViewModel.NewBook.SellingPrice, Mode=TwoWay}"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
+                <ComboBox Header="Category" Width="200">
                     <x:String>Green</x:String>
                     <x:String>Red</x:String>
                     <x:String>Yellow</x:String>
@@ -32,6 +31,31 @@
                         </Button>
                     </StackPanel>
                 </StackPanel>
+
+
+                <!--Loading reviews-->
+                <ProgressRing 
+                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                    Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                    Width="60"
+                    Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                <!--Error & Info-->
+                <InfoBarPanel>
+                    <InfoBar 
+                        Title="Error Creating Book"
+                        Severity="Error"
+                        IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                        />
+
+                    <InfoBar
+                        Title="Info"
+                        Severity="Warning"
+                        IsOpen="{x:Bind ViewModel.HasSuccess, Mode=OneWay}"
+                        Message="{x:Bind ViewModel.SuccessMessage, Mode=OneWay}"
+                        />
+                </InfoBarPanel>
 
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="12">
                     <Button Style="{StaticResource AccentButtonStyle}" Content="Add book" Command="{x:Bind ViewModel.AddBookButtonCommand}" />

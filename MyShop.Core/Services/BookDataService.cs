@@ -38,4 +38,9 @@ public class BookDataService : IBookDataService
 
         return _bookDataTuple;
     }
+
+    public async Task<(Book, string, int)> CreateBookAsync(Book book)
+    {
+        return await Task.Run(async () => await _bookRepository.CreateABookAsync(book));
+    }
 }

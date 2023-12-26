@@ -45,7 +45,7 @@
         </Grid.Resources>
 
         <ScrollViewer IsTabStop="True">
-            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}" Spacing="12" HorizontalAlignment="Center">
+            <StackPanel x:Name="contentPanel" DataContext="{x:Bind ViewModel.Item}" Spacing="12">
                 <TextBlock Style="{StaticResource BookTitleStyle}" Text="{Binding Name}" />
 
                 <StackPanel x:Name="DetailPanel" Orientation="Horizontal">

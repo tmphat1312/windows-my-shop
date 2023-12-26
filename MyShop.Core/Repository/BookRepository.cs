@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using MyShop.Core.Contracts.Repository;
-using MyShop.Core.Helpers;
 using MyShop.Core.Http;
 using MyShop.Core.Models;
 
@@ -15,33 +14,60 @@ public class BookRepository : IBookRepository
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<(IEnumerable<Book>, int, string, int)> GetAllBooksAsync()
+    public async Task<(Book, string, int)> CreateABookAsync(Book newBook)
     {
-        var books = new List<Book>();
-        var totalBooks = 0;
+        var returnedBook = new Book();
         var message = string.Empty;
         var ERROR_CODE = 0;
-        var paramBuilder = new HttpSearchParamsBuilder();
-
-        paramBuilder.Append("page", 1);
-        paramBuilder.Append("limit", 2);
 
         try
         {
-            var client = _httpClientFactory.CreateClient("Backend");
-            var response = await client.GetAsync($"books?{paramBuilder.GetQueryString()}");
+            using var client = _httpClientFactory.CreateClient("Backend");
+            using var content = new MultipartFormDataContent
+            {
+                { new StringContent(newBook.Name), "name" },
+                { new StringContent(newBook.Description), "description" },
+                { new StringContent(newBook.Author), "author" },
+                { new StringContent(newBook.CategoryId), "category" },
+                { new StringContent(newBook.SellingPrice.ToString()), "sellingPrice" },
+                { new StringContent(newBook.PurchasePrice.ToString()), "purchasePrice" },
+                { new StringContent(newBook.Quantity.ToString()), "quantity" },
+                { new StringContent(newBook.PublishedYear.ToString()), "publishedYear" }
+            };
+
+            if (newBook.ImageBytes != null)
+            {
+                var memoryStream = new MemoryStream(newBook.ImageBytes);
+                var streamContent = new StreamContent(memoryStream);
+                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("image/jpeg");
+                content.Add(streamContent, "image", "filename.jpg");
+            }
+
+            var response = await client.PostAsync("books", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<Book>>(responseContent);
 
             if (response.IsSuccessStatusCode)
             {
-                var content = response.Content.ReadAsStringAsync().Result;
-                var bookResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Book>>(content);
-                books = bookResponse.Data.ToList();
-                totalBooks = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
+                returnedBook = httpResponse.Data;
+                message = "Book created successfully.";
             }
             else
             {
-                message = response.ReasonPhrase;
                 ERROR_CODE = (int)response.StatusCode;
+
+                if (ERROR_CODE == 400)
+                {
+                    message = httpResponse.Error?.Message;
+                }
+                else if (ERROR_CODE == 500)
+                {
+                    message = httpResponse.Message;
+                }
+                else
+                {
+                    message = "Something went wrong. Please try again later.";
+                }
             }
         }
         catch (Exception ex)
@@ -50,7 +76,7 @@ public class BookRepository : IBookRepository
             ERROR_CODE = -1;
         }
 
-        return (books, totalBooks, message, ERROR_CODE);
+        return (returnedBook, message, ERROR_CODE);
     }
 
     public async Task<(IEnumerable<Book>, int, string, int)> GetAllBooksAsync(string searchParams)
@@ -62,19 +88,19 @@ public class BookRepository : IBookRepository
 
         try
         {
-            var client = _httpClientFactory.CreateClient("Backend");
-            var response = await client.GetAsync($"books?{searchParams}");
+            using var client = _httpClientFactory.CreateClient("Backend");
+            using var response = await client.GetAsync($"books?{searchParams}");
+            var content = response.Content.ReadAsStringAsync().Result;
+            var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Book>>>(content);
 
             if (response.IsSuccessStatusCode)
             {
-                var content = response.Content.ReadAsStringAsync().Result;
-                var httpResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Book>>(content);
                 books = httpResponse.Data.ToList();
                 totalItems = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }
             else
             {
-                message = response.ReasonPhrase;
+                message = httpResponse.Error.Message;
                 ERROR_CODE = (int)response.StatusCode;
             }
         }

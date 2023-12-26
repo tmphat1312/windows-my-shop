@@ -11,11 +11,20 @@ public partial class AddBookViewModel : ObservableRecipient
 {
     private readonly IBookDataService _bookDataService;
 
-    [ObservableProperty]
-    private string successMessage = string.Empty;
 
     [ObservableProperty]
-    private Book newBook = new();
+    private Book newBook = new()
+    {
+        Quantity = 1,
+        RatingsAverage = 0,
+        PurchasePrice = 1000,
+        SellingPrice = 1000,
+        PublishedYear = DateTime.Now.Year,
+        CategoryId = "6585555f703fca1356f60b91",
+        Author = "John Doe",
+        Name = "Book Name",
+        Description = "Book Description"
+    };
 
     [ObservableProperty]
     private bool isLoading = false;
@@ -24,10 +33,14 @@ public partial class AddBookViewModel : ObservableRecipient
     private string errorMessage = string.Empty;
 
     [ObservableProperty]
+    private string successMessage = string.Empty;
+
+    [ObservableProperty]
     private string selectedImageName = string.Empty;
 
     public bool IsImageSelected => !string.IsNullOrEmpty(SelectedImageName);
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
+    public bool HasSuccess => !string.IsNullOrEmpty(SuccessMessage);
 
 
     public RelayCommand SelectImageButtonCommand
@@ -51,7 +64,7 @@ public partial class AddBookViewModel : ObservableRecipient
 
         SelectImageButtonCommand = new RelayCommand(SelectImage, () => !IsImageSelected);
         RemoveImageButtonCommand = new RelayCommand(RemoveImage, () => IsImageSelected);
-        AddBookButtonCommand = new RelayCommand(AddBook);
+        AddBookButtonCommand = new RelayCommand(AddBook, () => !IsLoading);
     }
 
     public async void SelectImage()
@@ -63,9 +76,7 @@ public partial class AddBookViewModel : ObservableRecipient
         };
         picker.FileTypeFilter.Add(".jpg");
         picker.FileTypeFilter.Add(".jpeg");
-        picker.FileTypeFilter.Add(".png");
 
-        // Initialize the picker with the window handle
         var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
         InitializeWithWindow.Initialize(picker, hwnd);
 
@@ -92,14 +103,26 @@ public partial class AddBookViewModel : ObservableRecipient
 
     public async void AddBook()
     {
-        //Message = "Processing!!!";
-        //var respone = await _userDataService.CreateUserAsync(newUser);
-        //Message = respone.Message;
+        IsLoading = true;
+        ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
+        NotfifyChanges();
 
-        //if (respone.ErrorCode == 201)
-        //{
-        //    _navigationService.NavigateTo("MyShop.ViewModels.UsersViewModel");
-        //}
+        var (_, message, ERROR_CODE) = await _bookDataService.CreateBookAsync(NewBook);
+
+        if (ERROR_CODE == 0)
+        {
+            SuccessMessage = message;
+            NewBook = new Book();
+            SelectedImageName = string.Empty;
+        }
+        else
+        {
+            ErrorMessage = message;
+        }
+
+        IsLoading = false;
+        NotfifyChanges();
     }
 
     public void NotfifyChanges()
@@ -109,5 +132,6 @@ public partial class AddBookViewModel : ObservableRecipient
 
         OnPropertyChanged(nameof(IsImageSelected));
         OnPropertyChanged(nameof(HasError));
+        OnPropertyChanged(nameof(HasSuccess));
     }
 }
