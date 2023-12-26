@@ -16,6 +16,7 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
     private readonly IReviewDataService _reviewDataService;
     private readonly IBookDataService _bookDataService;
     private readonly INavigationService _navigationService;
+    private readonly ICategoryDataService _categoryDataService;
 
     [ObservableProperty]
     public bool isEditSession = false;
@@ -26,6 +27,8 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
     public string editErrorMessage = string.Empty;
     [ObservableProperty]
     public bool isEditLoading = false;
+    [ObservableProperty]
+    public List<Category> categoryOptions = new();
 
 
     [ObservableProperty]
@@ -69,11 +72,12 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
         get; set;
     }
 
-    public BooksDetailViewModel(IReviewDataService reviewDataService, IBookDataService bookDataService, INavigationService navigationService)
+    public BooksDetailViewModel(IReviewDataService reviewDataService, IBookDataService bookDataService, INavigationService navigationService, ICategoryDataService categoryDataService)
     {
         _reviewDataService = reviewDataService;
         _bookDataService = bookDataService;
         _navigationService = navigationService;
+        _categoryDataService = categoryDataService;
 
         SetEditItemSessionButtonCommand = new RelayCommand(() =>
         {
@@ -85,6 +89,17 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
         RemoveImageButtonCommand = new RelayCommand(RemoveImage);
         CancelButtonCommand = new RelayCommand(CancelEdit, () => !IsEditLoading);
         EditBookButtonCommand = new RelayCommand(UpdateBook, () => !IsEditLoading);
+    }
+
+    public async void LoadCategories()
+    {
+        await Task.Run(async () => await _categoryDataService.LoadDataAsync());
+        var (categories, _, _) = _categoryDataService.GetData();
+
+        if (categories is not null)
+        {
+            CategoryOptions = (List<Category>)categories;
+        }
     }
 
     public async void SelectImage()
@@ -225,6 +240,7 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
             EditBook = Item;
             _reviewDataService.BookId = Item?.Id ?? string.Empty;
             LoadReviewsAsync();
+            LoadCategories();
         }
     }
 

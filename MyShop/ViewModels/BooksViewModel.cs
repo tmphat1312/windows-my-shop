@@ -36,12 +36,6 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
             new() { Name = "PublishYear (Recent)", Value="publishedYear", IsAscending = false },
         };
         SelectedSortOption = SortOptions[0];
-
-        FilterOptions = new List<HttpFilterObject>
-        {
-            new() { Value = "all", Key = "category" },
-            new() { Value = "fiction", Key = "category" },
-        };
     }
 
     public async void LoadCategories()

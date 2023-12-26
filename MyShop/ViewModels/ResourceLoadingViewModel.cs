@@ -38,10 +38,7 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     {
         get; set;
     } = string.Empty;
-    public List<HttpFilterObject> FilterOptions
-    {
-        get; set;
-    } = new List<HttpFilterObject>();
+
     public int MinPrice
     {
         get; set;
@@ -98,7 +95,7 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         paramBuilder.Append("page", CurrentPage);
         paramBuilder.Append("limit", ItemsPerPage);
 
-        if (SelectedSortOption is not null)
+        if (SelectedSortOption is not null && SelectedSortOption.Value != "default")
         {
             paramBuilder.Append("sort", SelectedSortOption.SortString);
         }
@@ -118,7 +115,7 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
             paramBuilder.Append("sellingPrice[lte]", MaxPrice);
         }
 
-        if (SelectedCategory is not null)
+        if (SelectedCategory is not null && SelectedCategory.Id != "all")
         {
             paramBuilder.Append("category", SelectedCategory.Id);
         }

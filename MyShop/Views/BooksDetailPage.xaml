@@ -133,11 +133,13 @@
                         <TextBox Header="Description" Height="120" PlaceholderText="Write book description" Text="{x:Bind ViewModel.EditBook.Description, Mode=TwoWay}" />
                         <NumberBox Header="Purchase price" Value="{x:Bind ViewModel.EditBook.PurchasePrice, Mode=TwoWay}" SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
                         <NumberBox Header="Selling price" Value="{x:Bind ViewModel.EditBook.SellingPrice, Mode=TwoWay}"  SmallChange="1000" LargeChange="10000" SpinButtonPlacementMode="Inline" />
-                        <ComboBox Header="Category" Width="200">
-                            <x:String>Green</x:String>
-                            <x:String>Red</x:String>
-                            <x:String>Yellow</x:String>
-                        </ComboBox>
+                        <ComboBox 
+                            x:Name="CategoryCombobox" 
+                            SelectionChanged="CategoryCombobox_SelectionChanged"
+                            Header="Category" Width="200" 
+                            ItemsSource="{x:Bind ViewModel.CategoryOptions, Mode=OneWay}"
+                            DisplayMemberPath="Name"  />
+                        <TextBlock Text="{x:Bind ViewModel.Item.Category.Name}" FontSize="12" />
                         <StackPanel VerticalAlignment="Top">
                             <TextBlock Text="Book photo" Margin="0,0,0,10"/>
                             <StackPanel Orientation="Horizontal">
