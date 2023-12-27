@@ -96,7 +96,17 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
+        <!--Loading-->
+        <ProgressRing 
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+            Width="60"
+            Margin="0, 20, 0, 20"
+            Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
         <controls:ListDetailsView
+            Visibility="{x:Bind ViewModel.IsContentReady, Mode=OneWay}" 
             x:Uid="Orders"
             x:Name="ListDetailsViewControl"
             BackButtonBehavior="Manual"

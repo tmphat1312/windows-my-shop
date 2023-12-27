@@ -2,11 +2,9 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI.Controls;
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
-using MyShop.Core.Services;
 using MyShop.Services;
 
 namespace MyShop.ViewModels;
@@ -18,9 +16,12 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     [ObservableProperty]
     private Order? selected;
 
+    [ObservableProperty]
+    public bool isContentReady = false;
+
     public ObservableCollection<Order> Source { get; private set; } = new ObservableCollection<Order>();
 
-    
+
     public RelayCommand AddOrderCommand
     {
         get;
@@ -72,8 +73,8 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     public async void OnNavigatedTo(object parameter)
     {
         Source.Clear();
-
-        // TODO: Replace with real data.
+        IsLoading = true;
+        IsContentReady = false;
 
         await Task.Run(async () => await _orderDataService.LoadDataAsync());
 
@@ -88,12 +89,11 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
                 Source.Add(item);
             }
 
-            IsLoading = false;
             TotalItems = totalItems;
 
             if (TotalItems == 0)
             {
-                InfoMessage = "No books found";
+                InfoMessage = "No orders found";
             }
         }
         else
@@ -104,6 +104,8 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
             }
         }
 
+        IsLoading = false;
+        IsContentReady = true;
 
         EnsureItemSelected();
     }
