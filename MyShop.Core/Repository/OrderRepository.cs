@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Text.Json;
-using System.Threading.Tasks;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Helpers;
 using MyShop.Core.Http;
@@ -28,31 +23,31 @@ public class OrderRepository : IOrderRepository
 
         try
         {
-        
+
             var client = _httpClientFactory.CreateClient("Backend");
             var content = new StringContent(JsonSerializer.Serialize(addOrder), Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"orders", content);
-        
+
             if (response.IsSuccessStatusCode)
             {
-            
+
                 var responseContent = response.Content.ReadAsStringAsync().Result;
                 var orders = JsonSerializer.Deserialize<HttpDataSchemaResponse<Order>>(responseContent);
                 order = orders.Data;
             }
             else
             {
-            
+
                 message = response.ReasonPhrase;
                 ERROR_CODE = (int)response.StatusCode;
             }
         }
         catch (Exception ex)
         {
-        
-                   message = ex.Message;
-                   ERROR_CODE = -1;
-               }
+
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
 
         return (order, message, ERROR_CODE);
     }
@@ -112,6 +107,7 @@ public class OrderRepository : IOrderRepository
                 var content = response.Content.ReadAsStringAsync().Result;
                 var OrderResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Order>>>(content);
                 Orders = OrderResponse.Data.ToList();
+
                 totalItems = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }
             else

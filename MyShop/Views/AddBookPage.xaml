@@ -34,7 +34,7 @@
                 </StackPanel>
 
 
-                <!--Loading reviews-->
+                <!--Loading-->
                 <ProgressRing 
                     IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
                     Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 

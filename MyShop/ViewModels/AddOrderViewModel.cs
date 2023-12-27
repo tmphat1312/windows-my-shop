@@ -1,10 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.Extensions.Hosting;
 using MyShop.Contracts.Services;
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
@@ -12,7 +7,6 @@ using MyShop.Core.Http;
 using MyShop.Core.Models;
 using MyShop.Core.Services;
 using MyShop.Services;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.ViewModels;
 
@@ -52,6 +46,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
             new() { Name = "PublishYear (Recent)", Value="publishedYear", IsAscending = false },
         };
         SelectedSortOption = SortOptions[0];
+
     }
 
     public async void LoadCategories()
@@ -73,7 +68,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
     {
         var validBooks = Source.Where(b => b.OrderQuantity > 0).ToList();
 
-        if(validBooks.Count == 0)
+        if (validBooks.Count == 0)
         {
 
             ErrorMessage = "Please select at least one book";
@@ -92,7 +87,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
                 Price = book.SellingPrice // Lấy giá của sách
             }).ToList();
 
-            var result =  await Task.Run(async () => await _oderDataService.CreateAOrderAsync(orderDetails));
+            var result = await Task.Run(async () => await _oderDataService.CreateAOrderAsync(orderDetails));
 
             int errorCode = result.Item3;
             if (errorCode == 0)
@@ -166,7 +161,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
     {
     }
 
-   
+
 
     [RelayCommand]
     private void OnApplyFiltersAndSearch()
@@ -174,5 +169,5 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
         LoadData();
     }
 
-   
+
 }

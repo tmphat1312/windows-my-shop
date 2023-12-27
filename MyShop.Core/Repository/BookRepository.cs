@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Http;
 using MyShop.Core.Models;
@@ -211,5 +213,53 @@ public class BookRepository : IBookRepository
         }
 
         return (returnedBook, message, ERROR_CODE);
+    }
+
+    public async Task<(string, int)> ImportDataAsync(IEnumerable<Book> books)
+    {
+        var message = string.Empty;
+        var ERROR_CODE = 0;
+
+        try
+        {
+            using var client = _httpClientFactory.CreateClient("Backend");
+            var options = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            };
+            using var httpContent = new StringContent(JsonSerializer.Serialize(books, options), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("books", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                message = "Books imported successfully.";
+            }
+            else
+            {
+                var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<Book>>(responseContent);
+                ERROR_CODE = (int)response.StatusCode;
+
+                if (ERROR_CODE == 400)
+                {
+                    message = httpResponse.Error?.Message;
+                }
+                else if (ERROR_CODE == 500)
+                {
+                    message = httpResponse.Message;
+                }
+                else
+                {
+                    message = "Something went wrong. Please try again later.";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
+
+        return (message, ERROR_CODE);
     }
 }

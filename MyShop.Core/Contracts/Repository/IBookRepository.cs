@@ -38,4 +38,6 @@ public interface IBookRepository
     Task<(string, int)> DeleteBookAsync(Book book);
 
     Task<(Book, string, int)> UpdateBookAsync(Book book);
+
+    Task<(string, int)> ImportDataAsync(IEnumerable<Book> books);
 }

@@ -34,23 +34,35 @@ public class BookDataService : IBookDataService
 
     public async Task<(IEnumerable<Book>, int, string, int)> LoadDataAsync()
     {
-        _bookDataTuple = await _bookRepository.GetAllBooksAsync(SearchParams);
+        if (!IsInitialized && IsDirty)
+        {
+            _bookDataTuple = await _bookRepository.GetAllBooksAsync(SearchParams);
+        }
 
         return _bookDataTuple;
     }
 
     public async Task<(Book, string, int)> CreateBookAsync(Book book)
     {
+        IsDirty = true;
         return await Task.Run(async () => await _bookRepository.CreateABookAsync(book));
     }
 
     public async Task<(string, int)> DeleteBookAsync(Book book)
     {
+        IsDirty = true;
         return await Task.Run(async () => await _bookRepository.DeleteBookAsync(book));
     }
 
     public async Task<(Book, string, int)> UpdateBookAsync(Book book)
     {
+        IsDirty = true;
         return await Task.Run(async () => await _bookRepository.UpdateBookAsync(book));
+    }
+
+    public async Task<(string, int)> ImportDataAsync(IEnumerable<Book> books)
+    {
+        IsDirty = true;
+        return await Task.Run(async () => await _bookRepository.ImportDataAsync(books));
     }
 }

@@ -11,6 +11,7 @@ public class CategoryDataService : ICategoryDataService
 
     public List<Category> Categories => _categoryTuple.Item1;
     private bool IsAlreadyFetched = false;
+    public bool IsDirty = false;
 
     public CategoryDataService(ICategoryRepository categoryRepository)
     {
@@ -21,12 +22,36 @@ public class CategoryDataService : ICategoryDataService
 
     public async Task<(IEnumerable<Category>, string, int)> LoadDataAsync()
     {
-        if (!IsAlreadyFetched)
+        if (!IsAlreadyFetched || IsDirty)
         {
             _categoryTuple = ((List<Category>, string, int))await _categoryRepository.GetCategoriesAsync();
             IsAlreadyFetched = true;
         }
 
         return _categoryTuple;
+    }
+
+    public Task<(Category, string, int)> AddCategoryAsync(Category category)
+    {
+        IsDirty = true;
+        return Task.Run(async () => await _categoryRepository.CreateCategoryAsync(category));
+    }
+
+    public Task<(Category, string, int)> UpdateCategoryAsync(Category category)
+    {
+        IsDirty = true;
+        return Task.Run(async () => await _categoryRepository.UpdateCategoryAsync(category));
+    }
+
+    public Task<(string, int)> DeleteCategoryAsync(Category category)
+    {
+        IsDirty = true;
+        return Task.Run(async () => await _categoryRepository.DeleteCategoryAsync(category));
+    }
+
+    public Task<(string, int)> ImportDataAsync(IEnumerable<Category> categories)
+    {
+        IsDirty = true;
+        return Task.Run(async () => await _categoryRepository.ImportDataAsync(categories));
     }
 }

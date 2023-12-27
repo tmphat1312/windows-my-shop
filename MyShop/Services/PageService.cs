@@ -17,15 +17,16 @@ public class PageService : IPageService
         Configure<MainViewModel, MainPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<UsersViewModel, UsersPage>();
-        Configure<CategoriesViewModel, CategoriesPage>();
-        Configure<CategoriesDetailViewModel, CategoriesDetailPage>();
         Configure<BooksViewModel, BooksPage>();
         Configure<BooksDetailViewModel, BooksDetailPage>();
-        Configure<AccountViewModel, AccountPage>();    
+        Configure<AccountViewModel, AccountPage>();
         Configure<AddUserViewModel, AddUserPage>();
         Configure<AddBookViewModel, AddBookPage>();
         Configure<OrdersViewModel, OrdersPage>();
         Configure<AddOrderViewModel, AddOrderPage>();
+        Configure<CategoryViewModel, CategoryPage>();
+        Configure<AddCategoryViewModel, AddCategoryPage>();
+        Configure<ImportDataViewModel, ImportDataPage>();
     }
 
     public Type GetPageType(string key)

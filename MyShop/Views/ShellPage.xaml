@@ -41,7 +41,8 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF246;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Users" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.UsersViewModel">
+                
+                <!--<NavigationViewItem Content="Users" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.UsersViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE716;"/>
                     </NavigationViewItem.Icon>
@@ -55,11 +56,20 @@
        
                     </NavigationViewItem.MenuItems>
                     
-                </NavigationViewItem>
-                <NavigationViewItem Content="Categories" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.CategoriesViewModel">
+                </NavigationViewItem>-->
+
+                <NavigationViewItem x:Uid="Shell_Category" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.CategoryViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;"/>
                     </NavigationViewItem.Icon>
+
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Add a category" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddCategoryViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED11;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem Content="Books"  helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.BooksViewModel">
                     <NavigationViewItem.Icon>
@@ -89,7 +99,11 @@
                     </NavigationViewItem.MenuItems>
                   
                 </NavigationViewItem>
-               
+                <NavigationViewItem Content="Import data" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.ImportDataViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8B6;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             
             <NavigationView.FooterMenuItems>
