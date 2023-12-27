@@ -50,4 +50,15 @@ public class OrderDataService : IOrderDataService
 
         return await _orderRepository.CreateAOrderAsync(addOrder);
     }
+
+    public async Task<(Order, string, int)> UpdateOrderAsync(Order order)
+    {
+
+        return await _orderRepository.UpdateOrderAsync(order);
+    }
+
+    public async Task<(string, int)> DeleteOrderAsync(Order order)
+    {
+        return await _orderRepository.DeleteOrderAsync(order);
+    }
 }

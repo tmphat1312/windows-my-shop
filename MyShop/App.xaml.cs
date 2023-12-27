@@ -63,7 +63,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY3NDEyNCwiZXhwIjoxNzAzNjc1OTI0fQ.dyyB6H3agZvnI-Ifva6-PVn0JtNu5XDb6TtsVCWNA1Q";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY5OTI1OSwiZXhwIjoxNzAzNzAxMDU5fQ.bRJA3eUyTvLVUGcAhyPBtfayvv3eafr7mT9KYKksqZk";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -100,6 +100,7 @@ public partial class App : Application
             services.AddTransient<CategoryPage>();
             services.AddTransient<AddOrderViewModel>();
             services.AddTransient<AddOrderPage>();
+            services.AddTransient<OrderDetailControlViewModel>();
             services.AddTransient<OrdersViewModel>();
             services.AddTransient<OrdersPage>();
             services.AddTransient<AddUserViewModel>();

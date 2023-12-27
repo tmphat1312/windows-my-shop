@@ -16,4 +16,7 @@ public interface IOrderDataService
 
     Task<(Order, string, int)> CreateAOrderAsync(List<AddOrderDetail> addOrderDetail);
 
+    Task<(Order, string, int)> UpdateOrderAsync(Order order);
+
+    Task<(string, int)> DeleteOrderAsync(Order order);
 }

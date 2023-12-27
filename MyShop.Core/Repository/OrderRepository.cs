@@ -1,4 +1,5 @@
-﻿using System.Text;
+
+using System.Text;
 using System.Text.Json;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Helpers;
@@ -51,6 +52,8 @@ public class OrderRepository : IOrderRepository
 
         return (order, message, ERROR_CODE);
     }
+
+   
 
     public async Task<(IEnumerable<Order>, int, string, int)> GetAllOrdersAsync()
     {
@@ -105,8 +108,9 @@ public class OrderRepository : IOrderRepository
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Order>>>(content);
-                Orders = httpResponse.Data.ToList();
+                var OrderResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Order>>>(content);
+                Orders = OrderResponse.Data.ToList();
+
                 totalItems = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }
             else
@@ -122,5 +126,79 @@ public class OrderRepository : IOrderRepository
         }
 
         return (Orders, totalItems, message, ERROR_CODE);
+    }
+
+    public async Task<(Order, string, int)> UpdateOrderAsync(Order order)
+    {
+        var message = string.Empty;
+        var ERROR_CODE = 0;
+
+        try
+        {
+            var updateOrder = new Dictionary<string, string>
+            {
+                ["status"] = order.Status
+            };
+
+            var client = _httpClientFactory.CreateClient("Backend");
+            var content = new StringContent(JsonSerializer.Serialize(updateOrder), Encoding.UTF8, "application/json");
+            var contentString = await content.ReadAsStringAsync();
+            var response = await client.PatchAsync($"orders/{order.Id}", content);
+        
+            if (response.IsSuccessStatusCode)
+            {
+            
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                var orders = JsonSerializer.Deserialize<HttpDataSchemaResponse<Order>>(responseContent);
+                order = orders.Data;
+            }
+            else
+            {
+            
+                message = response.ReasonPhrase;
+                ERROR_CODE = (int)response.StatusCode;
+            }
+        }
+        catch (Exception ex)
+        {
+        
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
+
+        return (order, message, ERROR_CODE);
+    }
+
+    public async Task<(string, int)> DeleteOrderAsync(Order order)
+    {
+        var message = string.Empty;
+        var ERROR_CODE = 0;
+
+        try
+        {
+           
+            var client = _httpClientFactory.CreateClient("Backend");
+           
+            var response = await client.DeleteAsync($"orders/{order.Id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                message = "Order deleted successfully.";
+            }
+            else
+            {
+
+                message = response.ReasonPhrase;
+                ERROR_CODE = (int)response.StatusCode;
+            }
+        }
+        catch (Exception ex)
+        {
+
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
+
+        return (message, ERROR_CODE);
     }
 }

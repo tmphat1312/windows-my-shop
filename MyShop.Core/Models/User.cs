@@ -1,22 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MyShop.Core.Models;
 public class User
 {
-    [JsonProperty("_id")]
+    [JsonPropertyName("_id")]
     public string ID
     {
         get; set;
     }
 
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name
     {
         get; set;
     } = "";
 
 
-    [JsonProperty("email")]
+    [JsonPropertyName("email")]
     public string Email
     {
         get; set;
@@ -29,20 +30,20 @@ public class User
 
     } = "";
 
-    [JsonProperty("role")]
+    [JsonPropertyName("role")]
     public string Role
     {
 
         get; set;
     } = "customer";
 
-    [JsonProperty("image")]
+    [JsonPropertyName("image")]
 
     public string Image { get; set; } = "noimage";
 
     public byte[] ImageBytes { get; set; } = null;
 
-    [JsonProperty("createdAt")]
+    [JsonPropertyName("createdAt")]
     public DateTime CreatedAt
     {
         get; set;
