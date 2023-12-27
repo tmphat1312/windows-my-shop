@@ -63,7 +63,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY0MDY3NCwiZXhwIjoxNzAzNjQyNDc0fQ.yp-kxqlbsCENyV4-o1i2iz309pywLfY2JozfWrB1mQ8";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY1MzUyNiwiZXhwIjoxNzAzNjU1MzI2fQ.Sjjo9wy918bEPv7CX2YUW9fCTMwRGAkEdCduloRwiT0";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -91,6 +91,9 @@ public partial class App : Application
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             // Views and ViewModels
+            services.AddTransient<AddCategoryViewModel>();
+            services.AddTransient<AddCategoryPage>();
+            services.AddTransient<CategoryDetailControlViewModel>();
             services.AddTransient<CategoryViewModel>();
             services.AddTransient<CategoryPage>();
             services.AddTransient<AddOrderViewModel>();
@@ -107,8 +110,6 @@ public partial class App : Application
             services.AddTransient<BooksDetailPage>();
             services.AddTransient<BooksViewModel>();
             services.AddTransient<BooksPage>();
-            services.AddTransient<CategoriesDetailViewModel>();
-            services.AddTransient<CategoriesViewModel>();
             services.AddTransient<UsersViewModel>();
             services.AddTransient<UsersPage>();
             services.AddTransient<SettingsViewModel>();
@@ -117,6 +118,7 @@ public partial class App : Application
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

@@ -127,4 +127,24 @@ public class NavigationService : INavigationService
     }
 
     public void SetListDataItemForNextConnectedAnimation(object item) => Frame.SetListDataItemForNextConnectedAnimation(item);
+    public bool Refresh()
+    {
+        if (Frame != null)
+        {
+            var vmBeforeNavigation = _frame?.GetPageViewModel();
+            var navigated = _frame.Navigate(_frame.Content.GetType(), _lastParameterUsed);
+
+            if (navigated)
+            {
+                if (vmBeforeNavigation is INavigationAware navigationAware)
+                {
+                    navigationAware.OnNavigatedFrom();
+                }
+            }
+
+            return navigated;
+        }
+
+        return false;
+    }
 }

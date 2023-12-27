@@ -62,6 +62,14 @@
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;"/>
                     </NavigationViewItem.Icon>
+
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Add a category" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddCategoryViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED11;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem Content="Books"  helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.BooksViewModel">
                     <NavigationViewItem.Icon>
@@ -91,7 +99,6 @@
                     </NavigationViewItem.MenuItems>
                   
                 </NavigationViewItem>
-               
             </NavigationView.MenuItems>
             
             <NavigationView.FooterMenuItems>
