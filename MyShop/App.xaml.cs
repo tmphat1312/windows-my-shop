@@ -63,7 +63,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY1MzUyNiwiZXhwIjoxNzAzNjU1MzI2fQ.Sjjo9wy918bEPv7CX2YUW9fCTMwRGAkEdCduloRwiT0";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY2NTk0MSwiZXhwIjoxNzAzNjY3NzQxfQ.mgLZbQVUaL4P4q14zd9oGDp4e0nM-QO3R1S28tUTU3s";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -91,6 +91,8 @@ public partial class App : Application
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             // Views and ViewModels
+            services.AddTransient<ImportDataViewModel>();
+            services.AddTransient<ImportDataPage>();
             services.AddTransient<AddCategoryViewModel>();
             services.AddTransient<AddCategoryPage>();
             services.AddTransient<CategoryDetailControlViewModel>();
