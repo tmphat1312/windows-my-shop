@@ -19,6 +19,7 @@
     <Content Remove="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\ImportBooks.png" />
     <None Remove="Assets\ImportCategories.png" />
     <None Remove="Controls\ApplyButton.xaml" />
     <None Remove="Controls\PaginationControl.xaml" />

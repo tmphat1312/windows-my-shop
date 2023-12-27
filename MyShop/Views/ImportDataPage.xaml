@@ -7,9 +7,9 @@
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        <ScrollViewer>
+        <ScrollViewer Padding="0,0,0,20">
             <StackPanel Spacing="20" MinWidth="600">
-                <TextBlock Text="Please make sure to close all of your intending to import files, We have not handled that case yet!!!" FontWeight="Medium" FontSize="20" Foreground="OrangeRed" />
+                <TextBlock Text="Please make sure to get the right format of import files!!!" FontWeight="Medium" FontSize="20" Foreground="OrangeRed" />
 
                 <Expander
                     IsExpanded="False"
@@ -20,9 +20,18 @@
                     <StackPanel Spacing="8" Padding="0, 0, 0, 20">
                         <Image Source="/Assets/ImportCategories.png" Width="600" />
 
+                        <TextBlock>
+                            <Run Text="Name:" />
+                            <Run Text="text" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Description:" />
+                            <Run Text="text" />
+                        </TextBlock>
+
                         <ProgressRing
-				            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-				            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+				            IsActive="{x:Bind ViewModel.IsLoadingCategory, Mode=OneWay}"
+				            Visibility="{x:Bind ViewModel.IsLoadingCategory, Mode=OneWay}"
 				            Width="60"
 				            Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
 
@@ -30,14 +39,14 @@
                             <InfoBar
 					            Title="Error Importing Category"
 					            Severity="Error"
-					            IsOpen="{x:Bind ViewModel.HasError, Mode=OneWay}"
-					            Message="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"/>
+					            IsOpen="{x:Bind ViewModel.HasErrorCategory, Mode=OneWay}"
+					            Message="{x:Bind ViewModel.ErrorMessageCategory, Mode=OneWay}"/>
 
                             <InfoBar
 					            Title="Ting"
 					            Severity="Success"
-					            IsOpen="{x:Bind ViewModel.HasSuccess, Mode=OneWay}"
-					            Message="{x:Bind ViewModel.SuccessMessage, Mode=OneWay}"/>
+					            IsOpen="{x:Bind ViewModel.HasSuccessCategory, Mode=OneWay}"
+					            Message="{x:Bind ViewModel.SuccessMessageCategory, Mode=OneWay}"/>
                         </InfoBarPanel>
 
                         <Button Content="Import categories" HorizontalAlignment="Left" Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.ImportCategoryButtonCommand}" />
@@ -51,8 +60,61 @@
                     VerticalAlignment="Top"
                     Header="Import book data">
                     <StackPanel Spacing="8" Padding="0, 0, 0, 20">
-                        <Image Source="/Assets/ImportCategories.png" Width="600" />
-                        <Button Content="Import books" HorizontalAlignment="Left" Style="{StaticResource AccentButtonStyle}" />
+                        <Image Source="/Assets/ImportBooks.png" Width="600" />
+
+                        <TextBlock>
+                            <Run Text="Name:" />
+                            <Run Text="text" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Description:" />
+                            <Run Text="text" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Purchase price:" />
+                            <Run Text="number" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Selling price:" />
+                            <Run Text="number" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Author:" />
+                            <Run Text="text" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Published year:" />
+                            <Run Text="number" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Ratings average:" />
+                            <Run Text="number" />
+                        </TextBlock>
+                        <TextBlock>
+                            <Run Text="Quantity:" />
+                            <Run Text="number" />
+                        </TextBlock>
+                        <ProgressRing
+                            IsActive="{x:Bind ViewModel.IsLoadingBook, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsLoadingBook, Mode=OneWay}"
+                            Width="60"
+                            Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                        <InfoBarPanel>
+                            <InfoBar
+                                Title="Error Importing Category"
+                                Severity="Error"
+                                IsOpen="{x:Bind ViewModel.HasErrorBook, Mode=OneWay}"
+                                Message="{x:Bind ViewModel.ErrorMessageBook, Mode=OneWay}"/>
+
+                            <InfoBar
+                                Title="Ting"
+                                Severity="Success"
+                                IsOpen="{x:Bind ViewModel.HasSuccessBook, Mode=OneWay}"
+                                Message="{x:Bind ViewModel.SuccessMessageBook, Mode=OneWay}"/>
+                        </InfoBarPanel>
+
+                        <Button Content="Import books" HorizontalAlignment="Left" Style="{StaticResource AccentButtonStyle}" Command="{x:Bind ViewModel.ImportBookButtonCommand}" />
                     </StackPanel>
                 </Expander>
             </StackPanel>

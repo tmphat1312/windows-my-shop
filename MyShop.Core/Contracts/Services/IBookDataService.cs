@@ -21,4 +21,5 @@ public interface IBookDataService
 
     public Task<(Book, string, int)> UpdateBookAsync(Book book);
 
+    public Task<(string, int)> ImportDataAsync(IEnumerable<Book> books);
 }
