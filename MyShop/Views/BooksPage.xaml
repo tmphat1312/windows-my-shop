@@ -80,15 +80,42 @@
                     <StackPanel 
                         x:Name="FiltersAndSearchPanel" 
                         Style="{StaticResource FiltersAndSearchPanelStyle}">
+                        <ComboBox 
+                            x:Name="CategoryCombobox" 
+                            SelectionChanged="CategoryCombobox_SelectionChanged" 
+                            Header="Category" Width="200" 
+                            ItemsSource="{x:Bind ViewModel.CategoryFilters, Mode=OneWay}"
+                            DisplayMemberPath="Name" 
+                            SelectedIndex="0" />
+
+                        <NumberBox 
+                            x:Name="MinPriceTextBox"
+                            Header="Min Price"
+                            ValueChanged="MinPriceTextBox_ValueChanged"
+                            SpinButtonPlacementMode="Compact"
+                            SmallChange="1000"
+                            LargeChange="100000"
+                            Value="0"
+                            MinWidth="140"
+                            MaxWidth="280" />
+
+                        <NumberBox 
+                            x:Name="MaxPriceTextBox"
+                            Header="Max Price"
+                            ValueChanged="MaxPriceTextBox_ValueChanged"
+                            SpinButtonPlacementMode="Compact"
+                            SmallChange="1000"
+                            LargeChange="100000"
+                            MinWidth="140"
+                            MaxWidth="280" />
+
                         <TextBox 
                             x:Name="SearchTextBox"
                             TextChanged="SearchTextBox_TextChanged"
                             KeyDown="SearchTextBox_KeyDown"
                             Header="Search"
                             PlaceholderText="Book title"
-                            AutomationProperties.Name="multi-line TextBox"
                             IsSpellCheckEnabled="True"
-                            SelectionHighlightColor="Green" 
                             MinWidth="140"
                             MaxWidth="280" />
 
@@ -118,10 +145,41 @@
                             <ComboBox 
                                 SelectionChanged="SortByComboBox_SelectionChanged"
                                 ItemsSource="{Binding ElementName=SortByComboBox,Path=ItemsSource}"
-                                SelectedIndex="{Binding ElementName=SortByComboBox,Path=SelectedIndex}"
+                                SelectedIndex="{Binding ElementName=SortByComboBox,Path=SelectedIndex, Mode=TwoWay}"
                                 DisplayMemberPath="Name"
                                 Header="Sort by" 
                                 Width="200"/>
+
+                            <NumberBox 
+                                Header="Min Price"
+                                ValueChanged="MinPriceTextBox_ValueChanged"
+                                SpinButtonPlacementMode="Compact"
+                                SmallChange="1000"
+                                LargeChange="100000"
+                                Value="{Binding ElementName=MinPriceTextBox, Path=Value, Mode=TwoWay}"
+                                MinWidth="140"
+                                MaxWidth="280" />
+
+                            <NumberBox 
+                                Header="Max Price"
+                                ValueChanged="MaxPriceTextBox_ValueChanged"
+                                SpinButtonPlacementMode="Compact"
+                                Value="{Binding ElementName=MaxPriceTextBox, Path=Value, Mode=TwoWay}"
+                                SmallChange="1000"
+                                LargeChange="100000"
+                                MinWidth="140"
+                                MaxWidth="280" />
+
+                            <TextBox 
+                                TextChanged="SearchTextBox_TextChanged"
+                                KeyDown="SearchTextBox_KeyDown"
+                                Header="Search"
+                                Text="{Binding ElementName=SearchTextBox, Path=Text, Mode=TwoWay}"
+                                PlaceholderText="Book title"
+                                IsSpellCheckEnabled="True"
+                                MinWidth="140"
+                                MaxWidth="280" />
+
 
                             <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
@@ -183,7 +241,7 @@
 
                         <controls:AdaptiveGridView.ItemTemplate>
                             <DataTemplate x:DataType="models:Book">
-                                <Border x:Name="BookBorder" Background="White" BorderBrush="#e2e8f0" BorderThickness="4" CornerRadius="6">
+                                <Border x:Name="BookBorder" Background="White" BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="4" CornerRadius="6">
                                     <StackPanel x:Name="itemThumbnail" Padding="12">
                                         <Border CornerRadius="6" HorizontalAlignment="Center">
                                             <Image Style="{StaticResource BookPosterStyle}" Source="{x:Bind Image}" />

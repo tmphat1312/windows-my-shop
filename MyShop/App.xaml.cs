@@ -1,5 +1,4 @@
 ﻿using System.Net.Http.Headers;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -63,7 +62,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzYzMTA0MSwiZXhwIjoxNzAzNjMyODQxfQ.8PP5P-eweefgBQ1EJmI-XzV7yFG2qz-vlf1VjMkUB00";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU5OTEyOSwiZXhwIjoxNzAzNjAwOTI5fQ.NiugQeLUSws9PGsA7D3v_XeQwcg87UruiiPntFfkOEo";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -87,7 +86,8 @@ public partial class App : Application
             services.AddSingleton<IReviewRepository, ReviewRepository>();
             services.AddSingleton<IOrderDataService, OrderDataService>();
             services.AddSingleton<IOrderRepository, OrderRepository>();
-
+            services.AddSingleton<ICategoryDataService, CategoryDataService>();
+            services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             // Views and ViewModels
             services.AddTransient<AddOrderViewModel>();

@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MyShop.Core.Helpers;
 using MyShop.Core.Http;
+using MyShop.Core.Models;
 
 namespace MyShop.Services;
 
@@ -37,10 +38,22 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     {
         get; set;
     } = string.Empty;
-    public List<HttpFilterObject> FilterOptions
+
+    public int MinPrice
     {
         get; set;
-    } = new List<HttpFilterObject>();
+    }
+    public int MaxPrice
+    {
+        get; set;
+    }
+
+    [ObservableProperty]
+    public List<Category> categoryFilters = new() { new() { Id = "all", Name = "All" } };
+    public Category? SelectedCategory
+    {
+        get; set;
+    }
 
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
     public bool HasNextPage => CurrentPage < TotalPages;
@@ -54,7 +67,6 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
 
     [ObservableProperty]
     public bool isDirty = false;
-
 
     public Action FunctionOnCommand { get; set; } = () => { };
 
@@ -83,7 +95,7 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         paramBuilder.Append("page", CurrentPage);
         paramBuilder.Append("limit", ItemsPerPage);
 
-        if (SelectedSortOption is not null)
+        if (SelectedSortOption is not null && SelectedSortOption.Value != "default")
         {
             paramBuilder.Append("sort", SelectedSortOption.SortString);
         }
@@ -91,6 +103,21 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         if (!string.IsNullOrEmpty(SearchQuery))
         {
             paramBuilder.Append("q", SearchQuery);
+        }
+
+        if (MinPrice > 0)
+        {
+            paramBuilder.Append("sellingPrice[gte]", MinPrice);
+        }
+
+        if (MaxPrice > 0)
+        {
+            paramBuilder.Append("sellingPrice[lte]", MaxPrice);
+        }
+
+        if (SelectedCategory is not null && SelectedCategory.Id != "all")
+        {
+            paramBuilder.Append("category", SelectedCategory.Id);
         }
 
         return paramBuilder.GetQueryString();
@@ -150,6 +177,24 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         }
     }
 
+    public virtual void SelectCategory(Category category)
+    {
+        if (category.Id == "all")
+        {
+            if (SelectedCategory?.Name != category.Name)
+            {
+                IsDirty = true;
+            }
+
+            SelectedCategory = null;
+        }
+        else
+        {
+            SelectedCategory = category;
+            IsDirty = true;
+        }
+    }
+
     public virtual void Search(string query)
     {
         if (string.IsNullOrEmpty(query))
@@ -164,6 +209,42 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         }
 
         SearchQuery = query;
+        IsDirty = true;
+    }
+
+    public virtual void ClearFilters()
+    {
+        if (SelectedSortOption is not null)
+        {
+
+            IsDirty = true;
+        }
+
+        SelectedSortOption = null;
+        SearchQuery = string.Empty;
+        MinPrice = 0;
+        MaxPrice = 0;
+    }
+
+    public virtual void SetMinPrice(int price)
+    {
+        if (price == MinPrice)
+        {
+            return;
+        }
+
+        MinPrice = price;
+        IsDirty = true;
+    }
+
+    public virtual void SetMaxPrice(int price)
+    {
+        if (price == MaxPrice)
+        {
+            return;
+        }
+
+        MaxPrice = price;
         IsDirty = true;
     }
 }
