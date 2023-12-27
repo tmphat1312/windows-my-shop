@@ -67,7 +67,6 @@ public partial class App : Application
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
 
-
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
@@ -85,16 +84,20 @@ public partial class App : Application
             services.AddSingleton<IBookRepository, BookRepository>();
             services.AddSingleton<IReviewDataService, ReviewDataService>();
             services.AddSingleton<IReviewRepository, ReviewRepository>();
+            services.AddSingleton<IOrderDataService, OrderDataService>();
+            services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<ICategoryDataService, CategoryDataService>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             // Views and ViewModels
+            services.AddTransient<AddOrderViewModel>();
+            services.AddTransient<AddOrderPage>();
+            services.AddTransient<OrdersViewModel>();
+            services.AddTransient<OrdersPage>();
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<AddUserPage>();
             services.AddTransient<AddBookViewModel>();
             services.AddTransient<AddBookPage>();
-            services.AddTransient<OrdersViewModel>();
-            services.AddTransient<OrdersPage>();
             services.AddTransient<AccountViewModel>();
             services.AddTransient<AccountPage>();
             services.AddTransient<BooksDetailViewModel>();

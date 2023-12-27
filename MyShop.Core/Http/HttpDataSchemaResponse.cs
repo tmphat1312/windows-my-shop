@@ -2,6 +2,7 @@
 
 namespace MyShop.Core.Http;
 
+
 public class Error
 {
     [JsonPropertyName("errorMessage")]

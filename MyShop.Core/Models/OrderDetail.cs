@@ -1,23 +1,30 @@
-﻿namespace MyShop.Core.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace MyShop.Core.Models;
 
 public class OrderDetail
 {
+    [JsonPropertyName("id")]
     public string OrderId
     {
         get; set;
     }
 
-    public string BookId
+    [JsonPropertyName("book")]
+    public Book Book
     {
-        get; set;
-    }
+    
+           get; set;
+     }
 
+    [JsonPropertyName("quantity")]
     public int Quantity
     {
         get; set;
     }
 
-    public decimal Price
+    [JsonPropertyName("price")]
+    public double Price
     {
         get; set;
     }
