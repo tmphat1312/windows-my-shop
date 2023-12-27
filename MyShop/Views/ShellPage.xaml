@@ -99,6 +99,11 @@
                     </NavigationViewItem.MenuItems>
                   
                 </NavigationViewItem>
+                <NavigationViewItem Content="Import data" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.ImportDataViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8B6;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             
             <NavigationView.FooterMenuItems>

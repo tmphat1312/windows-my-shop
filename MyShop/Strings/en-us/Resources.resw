@@ -207,4 +207,7 @@
   <data name="Shell_AddCategory.Content" xml:space="preserve">
     <value>AddCategory</value>
   </data>
+  <data name="Shell_ImportData.Content" xml:space="preserve">
+    <value>ImportData</value>
+  </data>
 </root>

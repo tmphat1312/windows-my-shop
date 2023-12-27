@@ -48,4 +48,10 @@ public class CategoryDataService : ICategoryDataService
         IsDirty = true;
         return Task.Run(async () => await _categoryRepository.DeleteCategoryAsync(category));
     }
+
+    public Task<(string, int)> ImportDataAsync(IEnumerable<Category> categories)
+    {
+        IsDirty = true;
+        return Task.Run(async () => await _categoryRepository.ImportDataAsync(categories));
+    }
 }

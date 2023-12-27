@@ -11,4 +11,6 @@ public interface ICategoryRepository
     public Task<(Category, string, int)> UpdateCategoryAsync(Category category);
 
     Task<(string, int)> DeleteCategoryAsync(Category category);
+
+    public Task<(string, int)> ImportDataAsync(IEnumerable<Category> categories);
 }
