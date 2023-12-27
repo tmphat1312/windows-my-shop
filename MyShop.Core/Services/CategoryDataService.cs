@@ -29,4 +29,9 @@ public class CategoryDataService : ICategoryDataService
 
         return _categoryTuple;
     }
+
+    public Task<(Category, string, int)> AddCategoryAsync(Category category)
+    {
+        return Task.Run(async () => await _categoryRepository.CreateCategoryAsync(category));
+    }
 }

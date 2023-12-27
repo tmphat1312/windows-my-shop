@@ -11,4 +11,6 @@ public interface ICategoryDataService
 
     public Task<(IEnumerable<Category>, string, int)> LoadDataAsync();
     public (IEnumerable<Category>, string, int) GetData();
+
+    public Task<(Category, string, int)> AddCategoryAsync(Category category);
 }

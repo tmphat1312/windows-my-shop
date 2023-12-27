@@ -204,4 +204,7 @@
   <data name="Shell_Category.Content" xml:space="preserve">
     <value>Category</value>
   </data>
+  <data name="Shell_AddCategory.Content" xml:space="preserve">
+    <value>AddCategory</value>
+  </data>
 </root>
