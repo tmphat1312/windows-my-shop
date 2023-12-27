@@ -113,61 +113,119 @@
                     </InfoBarPanel>
                 </StackPanel>
                 <Grid>
-						<StackPanel
-							x:Name="FiltersAndSearchPanel"
-							Style="{StaticResource FiltersAndSearchPanelStyle}">
-							<TextBox
-								x:Name="SearchTextBox"
-								TextChanged="SearchTextBox_TextChanged"
-								KeyDown="SearchTextBox_KeyDown"
-								Header="Search"
-								PlaceholderText="Book title"
-								AutomationProperties.Name="multi-line TextBox"
-								IsSpellCheckEnabled="True"
-								SelectionHighlightColor="Green"
-								MinWidth="140"
-								MaxWidth="280" />
+					<StackPanel 
+					x:Name="FiltersAndSearchPanel" 
+					Style="{StaticResource FiltersAndSearchPanelStyle}">
+					<ComboBox 
+						x:Name="CategoryCombobox" 
+						SelectionChanged="CategoryCombobox_SelectionChanged" 
+						Header="Category" Width="200" 
+						ItemsSource="{x:Bind ViewModel.CategoryFilters, Mode=OneWay}"
+						DisplayMemberPath="Name" 
+						SelectedIndex="0" />
 
-							<ComboBox
-								SelectionChanged="SortByComboBox_SelectionChanged"
-								ItemsSource="{x:Bind ViewModel.SortOptions}"
-								DisplayMemberPath="Name"
-								SelectedIndex="0"
-								Header="SortBy"
-								x:Name="SortByComboBox"
-								Width="200"/>
+					<NumberBox 
+						x:Name="MinPriceTextBox"
+						Header="Min Price"
+						ValueChanged="MinPriceTextBox_ValueChanged"
+						SpinButtonPlacementMode="Compact"
+						SmallChange="1000"
+						LargeChange="100000"
+						Value="0"
+						MinWidth="140"
+						MaxWidth="280" />
 
-							<Button  VerticalAlignment="Bottom" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
-								<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
-									<FontIcon Glyph="&#xE71C;"  FontSize="16" />
-									<TextBlock Text="Apply" />
-								</StackPanel>
-							</Button>
-						</StackPanel>
+                    <NumberBox 
+						x:Name="MaxPriceTextBox"
+						Header="Max Price"
+						ValueChanged="MaxPriceTextBox_ValueChanged"
+						SpinButtonPlacementMode="Compact"
+						SmallChange="1000"
+						LargeChange="100000"
+						MinWidth="140"
+						MaxWidth="280" />
 
-						<!--I have code duplication, but huhhuhuhuhu-->
-						<Expander
+                    <TextBox 
+						x:Name="SearchTextBox"
+						TextChanged="SearchTextBox_TextChanged"
+						KeyDown="SearchTextBox_KeyDown"
+						Header="Search"
+						PlaceholderText="Book title"
+						IsSpellCheckEnabled="True"
+						MinWidth="140"
+						MaxWidth="280" />
+
+                    <ComboBox 
+						SelectionChanged="SortByComboBox_SelectionChanged"
+						ItemsSource="{x:Bind ViewModel.SortOptions}"
+						DisplayMemberPath="Name"
+						SelectedIndex="0"
+						Header="SortBy" 
+						x:Name="SortByComboBox"
+						Width="200"/>
+
+                        <Button  VerticalAlignment="Bottom" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
+							<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+								<FontIcon Glyph="&#xE71C;"  FontSize="16" />
+								<TextBlock Text="Apply" />
+							</StackPanel>
+						</Button>
+					</StackPanel>
+
+                    <!--I have code duplication, but huhhuhuhuhu-->
+                    <Expander
 							Header="Search box with filters"
 							x:Name="SmallFiltersAndSearchPanel"
-							Style="{StaticResource SmallFiltersAndSearchPanelStyle}">
-							<StackPanel Spacing="12" HorizontalAlignment="Left">
-								<ComboBox
-									SelectionChanged="SortByComboBox_SelectionChanged"
-									ItemsSource="{Binding ElementName=SortByComboBox,Path=ItemsSource}"
-									SelectedIndex="{Binding ElementName=SortByComboBox,Path=SelectedIndex}"
-									DisplayMemberPath="Name"
-									Header="Sort by"
-									Width="200"/>
+							Style="{StaticResource SmallFiltersAndSearchPanelStyle}">	
+                        <StackPanel Spacing="12" HorizontalAlignment="Left">
+						<ComboBox 
+							SelectionChanged="SortByComboBox_SelectionChanged"
+							ItemsSource="{Binding ElementName=SortByComboBox,Path=ItemsSource}"
+							SelectedIndex="{Binding ElementName=SortByComboBox,Path=SelectedIndex, Mode=TwoWay}"
+							DisplayMemberPath="Name"
+							Header="Sort by" 
+							Width="200"/>
 
-								<Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
-									<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
-										<FontIcon Glyph="&#xE71C;"  FontSize="16" />
-										<TextBlock Text="Apply" />
-									</StackPanel>
-								</Button>
-							</StackPanel>
-						</Expander>
-					</Grid>
+                        <NumberBox 
+							Header="Min Price"
+							ValueChanged="MinPriceTextBox_ValueChanged"
+							SpinButtonPlacementMode="Compact"
+							SmallChange="1000"
+							LargeChange="100000"
+							Value="{Binding ElementName=MinPriceTextBox, Path=Value, Mode=TwoWay}"
+							MinWidth="140"
+							MaxWidth="280" />
+
+                        <NumberBox 
+							  Header="Max Price"
+							  ValueChanged="MaxPriceTextBox_ValueChanged"
+							  SpinButtonPlacementMode="Compact"
+							  Value="{Binding ElementName=MaxPriceTextBox, Path=Value, Mode=TwoWay}"
+							  SmallChange="1000"
+							  LargeChange="100000"
+							  MinWidth="140"
+							  MaxWidth="280" />
+
+                         <TextBox 
+							  TextChanged="SearchTextBox_TextChanged"
+							  KeyDown="SearchTextBox_KeyDown"
+							  Header="Search"
+							  Text="{Binding ElementName=SearchTextBox, Path=Text, Mode=TwoWay}"
+							  PlaceholderText="Book title"
+							  IsSpellCheckEnabled="True"
+							  MinWidth="140"
+							  MaxWidth="280" />	
+
+
+                            <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.ApplyFiltersAndSearchCommand}" IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="4">
+                                    <FontIcon Glyph="&#xE71C;"  FontSize="16" />
+                                    <TextBlock Text="Apply" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Expander>
+                </Grid>
 
 					<!--Loading-->
 					<ProgressRing

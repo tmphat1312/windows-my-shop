@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,7 +76,7 @@ public class OrderRepository : IOrderRepository
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                var OrderResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Order>>(content);
+                var OrderResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Order>>>(content);
                 Orders = OrderResponse.Data.ToList();
                 totalOrders = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }
@@ -109,8 +110,8 @@ public class OrderRepository : IOrderRepository
             if (response.IsSuccessStatusCode)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                var httpResponse = JsonSerializer.Deserialize<HttpArrayDataSchemaResponse<Order>>(content);
-                Orders = httpResponse.Data.ToList();
+                var OrderResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<IEnumerable<Order>>>(content);
+                Orders = OrderResponse.Data.ToList();
                 totalItems = int.Parse(response.Headers.GetValues("x-total-count").FirstOrDefault());
             }
             else

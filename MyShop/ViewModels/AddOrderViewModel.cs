@@ -10,6 +10,7 @@ using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Http;
 using MyShop.Core.Models;
+using MyShop.Core.Services;
 using MyShop.Services;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -20,7 +21,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
     private readonly INavigationService _navigationService;
     private readonly IBookDataService _bookDataService;
     private readonly IOrderDataService _oderDataService;
-
+    private readonly ICategoryDataService _categoryDataService;
 
     public ObservableCollection<Book> Source { get; } = new ObservableCollection<Book>();
 
@@ -29,15 +30,16 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
         get;
     }
 
-    public AddOrderViewModel(INavigationService navigationService, IBookDataService bookDataService, IOrderDataService orderDataService)
+    public AddOrderViewModel(INavigationService navigationService, IBookDataService bookDataService, IOrderDataService orderDataService, ICategoryDataService categoryDataService)
     {
         AddOrderCommand = new RelayCommand(OnAddOrder);
 
         _navigationService = navigationService;
         _bookDataService = bookDataService;
-        _oderDataService = orderDataService;
+        _categoryDataService = categoryDataService;
 
         FunctionOnCommand = LoadData;
+
 
         SortOptions = new List<HttpSortObject>
         {
@@ -50,12 +52,21 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
             new() { Name = "PublishYear (Recent)", Value="publishedYear", IsAscending = false },
         };
         SelectedSortOption = SortOptions[0];
+    }
 
-        FilterOptions = new List<HttpFilterObject>
+    public async void LoadCategories()
+    {
+        await Task.Run(async () => await _categoryDataService.LoadDataAsync());
+        var (categories, _, _) = _categoryDataService.GetData();
+
+        if (categories is not null)
         {
-            new() { Value = "all", Key = "category" },
-            new() { Value = "fiction", Key = "category" },
-        };
+            foreach (var category in categories)
+            {
+                CategoryFilters.Add(category);
+            }
+        }
+
     }
 
     private async void OnAddOrder()
@@ -147,6 +158,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
         if (Source.Count <= 0)
         {
             LoadData();
+            LoadCategories();
         }
     }
 
