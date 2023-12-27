@@ -8,4 +8,8 @@ public interface IOrderRepository
 
   
     Task<(IEnumerable<Order>, int, string, int)> GetAllOrdersAsync(string searchParams);
+
+    Task<(Order, string, int)> UpdateOrderAsync(Order order);
+
+    Task<(string, int)> DeleteOrderAsync(Order order);
 }

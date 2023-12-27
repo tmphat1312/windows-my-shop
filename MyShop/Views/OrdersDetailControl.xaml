@@ -14,55 +14,80 @@
         IsTabStop="True">
         <StackPanel HorizontalAlignment="Stretch">
             <Grid HorizontalAlignment="Stretch">
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" HorizontalAlignment="Center"
-                           Text="Buyer:" Style="{ThemeResource TitleTextBlockStyle}" />
+                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Margin="0 12" HorizontalTextAlignment="Center"
+                           Text="Buyer:" Style="{StaticResource ListTitleStyle}" />
                 <TextBlock Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Text="{x:Bind ListDetailsMenuItem.User.Name, Mode=OneWay}"
+                    HorizontalAlignment="Left"
+                    Text="{x:Bind ViewModel.Item.User.Name, Mode=OneWay}"
                     Style="{ThemeResource TitleTextBlockStyle}" />
+
+                <CommandBar Grid.Column="2" DefaultLabelPosition="Right" HorizontalAlignment="Left" Margin="0,10,0,0" >
+                    <AppBarButton Icon="Edit" Label="Edit" Command="{x:Bind ViewModel.SetEditItemSessionButtonCommand}" />
+                    <AppBarButton Icon="Delete" Label="Delete" x:Name="DeleteItemButton" Click="DeleteItemButton_Click"  />
+                </CommandBar>
             </Grid>
             <StackPanel  Padding="0,15,0,0">
-                <TextBlock Text="Order Date" Style="{StaticResource DetailSubTitleStyle}" />
+                <TextBlock Text="Order Date" Style="{StaticResource ListTitleStyle}" />
 
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.OrderDate, Mode=OneWay}" Style="{StaticResource ListTitleStyle}" />
+                <TextBlock Text="{x:Bind ViewModel.Item.OrderDate, Mode=OneWay}" Style="{StaticResource DetailSubTitleStyle}" />
 
-                <TextBlock
+                <TextBlock  Visibility="{x:Bind ViewModel.IsEditButtonVisible, Mode=OneWay}"
                     Margin="{StaticResource SmallTopMargin}"
                     Text="Status"
-                    Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.Status, Mode=OneWay}" Style="{StaticResource ListTitleStyle}" />
-               
+                    Style="{StaticResource ListTitleStyle}" />
+                <TextBlock Text="{x:Bind ViewModel.Item.Status, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsEditButtonVisible, Mode=OneWay}"
+                           Style="{StaticResource DetailSubTitleStyle}" />
 
+                <!--Edit-->
+                <TextBlock  Visibility="{x:Bind ViewModel.IsEditSession, Mode=OneWay}"
+                        Margin="{StaticResource SmallTopMargin}"
+                        Text="Status"
+                        TextDecorations="Underline"
+                        Style="{StaticResource ListTitleStyle}" />
+                
+                <ComboBox x:Name="statusComboBox"  Visibility="{x:Bind ViewModel.IsEditSession, Mode=OneWay}"
+                          Margin="0 10" SelectedItem="{x:Bind ViewModel.newStatus, Mode=TwoWay}"
+                          Width="200" HorizontalAlignment="Left">
+                    <x:String>pending</x:String>
+                    <x:String>paid</x:String>
+                    <x:String>cancelled</x:String>
+                </ComboBox>
+                <!--/Edit-->
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Text="Total Price"
-                    Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.TotalPrice,Converter={StaticResource VietnamesePriceConverter}, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                    Style="{StaticResource ListTitleStyle}" />
+                <TextBlock Text="{x:Bind ViewModel.Item.TotalPrice,Converter={StaticResource VietnamesePriceConverter}, Mode=OneWay}" Style="{StaticResource DetailSubTitleStyle}" />
                 <TextBlock
                     Margin="{StaticResource SmallTopMargin}"
                     Text="FinalPrice"
-                    Style="{StaticResource DetailSubTitleStyle}" />
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.FinalPrice,Converter={StaticResource VietnamesePriceConverter}, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                    Style="{StaticResource ListTitleStyle}" />
+                <TextBlock Text="{x:Bind ViewModel.Item.FinalPrice,Converter={StaticResource VietnamesePriceConverter}, Mode=OneWay}" Style="{StaticResource DetailSubTitleStyle}" />
 
                 <TextBlock
                      Margin="{StaticResource SmallTopMargin}"
                      Text="Description"
-                     Style="{StaticResource DetailSubTitleStyle}" />    
-                <TextBlock Text="{x:Bind ListDetailsMenuItem.Description, Mode=OneWay}" Style="{StaticResource DetailBodyBaseMediumStyle}" />
+                     Style="{StaticResource ListTitleStyle}" />
+                <TextBlock Text="{x:Bind ViewModel.Item.Description, Mode=OneWay}" Style="{StaticResource DetailSubTitleStyle}" />
 
-                <TextBlock
+                <TextBlock  Visibility="{x:Bind ViewModel.IsEditButtonVisible, Mode=OneWay}"
                   Margin="{StaticResource SmallTopMargin}"
                   Text="Orders Detail:"
-                  Style="{StaticResource DetailSubTitleStyle}" />   
+                  Style="{StaticResource ListTitleStyle}" />   
             </StackPanel>
-            
-            <StackPanel HorizontalAlignment="Stretch" Margin="10">
+
+            <StackPanel HorizontalAlignment="Stretch" Visibility="{x:Bind ViewModel.IsEditButtonVisible, Mode=OneWay}"
+                        Margin="10">
              
                 <Grid Background="Orange" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -83,8 +108,8 @@
                 </Grid>
 
                 <!-- ListView -->
-                <ListView x:Name="OrderDetailsListView" HorizontalAlignment="Stretch" Margin="10"
-              ItemsSource="{x:Bind ListDetailsMenuItem.Details, Mode=OneWay}">
+                <ListView x:Name="OrderDetailsListView" HorizontalAlignment="Stretch" Margin="10"                       
+                      ItemsSource="{x:Bind ViewModel.Item.Details, Mode=OneWay}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:OrderDetail">
                             <Grid>
@@ -114,6 +139,32 @@
             </StackPanel>
 
 
+            <StackPanel Visibility="{x:Bind ViewModel.IsEditSession, Mode=OneWay}" Margin="15, 15, 0, 0" MinWidth="400" MaxWidth="500" Spacing="16">
+               
+                <!--Loading-->
+                <ProgressRing
+		            IsActive="{x:Bind ViewModel.IsEditLoading, Mode=OneWay}"
+		            Visibility="{x:Bind ViewModel.IsEditLoading, Mode=OneWay}"
+		            Width="60"
+		            Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
+
+                <!--Error & Info-->
+                <InfoBarPanel>
+                    <InfoBar
+			        Title="Error Updating Category"
+			        Severity="Error"
+			        IsOpen="{x:Bind ViewModel.HasEditError, Mode=OneWay}"
+			        Message="{x:Bind ViewModel.EditErrorMessage, Mode=OneWay}"
+                    />
+
+                </InfoBarPanel>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="12">
+                    <Button Style="{StaticResource AccentButtonStyle}" Content="Save changes"  Command="{x:Bind ViewModel.EditCategoryButtonCommand}" />
+                    <Button Content="Cancel" Command="{x:Bind ViewModel.CancelButtonCommand}" />
+                </StackPanel>
+            </StackPanel>
+            
         </StackPanel>
     </ScrollViewer>
 </UserControl>
