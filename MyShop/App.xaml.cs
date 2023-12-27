@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -62,7 +63,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzU5OTEyOSwiZXhwIjoxNzAzNjAwOTI5fQ.NiugQeLUSws9PGsA7D3v_XeQwcg87UruiiPntFfkOEo";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY0MDY3NCwiZXhwIjoxNzAzNjQyNDc0fQ.yp-kxqlbsCENyV4-o1i2iz309pywLfY2JozfWrB1mQ8";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -90,6 +91,8 @@ public partial class App : Application
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
             // Views and ViewModels
+            services.AddTransient<CategoryViewModel>();
+            services.AddTransient<CategoryPage>();
             services.AddTransient<AddOrderViewModel>();
             services.AddTransient<AddOrderPage>();
             services.AddTransient<OrdersViewModel>();
@@ -105,9 +108,7 @@ public partial class App : Application
             services.AddTransient<BooksViewModel>();
             services.AddTransient<BooksPage>();
             services.AddTransient<CategoriesDetailViewModel>();
-            services.AddTransient<CategoriesDetailPage>();
             services.AddTransient<CategoriesViewModel>();
-            services.AddTransient<CategoriesPage>();
             services.AddTransient<UsersViewModel>();
             services.AddTransient<UsersPage>();
             services.AddTransient<SettingsViewModel>();
