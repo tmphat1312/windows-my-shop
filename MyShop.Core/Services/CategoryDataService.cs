@@ -42,4 +42,10 @@ public class CategoryDataService : ICategoryDataService
         IsDirty = true;
         return Task.Run(async () => await _categoryRepository.UpdateCategoryAsync(category));
     }
+
+    public Task<(string, int)> DeleteCategoryAsync(Category category)
+    {
+        IsDirty = true;
+        return Task.Run(async () => await _categoryRepository.DeleteCategoryAsync(category));
+    }
 }

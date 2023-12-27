@@ -15,4 +15,6 @@ public interface ICategoryDataService
     public Task<(Category, string, int)> AddCategoryAsync(Category category);
 
     public Task<(Category, string, int)> UpdateCategoryAsync(Category category);
+
+    public Task<(string, int)> DeleteCategoryAsync(Category category);
 }

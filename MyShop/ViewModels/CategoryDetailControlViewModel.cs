@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MyShop.Contracts.Services;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
 
@@ -7,6 +8,7 @@ namespace MyShop.ViewModels;
 public partial class CategoryDetailControlViewModel : ObservableRecipient
 {
     private readonly ICategoryDataService _categoryDataservice;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty]
     public Category editCategory = new();
@@ -42,15 +44,16 @@ public partial class CategoryDetailControlViewModel : ObservableRecipient
         get; set;
     }
 
-    public CategoryDetailControlViewModel(ICategoryDataService categoryDataService)
+
+    public CategoryDetailControlViewModel(ICategoryDataService categoryDataService, INavigationService navigationService)
     {
         _categoryDataservice = categoryDataService;
+        _navigationService = navigationService;
 
         CancelButtonCommand = new RelayCommand(OnCancelEdit, () => !IsEditLoading);
         EditCategoryButtonCommand = new RelayCommand(OnUpdateCategory, () => !IsEditLoading);
         SetEditItemSessionButtonCommand = new RelayCommand(OnSetEditItemSession);
     }
-
 
     public void OnSetEditItemSession()
     {
@@ -77,6 +80,16 @@ public partial class CategoryDetailControlViewModel : ObservableRecipient
 
         IsEditLoading = false;
         NotifyThisChanges();
+    }
+
+    public async void OnDeletCategory()
+    {
+        var (_, ERROR_CODE) = await _categoryDataservice.DeleteCategoryAsync(Item);
+
+        if (ERROR_CODE == 0)
+        {
+            _navigationService.Refresh();
+        }
     }
 
     public void OnCancelEdit()

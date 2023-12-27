@@ -9,4 +9,6 @@ public interface ICategoryRepository
     public Task<(Category, string, int)> CreateCategoryAsync(Category category);
 
     public Task<(Category, string, int)> UpdateCategoryAsync(Category category);
+
+    Task<(string, int)> DeleteCategoryAsync(Category category);
 }

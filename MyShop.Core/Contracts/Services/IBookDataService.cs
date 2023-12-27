@@ -20,4 +20,5 @@ public interface IBookDataService
     public Task<(string, int)> DeleteBookAsync(Book book);
 
     public Task<(Book, string, int)> UpdateBookAsync(Book book);
+
 }
