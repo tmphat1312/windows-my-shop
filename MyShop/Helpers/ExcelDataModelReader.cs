@@ -91,7 +91,7 @@ public class ExcelDataModelReader
 
             /*
             * first row: empty
-            * second row: header row (name: text, description: text, purchasePrice: double, sellingPrice: double, author: text, publishedYear: int, quantity: int, ratingsAverage: double, category: text)
+            * second row: header row (name: text, description: text, purchasePrice: double, sellingPrice: double, author: text, publishedYear: int, ratingsAverage: double, quantity: int)
             * after that: data
             */
 
@@ -103,12 +103,19 @@ public class ExcelDataModelReader
             {
                 while (reader.Read())
                 {
-                    //var category = new Category
-                    //{
-                    //    Name = reader.GetString(1),
-                    //    Description = reader.GetString(2)
-                    //};
-                    //books.Add(category);
+                    var book = new Book
+                    {
+                        Name = reader.GetString(1),
+                        Description = reader.GetString(2),
+                        PurchasePrice = reader.GetDouble(3),
+                        SellingPrice = reader.GetDouble(4),
+                        Author = reader.GetString(5),
+                        PublishedYear = (int)reader.GetDouble(6),
+                        RatingsAverage = reader.GetDouble(7),
+                        Quantity = (int)reader.GetDouble(8)
+                    };
+
+                    books.Add(book);
                 }
             }
             while (reader.NextResult());

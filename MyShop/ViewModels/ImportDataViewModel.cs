@@ -8,26 +8,48 @@ namespace MyShop.ViewModels;
 public partial class ImportDataViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    public bool isLoading = false;
+    public bool isLoadingCategory = false;
 
     [ObservableProperty]
-    public string errorMessage = string.Empty;
+    public string errorMessageCategory = string.Empty;
 
     [ObservableProperty]
-    public string successMessage = string.Empty;
+    public string successMessageCategory = string.Empty;
 
-    public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
-    public bool HasSuccess => !string.IsNullOrEmpty(SuccessMessage);
+    public bool HasErrorCategory => !string.IsNullOrEmpty(ErrorMessageCategory);
+    public bool HasSuccessCategory => !string.IsNullOrEmpty(SuccessMessageCategory);
+
+    [ObservableProperty]
+    public bool isLoadingBook = false;
+
+    [ObservableProperty]
+    public string errorMessageBook = string.Empty;
+
+    [ObservableProperty]
+    public string successMessageBook = string.Empty;
+
+    public bool HasErrorBook => !string.IsNullOrEmpty(ErrorMessageBook);
+    public bool HasSuccessBook => !string.IsNullOrEmpty(SuccessMessageBook);
+
 
     private readonly ICategoryDataService _categoryDataService;
+    private readonly IBookDataService _bookDataService;
 
-    public ImportDataViewModel(ICategoryDataService categoryDataService)
+    public ImportDataViewModel(ICategoryDataService categoryDataService, IBookDataService bookDataService)
     {
         _categoryDataService = categoryDataService;
-        ImportCategoryButtonCommand = new RelayCommand(OnImportCategoryAsync, () => !IsLoading);
+        _bookDataService = bookDataService;
+
+        ImportCategoryButtonCommand = new RelayCommand(OnImportCategoryAsync, () => !IsLoadingCategory && !IsLoadingBook);
+        ImportBookButtonCommand = new RelayCommand(OnImportBookAsync, () => !IsLoadingCategory && !IsLoadingBook);
     }
 
     public RelayCommand ImportCategoryButtonCommand
+    {
+        get; set;
+    }
+
+    public RelayCommand ImportBookButtonCommand
     {
         get; set;
     }
@@ -36,30 +58,64 @@ public partial class ImportDataViewModel : ObservableRecipient
     {
         var categories = await ExcelDataModelReader.ReadCategoryFileAsync();
 
-        IsLoading = true;
+        IsLoadingCategory = true;
         NotifyChanges();
-
 
         var (message, ERROR_CODE) = await _categoryDataService.ImportDataAsync(categories);
 
         if (ERROR_CODE == 0)
         {
-            SuccessMessage = message;
+            SuccessMessageCategory = message;
         }
         else
         {
-            ErrorMessage = message;
+            ErrorMessageCategory = message;
         }
 
-        IsLoading = false;
+        IsLoadingCategory = false;
         NotifyChanges();
+    }
+
+    private async void OnImportBookAsync()
+    {
+        try
+        {
+            var books = await ExcelDataModelReader.ReadBookFileAsync();
+
+            IsLoadingBook = true;
+            NotifyChanges();
+
+            var (message, ERROR_CODE) = await _bookDataService.ImportDataAsync(books);
+
+            if (ERROR_CODE == 0)
+            {
+                SuccessMessageBook = message;
+            }
+            else
+            {
+                ErrorMessageBook = message;
+            }
+
+            IsLoadingBook = false;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessageBook = ex.Message;
+        }
+        finally
+        {
+            NotifyChanges();
+        }
     }
 
     private void NotifyChanges()
     {
         ImportCategoryButtonCommand.NotifyCanExecuteChanged();
+        ImportBookButtonCommand.NotifyCanExecuteChanged();
 
-        OnPropertyChanged(nameof(HasError));
-        OnPropertyChanged(nameof(HasSuccess));
+        OnPropertyChanged(nameof(HasErrorCategory));
+        OnPropertyChanged(nameof(HasSuccessCategory));
+        OnPropertyChanged(nameof(HasErrorBook));
+        OnPropertyChanged(nameof(HasSuccessBook));
     }
 }
