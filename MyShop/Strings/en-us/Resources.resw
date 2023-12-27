@@ -198,4 +198,10 @@
   <data name="Shell_AddOrder.Content" xml:space="preserve">
     <value>AddOrder</value>
   </data>
+  <data name="Category_NoSelection.Text" xml:space="preserve">
+    <value>Select an item from the list.</value>
+  </data>
+  <data name="Shell_Category.Content" xml:space="preserve">
+    <value>Category</value>
+  </data>
 </root>
