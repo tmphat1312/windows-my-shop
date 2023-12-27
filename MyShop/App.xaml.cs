@@ -63,7 +63,7 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY0NjAxNCwiZXhwIjoxNzAzNjQ3ODE0fQ.sRp3PgfE3WTeveen-HvC8g5uR3C6GIH08Np9fEpBArw";
+                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY1MTU4NSwiZXhwIjoxNzAzNjUzMzg1fQ.zCVRx7IGFu_3K0NwApOaPlLKJMF26oQebXvOYAMsfQ8";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             });
@@ -93,6 +93,7 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<AddCategoryViewModel>();
             services.AddTransient<AddCategoryPage>();
+            services.AddTransient<CategoryDetailControlViewModel>();
             services.AddTransient<CategoryViewModel>();
             services.AddTransient<CategoryPage>();
             services.AddTransient<AddOrderViewModel>();
@@ -109,8 +110,6 @@ public partial class App : Application
             services.AddTransient<BooksDetailPage>();
             services.AddTransient<BooksViewModel>();
             services.AddTransient<BooksPage>();
-            services.AddTransient<CategoriesDetailViewModel>();
-            services.AddTransient<CategoriesViewModel>();
             services.AddTransient<UsersViewModel>();
             services.AddTransient<UsersPage>();
             services.AddTransient<SettingsViewModel>();
@@ -119,6 +118,7 @@ public partial class App : Application
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

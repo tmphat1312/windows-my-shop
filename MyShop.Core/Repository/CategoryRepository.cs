@@ -92,4 +92,58 @@ public class CategoryRepository : ICategoryRepository
 
         return (categories, message, ERROR_CODE);
     }
+
+    public async Task<(Category, string, int)> UpdateCategoryAsync(Category category)
+    {
+        var returnedCategory = new Category();
+        var message = string.Empty;
+        var ERROR_CODE = 0;
+
+        try
+        {
+            var updateCategory = new Category()
+            {
+                Name = category.Name,
+                Description = category.Description,
+            };
+
+            using var client = _httpClientFactory.CreateClient("Backend");
+            using var httpContent = new StringContent(JsonSerializer.Serialize(updateCategory), Encoding.UTF8, "application/json");
+
+            var response = await client.PatchAsync($"categories/{category.Id}", httpContent);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<Category>>(responseContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                returnedCategory = httpResponse.Data;
+                returnedCategory.Id = category.Id;
+                message = "Category updated successfully.";
+            }
+            else
+            {
+                ERROR_CODE = (int)response.StatusCode;
+
+                if (ERROR_CODE == 400)
+                {
+                    message = httpResponse.Error?.Message;
+                }
+                else if (ERROR_CODE == 500)
+                {
+                    message = httpResponse.Message;
+                }
+                else
+                {
+                    message = "Something went wrong. Please try again later.";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+            ERROR_CODE = -1;
+        }
+
+        return (returnedCategory, message, ERROR_CODE);
+    }
 }

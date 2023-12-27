@@ -13,7 +13,7 @@ public partial class CategoryViewModel : ObservableRecipient, INavigationAware
     private readonly ICategoryDataService _categoryDataService;
 
     [ObservableProperty]
-    private Category? selected;
+    public Category? selected;
 
     [ObservableProperty]
     public bool isLoading = true;
