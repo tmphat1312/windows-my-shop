@@ -10,29 +10,46 @@ namespace MyShop.ViewModels;
 
 public partial class CategoryViewModel : ObservableRecipient, INavigationAware
 {
-    private readonly ISampleDataService _sampleDataService;
+    private readonly ICategoryDataService _categoryDataService;
 
     [ObservableProperty]
-    private SampleOrder? selected;
+    private Category? selected;
 
-    public ObservableCollection<SampleOrder> SampleItems { get; private set; } = new ObservableCollection<SampleOrder>();
+    [ObservableProperty]
+    public bool isLoading = true;
 
-    public CategoryViewModel(ISampleDataService sampleDataService)
+    [ObservableProperty]
+    public bool isContentReady = false;
+
+    public ObservableCollection<Category> CategoryList { get; private set; } = new();
+
+    public CategoryViewModel(ICategoryDataService categoryDataService)
     {
-        _sampleDataService = sampleDataService;
+        _categoryDataService = categoryDataService;
     }
 
-    public async void OnNavigatedTo(object parameter)
+
+    public async void LoadCategories()
     {
-        SampleItems.Clear();
+        await Task.Run(async () => await _categoryDataService.LoadDataAsync());
+        var (categories, _, _) = _categoryDataService.GetData();
 
-        // TODO: Replace with real data.
-        var data = await _sampleDataService.GetListDetailsDataAsync();
-
-        foreach (var item in data)
+        if (categories is not null)
         {
-            SampleItems.Add(item);
+            foreach (var category in categories)
+            {
+                CategoryList.Add(category);
+            }
         }
+
+        IsLoading = false;
+        IsContentReady = true;
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        LoadCategories();
+        EnsureItemSelected();
     }
 
     public void OnNavigatedFrom()
@@ -41,6 +58,9 @@ public partial class CategoryViewModel : ObservableRecipient, INavigationAware
 
     public void EnsureItemSelected()
     {
-        Selected ??= SampleItems.First();
+        if (CategoryList.Count > 0)
+        {
+            Selected ??= CategoryList[0];
+        }
     }
 }
