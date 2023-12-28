@@ -78,7 +78,6 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<IResourcePagingService, ResourcePagingService>();
             services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IUserDataService, UserDataService>();
             services.AddSingleton<IBookDataService, BookDataService>();
@@ -90,6 +89,7 @@ public partial class App : Application
             services.AddSingleton<ICategoryDataService, CategoryDataService>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<IStoreLoginCredentialsService, StoreCredentialsService>();
 
             // Views and ViewModels
             services.AddTransient<ImportDataViewModel>();

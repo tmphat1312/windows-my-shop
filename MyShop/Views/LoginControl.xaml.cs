@@ -23,6 +23,16 @@ public sealed partial class LoginControl : UserControl
     {
         ViewModel.Email = LoginEmailBox.Text;
         ViewModel.Password = LoginPasswordBox.Password;
+        ViewModel.IsRemembered = RememberMeCheckBox.IsChecked ?? false;
         ViewModel.LoginAsync();
+    }
+
+    private async void Login_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var (_, _) = await ViewModel.GetStoredCredentialsAsync();
+
+        RememberMeCheckBox.IsChecked = ViewModel.IsRemembered;
+        LoginEmailBox.Text = ViewModel.Email;
+        LoginPasswordBox.Password = ViewModel.Password;
     }
 }
