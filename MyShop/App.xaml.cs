@@ -62,10 +62,11 @@ public partial class App : Application
             services.AddHttpClient("Backend", client =>
             {
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
-            }).AddHttpMessageHandler<AccessTokenHandler>();
+            }).AddHttpMessageHandler<AccessTokenHandler>().AddHttpMessageHandler<AuthenticationResponseHandler>();
 
             // Http handlers
             services.AddTransient<AccessTokenHandler>();
+            services.AddTransient<AuthenticationResponseHandler>();
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();

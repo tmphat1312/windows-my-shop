@@ -77,5 +77,10 @@ public class AuthenticationService : IAuthenticationService
         return (message, ERROR_CODE);
     }
 
-    public Task<bool> LogoutAsync() => throw new NotImplementedException();
+    public Task<bool> LogoutAsync()
+    {
+        AccessToken = string.Empty;
+
+        return Task.FromResult(true);
+    }
 }
