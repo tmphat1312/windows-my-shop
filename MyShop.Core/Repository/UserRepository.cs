@@ -1,18 +1,6 @@
-
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-﻿using System.Net.Http.Headers;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MyShop.Core.Repository;
@@ -28,7 +16,7 @@ public class UserRepository : IUserRepository
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
     }
 
-   
+
     public async Task<(bool isSuccess, string Message, int ErrorCode)> CreateUserAsync(User user)
     {
         bool isSuccess = false;
@@ -123,7 +111,7 @@ public class UserRepository : IUserRepository
                     message = errorObject["message"]?.ToString() ?? "Unauthorized access.";
                 }
 
-               
+
             }
         }
         catch (Exception ex)

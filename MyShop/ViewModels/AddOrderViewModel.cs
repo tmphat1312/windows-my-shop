@@ -5,7 +5,6 @@ using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Http;
 using MyShop.Core.Models;
-using MyShop.Core.Services;
 using MyShop.Services;
 
 namespace MyShop.ViewModels;
@@ -24,7 +23,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
         get;
     }
 
-    public AddOrderViewModel(INavigationService navigationService, IBookDataService bookDataService, IOrderDataService orderDataService, ICategoryDataService categoryDataService)
+    public AddOrderViewModel(INavigationService navigationService, IBookDataService bookDataService, IOrderDataService orderDataService, ICategoryDataService categoryDataService, IStorePageSettingsService storePageSettingsService) : base(storePageSettingsService)
     {
         AddOrderCommand = new RelayCommand(OnAddOrder);
 
@@ -113,8 +112,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
         ErrorMessage = string.Empty;
         NotfifyChanges();
 
-        _bookDataService.SearchParams = BuildSearchParams();
-        _bookDataService.IsDirty = true;
+        _bookDataService.SearchParams = await BuildSearchParamsAsync();
 
         await Task.Run(async () => await _bookDataService.LoadDataAsync());
 

@@ -95,6 +95,7 @@ public partial class App : Application
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IStoreLoginCredentialsService, StoreCredentialsService>();
             services.AddSingleton<IStoreServerOriginService, StoreServerOriginService>();
+            services.AddSingleton<IStorePageSettingsService, StorePageSettingsService>();
 
             // Views and ViewModels
             services.AddTransient<ImportDataViewModel>();

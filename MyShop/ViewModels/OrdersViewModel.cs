@@ -2,6 +2,7 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MyShop.Contracts.Services;
 using MyShop.Contracts.ViewModels;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
@@ -36,7 +37,7 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     {
         get;
     }
-    public OrdersViewModel(IOrderDataService OrderDataService)
+    public OrdersViewModel(IOrderDataService OrderDataService, IStorePageSettingsService storePageSettingsService) : base(storePageSettingsService)
     {
         _orderDataService = OrderDataService;
 

@@ -72,7 +72,7 @@ public partial class BooksDetailViewModel : ResourceLoadingViewModel, INavigatio
         get; set;
     }
 
-    public BooksDetailViewModel(IReviewDataService reviewDataService, IBookDataService bookDataService, INavigationService navigationService, ICategoryDataService categoryDataService)
+    public BooksDetailViewModel(IReviewDataService reviewDataService, IBookDataService bookDataService, INavigationService navigationService, ICategoryDataService categoryDataService, IStorePageSettingsService storePageSettingsService) : base(storePageSettingsService)
     {
         _reviewDataService = reviewDataService;
         _bookDataService = bookDataService;
