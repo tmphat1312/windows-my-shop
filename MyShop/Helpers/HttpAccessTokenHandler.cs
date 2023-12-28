@@ -1,21 +1,32 @@
 ﻿using System.Net.Http.Headers;
+using MyShop.Contracts.Services;
 using MyShop.Core.Contracts.Services;
 
-namespace MyShop.Core.Http;
+namespace MyShop.Helpers;
 
 public class AccessTokenHandler : DelegatingHandler
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly IStoreServerOriginService _storeServerOriginService;
 
-    public AccessTokenHandler(IAuthenticationService authenticationService)
+    public AccessTokenHandler(IAuthenticationService authenticationService, IStoreServerOriginService storeServerOriginService)
     {
         _authenticationService = authenticationService;
+        _storeServerOriginService = storeServerOriginService;
     }
 
     protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         // Get the access token from the authentication service
         var accessToken = _authenticationService.GetAccessToken();
+
+        var port = _storeServerOriginService.Port;
+        var host = _storeServerOriginService.Host;
+        var currentUri = request.RequestUri.ToString();
+        var apiV1Index = currentUri.IndexOf("api/v1/");
+        var apiV1Length = "api/v1/".Length;
+        var apiV1 = currentUri.Substring(apiV1Index + apiV1Length);
+        request.RequestUri = new Uri(@$"{host}:{port}/api/v1/{apiV1}");
 
         if (!string.IsNullOrEmpty(accessToken))
         {

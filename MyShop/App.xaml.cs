@@ -9,6 +9,7 @@ using MyShop.Core.Contracts.Services;
 using MyShop.Core.Http;
 using MyShop.Core.Repository;
 using MyShop.Core.Services;
+using MyShop.Helpers;
 using MyShop.Models;
 using MyShop.Services;
 using MyShop.ViewModels;
@@ -61,11 +62,15 @@ public partial class App : Application
             // Http clients
             services.AddHttpClient("Backend", client =>
             {
-                client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
-            }).AddHttpMessageHandler<AccessTokenHandler>();
+                var host = App.GetService<IStoreServerOriginService>().Host;
+                var port = App.GetService<IStoreServerOriginService>().Port;
+
+                client.BaseAddress = new Uri(@$"{host}:{port}/api/v1/");
+            }).AddHttpMessageHandler<AccessTokenHandler>().AddHttpMessageHandler<AuthenticationResponseHandler>();
 
             // Http handlers
             services.AddTransient<AccessTokenHandler>();
+            services.AddTransient<AuthenticationResponseHandler>();
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -77,7 +82,6 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<IResourcePagingService, ResourcePagingService>();
             services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IUserDataService, UserDataService>();
             services.AddSingleton<IBookDataService, BookDataService>();
@@ -89,6 +93,8 @@ public partial class App : Application
             services.AddSingleton<ICategoryDataService, CategoryDataService>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<IStoreLoginCredentialsService, StoreCredentialsService>();
+            services.AddSingleton<IStoreServerOriginService, StoreServerOriginService>();
 
             // Views and ViewModels
             services.AddTransient<ImportDataViewModel>();
