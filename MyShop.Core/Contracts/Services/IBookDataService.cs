@@ -7,10 +7,6 @@ public interface IBookDataService
     {
         get; set;
     }
-    public bool IsDirty
-    {
-        get; set;
-    }
 
     public Task<(IEnumerable<Book>, int, string, int)> LoadDataAsync();
     public (IEnumerable<Book>, int, string, int) GetData();

@@ -18,7 +18,7 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
 
     public ObservableCollection<Book> Source { get; } = new ObservableCollection<Book>();
 
-    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService, ICategoryDataService categoryDataService)
+    public BooksViewModel(INavigationService navigationService, IBookDataService bookDataService, ICategoryDataService categoryDataService, IStorePageSettingsService storePageSettingsService) : base(storePageSettingsService)
     {
         _navigationService = navigationService;
         _bookDataService = bookDataService;
@@ -61,8 +61,7 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
         ErrorMessage = string.Empty;
         NotfifyChanges();
 
-        _bookDataService.SearchParams = BuildSearchParams();
-        _bookDataService.IsDirty = true;
+        _bookDataService.SearchParams = await BuildSearchParamsAsync();
 
         await Task.Run(async () => await _bookDataService.LoadDataAsync());
 

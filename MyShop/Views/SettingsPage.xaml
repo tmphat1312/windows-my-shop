@@ -52,13 +52,13 @@
             </StackPanel>
 
             <TextBlock x:Uid="Settings_Behaviors" Style="{ThemeResource SubtitleTextBlockStyle}" />
+            
             <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_RowsPerPage" />
                 <StackPanel Margin="{StaticResource XSmallTopMargin}" HorizontalAlignment="Left">
-                    <NumberBox Width="40" Value="10" />
+                    <ComboBox Header="Number of items per page" x:Name="ItemsPerPageComboBox" SelectionChanged="ItemsPerPageComboBox_SelectionChanged" ItemsSource="{x:Bind ViewModel.ItemsPerPageOptions}" SelectedItem="{x:Bind ViewModel.ItemsPerPage, Mode=TwoWay}"/>
                 </StackPanel>
 
-                <TextBlock x:Uid="Settings_OpenLastSession"  Margin="{StaticResource XSmallTopMargin}" />
+                <!--<TextBlock x:Uid="Settings_OpenLastSession"  Margin="{StaticResource XSmallTopMargin}" />
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
                     <RadioButton
                         x:Uid="Settings_OpenLastSession_Default"
@@ -71,9 +71,8 @@
                         FontSize="15"
                         GroupName="AppOnStartup">
                     </RadioButton>
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
-
 
             <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource XSmallTopMargin}">

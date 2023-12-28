@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MyShop.Contracts.Services;
 using MyShop.Core.Helpers;
 using MyShop.Core.Http;
 using MyShop.Core.Models;
@@ -23,8 +24,10 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
     [ObservableProperty]
     public int totalItems = 0;
 
-    [ObservableProperty]
-    public int itemsPerPage = 10;
+    public int ItemsPerPage
+    {
+        get; set;
+    } = 10;
 
     public List<HttpSortObject> SortOptions
     {
@@ -80,16 +83,20 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         get;
     }
 
+    private readonly IStorePageSettingsService _storePageSettingsService;
 
-    public ResourceLoadingViewModel()
+    public ResourceLoadingViewModel(IStorePageSettingsService storePageSettingsService)
     {
+        _storePageSettingsService = storePageSettingsService;
+
         GoToNextPageCommand = new RelayCommand(GoToNextPage, () => HasNextPage);
         GoToPreviousPageCommand = new RelayCommand(GoToPreviousPage, () => HasPreviousPage);
-        ItemsPerPage = 10; // TODO: get from settings
     }
 
-    protected string BuildSearchParams()
+    protected async Task<string> BuildSearchParamsAsync()
     {
+        ItemsPerPage = await _storePageSettingsService.GetItemsPerPageAsync();
+
         var paramBuilder = new HttpSearchParamsBuilder();
 
         paramBuilder.Append("page", CurrentPage);

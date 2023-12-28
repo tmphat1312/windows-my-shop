@@ -16,4 +16,9 @@ public sealed partial class SettingsPage : Page
         ViewModel = App.GetService<SettingsViewModel>();
         InitializeComponent();
     }
+
+    private void ItemsPerPageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ViewModel.SaveItemsPerPage();
+    }
 }

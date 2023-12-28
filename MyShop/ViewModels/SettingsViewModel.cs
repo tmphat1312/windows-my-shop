@@ -16,6 +16,7 @@ namespace MyShop.ViewModels;
 public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
+    private readonly IStorePageSettingsService _storePageSettingsService;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -23,14 +24,23 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     private string _versionDescription;
 
+    public List<int> ItemsPerPageOptions
+    {
+        get;
+    } = new() { 5, 10, 15, 20 };
+
+    [ObservableProperty]
+    public int itemsPerPage = 10;
+
     public ICommand SwitchThemeCommand
     {
         get;
     }
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService)
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, IStorePageSettingsService storePageSettingsService)
     {
         _themeSelectorService = themeSelectorService;
+        _storePageSettingsService = storePageSettingsService;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
 
@@ -43,6 +53,18 @@ public partial class SettingsViewModel : ObservableRecipient
                     await _themeSelectorService.SetThemeAsync(param);
                 }
             });
+
+        InitializeAsync();
+    }
+
+    private async void InitializeAsync()
+    {
+        ItemsPerPage = await _storePageSettingsService.GetItemsPerPageAsync();
+    }
+
+    public async void SaveItemsPerPage()
+    {
+        await _storePageSettingsService.SaveItemsPerPageAsync(ItemsPerPage);
     }
 
     private static string GetVersionDescription()
