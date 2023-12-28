@@ -30,9 +30,12 @@ public sealed partial class LoginControl : UserControl
     private async void Login_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var (_, _) = await ViewModel.GetStoredCredentialsAsync();
+        var (_, _) = await ViewModel.GetStoredServerOriginAsync();
 
         RememberMeCheckBox.IsChecked = ViewModel.IsRemembered;
         LoginEmailBox.Text = ViewModel.Email;
         LoginPasswordBox.Password = ViewModel.Password;
+        ServerHostBox.Text = ViewModel.ServerHost;
+        ServerPortBox.Value = ViewModel.ServerPort;
     }
 }

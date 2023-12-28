@@ -48,8 +48,13 @@
                     IsExpanded="False"
                     ExpandDirection="Down"
                     VerticalAlignment="Top"
-                    Header="Settings"
-                    Content="This is in the content"/>
+                    Header="Settings">
+                    <StackPanel Spacing="12" MinWidth="300">
+                        <TextBox Header="Server host (http://localhost)"  x:Name="ServerHostBox" Text="{x:Bind ViewModel.ServerHost, Mode=TwoWay}" />
+                        <NumberBox Header="Server port (8080)"  x:Name="ServerPortBox" Value="{x:Bind ViewModel.ServerPort, Mode=TwoWay}" />
+                        <Button Style="{StaticResource AccentButtonStyle}" Content="Save" HorizontalAlignment="Right" Margin="0, 16, 0, 0" Width="80" Command="{x:Bind ViewModel.SaveSettingsCommand}" />
+                    </StackPanel>
+                </Expander>
             </StackPanel>
         </Border>
     </Grid>

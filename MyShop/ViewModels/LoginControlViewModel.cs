@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using MyShop.Contracts.Services;
 using MyShop.Core.Contracts.Services;
 
@@ -9,6 +10,7 @@ public partial class LoginControlViewModel : ObservableRecipient
     private readonly IAuthenticationService _authenticationService;
     private readonly INavigationService _navigationService;
     private readonly IStoreLoginCredentialsService _storeLoginCredentialsService;
+    private readonly IStoreServerOriginService _storeServerOriginService;
 
     [ObservableProperty]
     public string accessToken = string.Empty;
@@ -24,18 +26,34 @@ public partial class LoginControlViewModel : ObservableRecipient
     {
         get; set;
     } = false;
+    [ObservableProperty]
+    public string serverHost = "http://localhost";
+    [ObservableProperty]
+    public int serverPort = 8080;
 
 
     public bool IsAuthenticated => !string.IsNullOrEmpty(AccessToken);
     public bool IsNotAuthenticated => !IsAuthenticated;
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
     public bool IsNotLoading => !IsLoading;
+    public bool IsSavingSettings
+    {
+        get; set;
+    } = false;
 
-    public LoginControlViewModel(IAuthenticationService authenticationService, INavigationService navigationService, IStoreLoginCredentialsService storeLoginCredentialsService)
+    public RelayCommand SaveSettingsCommand
+    {
+        get; set;
+    }
+
+    public LoginControlViewModel(IAuthenticationService authenticationService, INavigationService navigationService, IStoreLoginCredentialsService storeLoginCredentialsService, IStoreServerOriginService storeServerOriginService)
     {
         _authenticationService = authenticationService;
         _navigationService = navigationService;
         _storeLoginCredentialsService = storeLoginCredentialsService;
+        _storeServerOriginService = storeServerOriginService;
+
+        SaveSettingsCommand = new RelayCommand(SaveServerOriginSettingsAsync, () => !IsSavingSettings);
     }
 
     public async Task<(string Email, string Password)> GetStoredCredentialsAsync()
@@ -91,8 +109,28 @@ public partial class LoginControlViewModel : ObservableRecipient
         }
     }
 
+    public async Task<(string Host, int Port)> GetStoredServerOriginAsync()
+    {
+        var (host, port) = await _storeServerOriginService.TryGetServerOriginAsync();
+        ServerHost = host;
+        ServerPort = port;
+
+        return (ServerHost, ServerPort);
+    }
+
+    public async void SaveServerOriginSettingsAsync()
+    {
+        IsSavingSettings = true;
+        NotifyChanges();
+        await _storeServerOriginService.SaveServerOriginAsync(ServerHost, ServerPort);
+        IsSavingSettings = false;
+        NotifyChanges();
+    }
+
     private void NotifyChanges()
     {
+        SaveSettingsCommand.NotifyCanExecuteChanged();
+
         OnPropertyChanged(nameof(IsAuthenticated));
         OnPropertyChanged(nameof(IsNotAuthenticated));
         OnPropertyChanged(nameof(HasError));
