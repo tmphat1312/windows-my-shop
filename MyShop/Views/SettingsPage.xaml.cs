@@ -21,4 +21,14 @@ public sealed partial class SettingsPage : Page
     {
         ViewModel.SaveItemsPerPage();
     }
+
+    private void OpenLastPageCheckbox_Checked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        ViewModel.SaveOpenLastPage();
+    }
+
+    private void OpenLastPageCheckbox_Unchecked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        ViewModel.SaveNotOpenLastPage();
+    }
 }

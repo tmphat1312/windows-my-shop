@@ -58,20 +58,12 @@
                     <ComboBox Header="Number of items per page" x:Name="ItemsPerPageComboBox" SelectionChanged="ItemsPerPageComboBox_SelectionChanged" ItemsSource="{x:Bind ViewModel.ItemsPerPageOptions}" SelectedItem="{x:Bind ViewModel.ItemsPerPage, Mode=TwoWay}"/>
                 </StackPanel>
 
-                <!--<TextBlock x:Uid="Settings_OpenLastSession"  Margin="{StaticResource XSmallTopMargin}" />
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton
-                        x:Uid="Settings_OpenLastSession_Default"
-                        FontSize="15"
-                        IsChecked="True"
-                        GroupName="AppOnStartup">
-                    </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_OpenLastSession_Last"
-                        FontSize="15"
-                        GroupName="AppOnStartup">
-                    </RadioButton>
-                </StackPanel>-->
+                <CheckBox
+                    Margin="0, 10, 0, 0"
+                    Content="Open last page on startup" x:Name="OpenLastPageCheckbox"
+                    IsChecked="{x:Bind ViewModel.OpenLastPage, Mode=TwoWay}"
+                    Checked="OpenLastPageCheckbox_Checked"
+                    Unchecked="OpenLastPageCheckbox_Unchecked" />
             </StackPanel>
 
             <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />

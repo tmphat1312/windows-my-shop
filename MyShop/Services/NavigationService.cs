@@ -11,8 +11,6 @@ using MyShop.Helpers;
 
 namespace MyShop.Services;
 
-// For more information on navigation between pages see
-// https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md
 public class NavigationService : INavigationService
 {
     private readonly IPageService _pageService;
@@ -127,6 +125,7 @@ public class NavigationService : INavigationService
     }
 
     public void SetListDataItemForNextConnectedAnimation(object item) => Frame.SetListDataItemForNextConnectedAnimation(item);
+
     public bool Refresh()
     {
         if (Frame != null)

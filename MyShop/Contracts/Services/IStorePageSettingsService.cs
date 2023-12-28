@@ -5,4 +5,5 @@ public interface IStorePageSettingsService
 
     Task<bool> SaveItemsPerPageAsync(int itemsPerPage);
     Task<int> TryGetItemsPerPageAsync();
+
 }
