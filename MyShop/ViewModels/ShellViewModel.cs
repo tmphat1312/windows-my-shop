@@ -3,6 +3,7 @@
 using Microsoft.UI.Xaml.Navigation;
 
 using MyShop.Contracts.Services;
+using MyShop.Core.Contracts.Services;
 using MyShop.Views;
 
 namespace MyShop.ViewModels;
@@ -15,6 +16,9 @@ public partial class ShellViewModel : ObservableRecipient
     [ObservableProperty]
     private object? selected;
 
+    [ObservableProperty]
+    public bool isPaneOpen = false;
+
     public INavigationService NavigationService
     {
         get;
@@ -25,8 +29,14 @@ public partial class ShellViewModel : ObservableRecipient
         get;
     }
 
-    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService)
+    public IAuthenticationService AuthenticationService
     {
+        get;
+    }
+
+    public ShellViewModel(INavigationService navigationService, INavigationViewService navigationViewService, IAuthenticationService authenticationService)
+    {
+        AuthenticationService = authenticationService;
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
@@ -43,9 +53,12 @@ public partial class ShellViewModel : ObservableRecipient
         }
 
         var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
+
         if (selectedItem != null)
         {
             Selected = selectedItem;
         }
+
+        IsPaneOpen = AuthenticationService.IsAuthenticated();
     }
 }
