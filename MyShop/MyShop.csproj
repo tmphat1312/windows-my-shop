@@ -25,6 +25,7 @@
     <None Remove="Controls\PaginationControl.xaml" />
     <None Remove="Controls\SearchBoxControl.xaml" />
     <None Remove="Styles\ColorBrushes.xaml" />
+    <None Remove="Views\LoginControl.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +60,9 @@
     <None Update="Assets\Wide310x150Logo.scale-200.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\LoginControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Styles\ColorBrushes.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

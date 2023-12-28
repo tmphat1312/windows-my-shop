@@ -7,6 +7,7 @@
     xmlns:helpers="using:MyShop.Helpers"
     xmlns:behaviors="using:MyShop.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:views="using:MyShop.Views"
     Loaded="OnLoaded">
 
     <Grid>
@@ -25,7 +26,13 @@
                        Style="{StaticResource CaptionTextBlockStyle}"
                        Margin="28,0,0,0"/>
         </Grid>
+
+        <ScrollViewer VerticalAlignment="Center" HorizontalAlignment="Center">
+            <views:LoginControl  />
+        </ScrollViewer>
+
         <NavigationView
+            Visibility="{x:Bind ViewModel.IsPaneOpen, Mode=OneWay}"
             x:Name="NavigationViewControl"
             Canvas.ZIndex="0"
             IsBackButtonVisible="Visible"
@@ -41,24 +48,8 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF246;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                
-                <!--<NavigationViewItem Content="Users" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.UsersViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE716;"/>
-                    </NavigationViewItem.Icon>
 
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Create a User" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddUserViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82E;"/>
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-       
-                    </NavigationViewItem.MenuItems>
-                    
-                </NavigationViewItem>-->
-
-                <NavigationViewItem x:Uid="Shell_Category" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.CategoryViewModel">
+                <NavigationViewItem Content="Categories" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.CategoryViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;"/>
                     </NavigationViewItem.Icon>
@@ -84,7 +75,7 @@
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-                
+
                 <NavigationViewItem Content="Orders" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.OrdersViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE92;"/>
@@ -97,7 +88,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
-                  
+
                 </NavigationViewItem>
                 <NavigationViewItem Content="Import data" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.ImportDataViewModel">
                     <NavigationViewItem.Icon>
@@ -105,7 +96,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-            
+
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem Content="Account" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AccountViewModel">
                     <NavigationViewItem.Icon>
@@ -123,7 +114,7 @@
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
-            
+
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior
                     DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
@@ -138,7 +129,7 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            
+
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <Frame x:Name="NavigationFrame" />
             </Grid>

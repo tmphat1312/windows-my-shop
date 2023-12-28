@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Headers;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
@@ -8,6 +6,7 @@ using MyShop.Activation;
 using MyShop.Contracts.Services;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Contracts.Services;
+using MyShop.Core.Http;
 using MyShop.Core.Repository;
 using MyShop.Core.Services;
 using MyShop.Models;
@@ -62,11 +61,11 @@ public partial class App : Application
             // Http clients
             services.AddHttpClient("Backend", client =>
             {
-                //var accessToken = App.GetService<ILocalSettingsService>().GetAccessToken();
-                var accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1ODJjMDI2MzdkNzRmMDMyMDkwNTU1NCIsImlhdCI6MTcwMzY5OTI1OSwiZXhwIjoxNzAzNzAxMDU5fQ.bRJA3eUyTvLVUGcAhyPBtfayvv3eafr7mT9KYKksqZk";
                 client.BaseAddress = new Uri(@"http://localhost:8080/api/v1/");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            });
+            }).AddHttpMessageHandler<AccessTokenHandler>();
+
+            // Http handlers
+            services.AddTransient<AccessTokenHandler>();
 
             // Services
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
@@ -89,6 +88,7 @@ public partial class App : Application
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<ICategoryDataService, CategoryDataService>();
             services.AddSingleton<ICategoryRepository, CategoryRepository>();
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
             // Views and ViewModels
             services.AddTransient<ImportDataViewModel>();
@@ -121,6 +121,7 @@ public partial class App : Application
             services.AddTransient<MainPage>();
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
+            services.AddTransient<LoginControlViewModel>();
 
 
             // Configuration
