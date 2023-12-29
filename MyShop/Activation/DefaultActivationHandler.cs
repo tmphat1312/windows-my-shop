@@ -30,7 +30,7 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
         if (openLastPage && !string.IsNullOrEmpty(lastOpenPage))
         {
             _navigationService.NavigateTo(lastOpenPage, args.Arguments);
-            _navigationService.Refresh();
+            //_navigationService.Refresh();
         }
         else
         {

@@ -35,6 +35,11 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     {
         get;
     }
+
+    public RelayCommand ApplyFilterCommand
+    {
+        get;
+    }
     public OrdersViewModel(IOrderDataService OrderDataService, IStorePageSettingsService storePageSettingsService) : base(storePageSettingsService)
     {
         _orderDataService = OrderDataService;
@@ -44,6 +49,7 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
         AddOrderCommand = new RelayCommand(AddOrder);
         DeleteOrderCommand = new RelayCommand(DeleteOrder, () => Selected != null);
         EditOrderCommand = new RelayCommand(EditOrder, () => Selected != null);
+        ApplyFilterCommand = new RelayCommand(LoadDataAsync);
 
         FunctionOnCommand = LoadDataAsync;
     }

@@ -58,6 +58,16 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         get; set;
     }
 
+    public DateTime? FromDate
+    {
+        get; set;
+    }
+
+    public DateTime? ToDate
+    {
+        get; set;
+    }
+
     public int TotalPages => (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
     public bool HasNextPage => CurrentPage < TotalPages;
     public bool HasPreviousPage => CurrentPage > 1;
@@ -125,6 +135,16 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         if (SelectedCategory is not null && SelectedCategory.Id != "all")
         {
             paramBuilder.Append("category", SelectedCategory.Id);
+        }
+
+        if (FromDate is not null)
+        {
+            paramBuilder.Append("orderDate[gte]", FromDate.Value.ToString("yyyy-MM-dd"));
+        }
+
+        if (ToDate is not null)
+        {
+            paramBuilder.Append("orderDate[lte]", ToDate.Value.ToString("yyyy-MM-dd"));
         }
 
         return paramBuilder.GetQueryString();
@@ -252,6 +272,29 @@ public partial class ResourceLoadingViewModel : ObservableRecipient
         }
 
         MaxPrice = price;
+        IsDirty = true;
+    }
+
+    public virtual void SetFromDate(DateTime? date)
+    {
+
+        if (FromDate == date)
+        {
+            return;
+        }
+
+        FromDate = date;
+        IsDirty = true;
+    }
+
+    public virtual void SetToDate(DateTime? date)
+    {
+        if (ToDate == date)
+        {
+            return;
+        }
+
+        ToDate = date;
         IsDirty = true;
     }
 }
