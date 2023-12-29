@@ -30,6 +30,7 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
         _navigationService = navigationService;
         _bookDataService = bookDataService;
         _categoryDataService = categoryDataService;
+        _oderDataService = orderDataService;
 
         FunctionOnCommand = LoadData;
 
@@ -95,8 +96,6 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
             else
             {
                 ErrorMessage = result.Item2;
-                NotfifyChanges();
-                await Task.Delay(2000); // Chờ 2 giây
                 ErrorMessage = string.Empty;
                 NotfifyChanges();
             }

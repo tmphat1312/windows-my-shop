@@ -6,6 +6,7 @@ namespace MyShop.Core.Services;
 public class OrderDataService : IOrderDataService
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IAuthenticationService _authenticationService;
 
     // (orders, totalItems, errorMessage, ErrorCode)
     private (IEnumerable<Order>, int, string, int) _orderDataTuple;
@@ -27,9 +28,10 @@ public class OrderDataService : IOrderDataService
 
     public (IEnumerable<Order>, int, string, int) GetData() => _orderDataTuple;
 
-    public OrderDataService(IOrderRepository orderRepository)
+    public OrderDataService(IOrderRepository orderRepository, IAuthenticationService authenticationService)
     {
         _orderRepository = orderRepository;
+        _authenticationService = authenticationService;
     }
 
     public async Task<(IEnumerable<Order>, int, string, int)> LoadDataAsync()
@@ -41,7 +43,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<(Order, string, int)> CreateAOrderAsync(List<AddOrderDetail> addOrderDetail)
     {
-        string userId = "65889e531ceae159d7937a4e";
+        var userId = _authenticationService.GetUserId();
         var addOrder = new AddOrder
         {
             UserId = userId,

@@ -24,14 +24,12 @@ public class OrderRepository : IOrderRepository
 
         try
         {
-
             var client = _httpClientFactory.CreateClient("Backend");
             var content = new StringContent(JsonSerializer.Serialize(addOrder), Encoding.UTF8, "application/json");
             var response = await client.PostAsync($"orders", content);
 
             if (response.IsSuccessStatusCode)
             {
-
                 var responseContent = response.Content.ReadAsStringAsync().Result;
                 var orders = JsonSerializer.Deserialize<HttpDataSchemaResponse<Order>>(responseContent);
                 order = orders.Data;

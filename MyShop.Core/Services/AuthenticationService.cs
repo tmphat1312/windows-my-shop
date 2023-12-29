@@ -12,7 +12,13 @@ public class AuthenticationService : IAuthenticationService
         get; set;
     }
 
+    public string UserId
+    {
+        get; set;
+    }
+
     public string GetAccessToken() => AccessToken;
+    public string GetUserId() => UserId;
     public bool IsAuthenticated() => !string.IsNullOrEmpty(AccessToken);
 
     private readonly IHttpClientFactory _httpClientFactory;
@@ -46,7 +52,7 @@ public class AuthenticationService : IAuthenticationService
             if (httpResponse.IsSuccessStatusCode)
             {
                 AccessToken = loginResponse.AccessToken;
-
+                UserId = loginResponse.UserId;
                 ERROR_CODE = 0;
             }
             else

@@ -10,6 +10,12 @@ public class HttpLoginSchemaResponse
         get; set;
     }
 
+    [JsonPropertyName("userId")]
+    public string UserId
+    {
+        get; set;
+    }
+
     [JsonPropertyName("message")]
     public string Message
     {
