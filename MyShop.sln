@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop", "MyShop\MyShop.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.Core", "MyShop.Core\MyShop.Core.csproj", "{918C8333-2653-48B3-8FB9-C085FA33CD8E}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MyBookShop", "MyBookShop\MyBookShop.vdproj", "{96AC22DC-2B1F-43E7-937B-980CED323832}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,14 @@ Global
 		{918C8333-2653-48B3-8FB9-C085FA33CD8E}.Release|x64.Build.0 = Release|x64
 		{918C8333-2653-48B3-8FB9-C085FA33CD8E}.Release|x86.ActiveCfg = Release|x86
 		{918C8333-2653-48B3-8FB9-C085FA33CD8E}.Release|x86.Build.0 = Release|x86
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Debug|Any CPU.ActiveCfg = Debug
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Debug|arm64.ActiveCfg = Debug
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Debug|x64.ActiveCfg = Debug
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Debug|x86.ActiveCfg = Debug
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Release|Any CPU.ActiveCfg = Release
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Release|arm64.ActiveCfg = Release
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Release|x64.ActiveCfg = Release
+		{96AC22DC-2B1F-43E7-937B-980CED323832}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
