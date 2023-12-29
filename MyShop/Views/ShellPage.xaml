@@ -16,15 +16,15 @@
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
-            <Image Source="/Assets/WindowIcon.ico"
+            <Image Source="/Assets/AppIcon.ico"
                    HorizontalAlignment="Left"
-                   Width="16"
-                   Height="16" />
+                   Width="32"
+                   Height="32" Margin="10, 0, 0,0 "/>
             <TextBlock x:Name="AppTitleBarText"
                        VerticalAlignment="Center"
                        TextWrapping="NoWrap"
                        Style="{StaticResource CaptionTextBlockStyle}"
-                       Margin="28,0,0,0"/>
+                       Margin="60,0,0,0"/>
         </Grid>
 
         <ScrollViewer VerticalAlignment="Center" HorizontalAlignment="Center">

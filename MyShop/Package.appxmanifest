@@ -20,7 +20,7 @@
   <Properties>
     <DisplayName>MyShop</DisplayName>
     <PublisherDisplayName>ACER</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\AppIcon.png</Logo>
   </Properties>
 
   <Dependencies>
