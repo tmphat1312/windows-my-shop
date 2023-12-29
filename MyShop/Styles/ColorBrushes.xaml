@@ -5,7 +5,7 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="CardBorderBrush" Color="#cbd5e1"/>
-            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#020617"/>
+            <SolidColorBrush x:Key="CardBackgroundBrush" Color="White"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
             <SolidColorBrush x:Key="CardBorderBrush" Color="#4b5563"/>
