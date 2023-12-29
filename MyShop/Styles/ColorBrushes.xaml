@@ -4,10 +4,12 @@
 
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-            <SolidColorBrush x:Key="CardBorderBrush" Color="#e2e8f0"/>
+            <SolidColorBrush x:Key="CardBorderBrush" Color="#cbd5e1"/>
+            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#020617"/>
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="CardBorderBrush" Color="#e2e8f0"/>
+            <SolidColorBrush x:Key="CardBorderBrush" Color="#4b5563"/>
+            <SolidColorBrush x:Key="CardBackgroundBrush" Color="#4b5563"/>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 

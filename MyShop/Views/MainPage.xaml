@@ -18,9 +18,9 @@
     <Grid x:Name="ContentArea">
 
 
-        <ProgressRing 
-                IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
-                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+        <ProgressRing
+                IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
                 Width="60"
                 Margin="0, 20, 0, 20"
                 Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
@@ -50,7 +50,7 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" CornerRadius="10" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    <Border Grid.Column="0" CornerRadius="10" Background="{ThemeResource CardBackgroundBrush}" HorizontalAlignment="Left" VerticalAlignment="Top"
                      Margin="30 0" BorderBrush="LightGray" BorderThickness="1" Padding="20">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="80">
@@ -73,7 +73,7 @@
 
                     <StackPanel Grid.Column="1" Margin="80 0 0 0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Spacing="20">
                         <!-- Card for Sessions -->
-                        <Border CornerRadius="10" Background="White" BorderBrush="LightGray" BorderThickness="1" Padding="20">
+                        <Border CornerRadius="10" Background="{ThemeResource CardBackgroundBrush}" BorderBrush="LightGray" BorderThickness="1" Padding="20">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="80">
                                     <Border Background="#DC3545" CornerRadius="10" Padding="6 0 6 2">
@@ -94,7 +94,7 @@
                         </Border>
 
                         <!-- Card for Average Sessions -->
-                        <Border CornerRadius="10" Background="White" BorderBrush="LightGray" BorderThickness="1" Padding="20">
+                        <Border CornerRadius="10" Background="{ThemeResource CardBackgroundBrush}" BorderBrush="LightGray" BorderThickness="1" Padding="20">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Spacing="80">
                                     <Border Background="#085CFF" CornerRadius="10" Padding="6 0 6 2">
@@ -171,7 +171,7 @@
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="5*" />
                                 <ColumnDefinition Width="1.5*" />
-                             
+
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" Text="Image" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -180,13 +180,13 @@
                      Style="{StaticResource ListTitleStyle}" Margin="10"/>
                             <TextBlock Grid.Column="2" Text="Sold Quantity" HorizontalAlignment="Center" VerticalAlignment="Center"
                      Style="{StaticResource ListTitleStyle}" Margin="10"/>
-                           
+
                         </Grid>
 
                         <!-- ListView -->
                         <ListView x:Name="OrderDetailsListView" HorizontalAlignment="Stretch" Margin="30" MaxHeight="400"
                                   ScrollViewer.VerticalScrollMode="Enabled"
-                            ScrollViewer.VerticalScrollBarVisibility="Auto"              
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ItemsSource="{x:Bind ViewModel.BookSaleStats, Mode=OneWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="models:BookSaleStat">
@@ -198,7 +198,7 @@
                                             <!-- Tên sách -->
                                             <ColumnDefinition Width="1.5*" />
                                             <!-- Số lượng -->
-                                       
+
                                             <!-- Giá -->
                                         </Grid.ColumnDefinitions>
 
@@ -215,12 +215,12 @@
                     </StackPanel>
 
                 </Grid>
-                
+
 
             </Grid>
 
         </ScrollViewer>
     </Grid>
 
-   
+
 </Page>
