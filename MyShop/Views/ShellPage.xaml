@@ -97,13 +97,13 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
 
-            <NavigationView.FooterMenuItems>
+            <!--<NavigationView.FooterMenuItems>
                 <NavigationViewItem Content="Account" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AccountViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC25;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-            </NavigationView.FooterMenuItems>
+            </NavigationView.FooterMenuItems>-->
 
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
