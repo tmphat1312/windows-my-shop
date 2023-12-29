@@ -37,6 +37,7 @@ public sealed partial class OrdersPage : Page
     private void ToDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
     {
         var date = ToDate.Date;
+        date = date?.AddDays(1);
         var convertedDate = date.HasValue ? date.Value.DateTime : DateTime.MinValue;
         ViewModel.SetToDate(convertedDate);
     }
