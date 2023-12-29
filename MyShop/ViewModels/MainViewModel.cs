@@ -1,15 +1,11 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using MyShop.Core.Contracts.Services;
 using MyShop.Core.Models;
-using MyShop.Core.Services;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using Windows.Foundation.Metadata;
 
 namespace MyShop.ViewModels;
 
@@ -36,10 +32,10 @@ public partial class MainViewModel : ObservableRecipient
     private string selectedType = "day";
 
     [ObservableProperty]
-    private DateTime startDate = DateTime.Now;
+    private DateTime startDate;
 
     [ObservableProperty]
-    private DateTime lastDate = DateTime.Now;
+    private DateTime lastDate;
 
     public RelayCommand LoadDataRangeDateCommand;
 
@@ -48,9 +44,12 @@ public partial class MainViewModel : ObservableRecipient
 
     private PlotModel _revenue_ProfitGraph;
 
+    [ObservableProperty]
+    public bool isDirty = false;
+
     public PlotModel Revenue_ProfitGraph
     {
-    
+
         get => _revenue_ProfitGraph;
         set
         {
@@ -60,7 +59,7 @@ public partial class MainViewModel : ObservableRecipient
                 OnPropertyChanged(nameof(Revenue_ProfitGraph));
             }
         }
-            
+
     }
 
     [ObservableProperty]
@@ -81,7 +80,7 @@ public partial class MainViewModel : ObservableRecipient
     {
         _statisticDataService = statisticDataService;
         LoadDataAsync();
-        LoadDataRangeDateCommand = new RelayCommand(ExecuteLoadDataRangeDateCommand, CanExecuteLoadDataRangeDateCommand);
+        LoadDataRangeDateCommand = new RelayCommand(ExecuteLoadDataRangeDateCommand);
     }
 
     partial void OnRevenue_ProfitsChanged(IEnumerable<Revenue_Profit> value)
@@ -91,8 +90,8 @@ public partial class MainViewModel : ObservableRecipient
         var categoryAxis = new CategoryAxis { Position = AxisPosition.Left, Maximum = value.Count() };
 
         foreach (var item in value)
-        {        
-           categoryAxis.Labels.Add(item.Date);
+        {
+            categoryAxis.Labels.Add(item.Date);
         }
 
 
@@ -100,28 +99,28 @@ public partial class MainViewModel : ObservableRecipient
 
         double maxValue = 0;
 
-        foreach(var item in value)
+        foreach (var item in value)
         {
             double minRevenue = value.Max(item => item.Revenue) / 100000;
             double minProfit = value.Max(item => item.Profit) / 100000;
             maxValue = Math.Max(minRevenue, minProfit);
         }
 
-        var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0, AbsoluteMinimum = 0,Maximum=maxValue*1.1 };
+        var valueAxis = new LinearAxis { Position = AxisPosition.Bottom, MinimumPadding = 0, AbsoluteMinimum = 0, Maximum = maxValue * 1.1 };
         Graph.Axes.Add(valueAxis);
 
         // Tạo BarSeries cho doanh thu và lợi nhuận
         var barSeries1 = new BarSeries { Title = "Revenue", FillColor = OxyColors.Blue };
         foreach (var item in value)
         {
-            barSeries1.Items.Add(new BarItem { Value = item.Revenue/100000 });
+            barSeries1.Items.Add(new BarItem { Value = item.Revenue / 100000 });
         }
-     
+
 
         var barSeries2 = new BarSeries { Title = "Profit", FillColor = OxyColors.Green };
         foreach (var item in value)
         {
-            barSeries2.Items.Add(new BarItem { Value = item.Profit/100000 });
+            barSeries2.Items.Add(new BarItem { Value = item.Profit / 100000 });
         }
 
         Graph.Series.Add(barSeries1);
@@ -135,25 +134,33 @@ public partial class MainViewModel : ObservableRecipient
 
     partial void OnSelectedTypeChanged(string value)
     {
-       LoadDataAsync();
+        LoadDataAsync();
 
-        if(value == "day")
+        if (value == "day")
         {
-        
-                     PickRangeDate = Visibility.Visible;
-                    GrapVisibility = Visibility.Collapsed;
-         }
-         else
+            PickRangeDate = Visibility.Visible;
+            GrapVisibility = Visibility.Collapsed;
+        }
+        else
         {
-        
-                     PickRangeDate = Visibility.Collapsed;
-                   
-          }
+
+            PickRangeDate = Visibility.Collapsed;
+
+        }
+    }
+
+    public async void LoadBookSaleStat()
+    {
+        var (returnList2, _, _) = await _statisticDataService.GetBookSaleStatAsync(SelectedType);
+
+        if (returnList2 != null)
+        {
+            BookSaleStats = returnList2;
+        }
     }
 
     public async Task LoadDataAsync()
     {
-    
         IsLoading = true;
         IsContentReady = false;
 
@@ -163,44 +170,41 @@ public partial class MainViewModel : ObservableRecipient
         var (countNewOrders, _, _) = _statisticDataService.CountNewOrdersAsync(SelectedType);
         var (countBooks, _, _) = _statisticDataService.CountBooksAsync();
 
-          if (countSellingBooks != null)
-           {
-               CountSellingBooks = countSellingBooks;
-           }
+        if (countSellingBooks != null)
+        {
+            CountSellingBooks = countSellingBooks;
+        }
 
-           if(countNewOrders != null)
-           {
-               CountNewOrders = countNewOrders;
-           }
+        if (countNewOrders != null)
+        {
+            CountNewOrders = countNewOrders;
+        }
 
-           if(countBooks != null) { 
-            
-             CountBooks = countBooks;
-           }
-            
-          UpdateDataGraph();
+        if (countBooks != null)
+        {
 
-           IsLoading = false;
-           IsContentReady = true;
+            CountBooks = countBooks;
+        }
+
+        UpdateDataGraph();
+
+        IsLoading = false;
+        IsContentReady = true;
     }
 
     public async void UpdateDataGraph()
     {
         if (SelectedType != "day")
         {
-          var (returnList,message,error) =  await Task.Run(async () => await _statisticDataService.GetRevenue_ProfitAsync(SelectedType));
+            var (returnList, message, error) = await Task.Run(async () => await _statisticDataService.GetRevenue_ProfitAsync(SelectedType));
 
-            if(returnList != null)
+            if (returnList != null)
             {
-                 Revenue_Profits = returnList;
+                Revenue_Profits = returnList;
                 GrapVisibility = Visibility.Visible;
             }
 
-            var (returnList2, message2, error2) = await _statisticDataService.GetBookSaleStatAsync(SelectedType);
-            if (returnList2 != null)
-            {
-                BookSaleStats = returnList2;
-            }
+            LoadBookSaleStat();
         }
     }
 
@@ -213,7 +217,6 @@ public partial class MainViewModel : ObservableRecipient
         if (timeSpan.Days > 0 && timeSpan.Days <= 30)
         {
             return true;
-          
         }
         ErrorMessage = "Please select date range from 1 to 30 days";
         return false;
@@ -221,6 +224,7 @@ public partial class MainViewModel : ObservableRecipient
 
     public async void ExecuteLoadDataRangeDateCommand()
     {
+        IsDirty = false;
 
         string date1 = StartDate.ToString("yyyy-MM-dd");
         string date2 = LastDate.ToString("yyyy-MM-dd");

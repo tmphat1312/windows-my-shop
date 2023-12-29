@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using MyShop.Core.Contracts.Repository;
 using MyShop.Core.Http;
 using MyShop.Core.Models;
@@ -32,8 +26,8 @@ public class StatisticRepository : IStatisticRepository
             using var response = await client.GetAsync($"statistics/count-selling-books?type={query}");
             var content = response.Content.ReadAsStringAsync().Result;
             var httpResponse = JsonSerializer.Deserialize<HttpDataSchemaResponse<int>>(content);
-         
-           
+
+
 
             if (response.IsSuccessStatusCode)
             {
@@ -170,7 +164,7 @@ public class StatisticRepository : IStatisticRepository
             }
             else
             {
-                message = httpResponse.Error.Message;
+                message = httpResponse.Error?.Message;
                 ERROR_CODE = (int)response.StatusCode;
             }
         }

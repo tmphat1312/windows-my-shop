@@ -34,35 +34,41 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void Start_SelectedDateChanged(DatePicker sender, DatePickerSelectedValueChangedEventArgs args)
+    private void StartDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
     {
         PickDateError.Text = "";
+
+        var date = StartDate.Date;
 
         var today = DateTimeOffset.Now;
         var sevenDaysAgo = today.AddDays(-7);
 
-        var selectedDate = args.NewDate;
-
-        if (selectedDate > today)
+        if (date > today)
         {
             sender.Date = sevenDaysAgo;
             PickDateError.Text = "The start day is not greater than today";
+            return;
         }
+
+        ViewModel.StartDate = date.Value.DateTime;
+        ViewModel.IsDirty = true;
     }
 
-    private void End_SelectedDateChanged(DatePicker sender, DatePickerSelectedValueChangedEventArgs args)
+    private void EndDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
     {
         PickDateError.Text = "";
 
+        var date = EndDate.Date;
         var today = DateTimeOffset.Now;
 
-
-        var selectedDate = args.NewDate;
-
-        if (selectedDate > today)
+        if (date > today)
         {
             sender.Date = today;
             PickDateError.Text = "The last date is not greater than today";
+            return;
         }
+
+        ViewModel.LastDate = date.Value.DateTime;
+        ViewModel.IsDirty = true;
     }
 }

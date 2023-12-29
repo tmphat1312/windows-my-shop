@@ -128,20 +128,21 @@
                             <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 20 0 0" Spacing="20" VerticalAlignment="Bottom">
 
                                 <TextBlock Text="Date Range(Max 30 Days):" VerticalAlignment="Center" Margin="0 24 0 0"/>
-                                <DatePicker
+                                <CalendarDatePicker
                                     Header="Start Date:"
-                                    SelectedDateChanged="Start_SelectedDateChanged"
-                                    SelectedDate="{x:Bind ViewModel.StartDate,Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
+                                    x:Name="StartDate"
+                                    DateChanged="StartDate_DateChanged"
                                   />
 
-                                <DatePicker
+                                <CalendarDatePicker
                                      Header="Last Date:"
-                                     SelectedDateChanged="End_SelectedDateChanged"
-                                     SelectedDate="{x:Bind ViewModel.LastDate,Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
+                                    x:Name="EndDate"
+                                     DateChanged="EndDate_DateChanged"
                                    />
 
                                 <Button Content="Apply" Margin="0 24 24 0"
-                                        Command="{x:Bind ViewModel.LoadDataRangeDateCommand, Mode=OneWay}"
+                                        Command="{x:Bind ViewModel.LoadDataRangeDateCommand}"
+                                        IsEnabled="{x:Bind ViewModel.IsDirty, Mode=OneWay}"
                                         />
                             </StackPanel>
 
