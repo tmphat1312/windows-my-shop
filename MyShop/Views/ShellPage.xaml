@@ -53,57 +53,44 @@
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;"/>
                     </NavigationViewItem.Icon>
-
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Add a category" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddCategoryViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED11;"/>
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+
+                <NavigationViewItem Content="Add a category" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddCategoryViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED11;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
                 <NavigationViewItem Content="Books"  helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.BooksViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE780;"/>
                     </NavigationViewItem.Icon>
+                </NavigationViewItem>
 
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Add a book" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddBookViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82E;"/>
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
+                <NavigationViewItem Content="Add a book" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddBookViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82E;"/>
+                    </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
                 <NavigationViewItem Content="Orders" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.OrdersViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEE92;"/>
                     </NavigationViewItem.Icon>
-
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Add a order" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddOrderViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDC6;"/>
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
-
                 </NavigationViewItem>
+
+                <NavigationViewItem Content="Add an order" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AddOrderViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDC6;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
                 <NavigationViewItem Content="Import data" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.ImportDataViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8B6;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-
-            <!--<NavigationView.FooterMenuItems>
-                <NavigationViewItem Content="Account" helpers:NavigationHelper.NavigateTo="MyShop.ViewModels.AccountViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEC25;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </NavigationView.FooterMenuItems>-->
 
             <NavigationView.HeaderTemplate>
                 <DataTemplate>

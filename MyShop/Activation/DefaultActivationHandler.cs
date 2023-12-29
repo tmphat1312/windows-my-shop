@@ -30,13 +30,12 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
         if (openLastPage && !string.IsNullOrEmpty(lastOpenPage))
         {
             _navigationService.NavigateTo(lastOpenPage, args.Arguments);
+            _navigationService.Refresh();
         }
         else
         {
             _navigationService.NavigateTo(typeof(MainViewModel).FullName!, args.Arguments);
         }
-
-        //_navigationService.NavigateTo(typeof(BooksViewModel).FullName!, args.Arguments);
 
         await Task.CompletedTask;
     }

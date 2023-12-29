@@ -15,8 +15,8 @@
             <Grid Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <FontIcon
@@ -26,14 +26,14 @@
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center"
                     Foreground="{StaticResource SystemControlForegroundBaseHighBrush}" />
-                
+
                 <StackPanel
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-					<TextBlock Text="{x:Bind OrderDate}" Style="{StaticResource ListTitleStyle}" />
-					<TextBlock Text="{x:Bind Status}" Style="{StaticResource ListSubTitleStyle}" />
-				</StackPanel>
+                    <TextBlock Text="{x:Bind OrderDate}" Style="{StaticResource ListTitleStyle}" />
+                    <TextBlock Text="{x:Bind Status}" Style="{StaticResource ListSubTitleStyle}" />
+                </StackPanel>
 
                 <StackPanel
                     Grid.Column="2"
@@ -82,42 +82,54 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <!--641 is the default CompactModeThresholdWidth in NavigationView -->
-                        <AdaptiveTrigger MinWindowWidth="641" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="ListDetailsViewControl.ListHeaderTemplate" Value="{StaticResource ListHeaderTemplate}" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+    <ScrollViewer>
 
-        <!--Loading-->
-        <ProgressRing 
+        <Grid x:Name="ContentArea">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState>
+                        <VisualState.StateTriggers>
+                            <!--641 is the default CompactModeThresholdWidth in NavigationView -->
+                            <AdaptiveTrigger MinWindowWidth="641" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="ListDetailsViewControl.ListHeaderTemplate" Value="{StaticResource ListHeaderTemplate}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <!--Loading-->
+            <ProgressRing 
             IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
             Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
             Width="60"
             Margin="0, 20, 0, 20"
             Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
 
-        <controls:ListDetailsView
+            <StackPanel
             Visibility="{x:Bind ViewModel.IsContentReady, Mode=OneWay}" 
-            x:Uid="Orders"
-            x:Name="ListDetailsViewControl"
-            BackButtonBehavior="Manual"
-            Background="Transparent"
-            BorderBrush="Transparent"
-            DetailsTemplate="{StaticResource DetailsTemplate}"
-            ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-            ItemTemplate="{StaticResource ItemTemplate}"
-            ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
-            NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
-            SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
-            ViewStateChanged="OnViewStateChanged"/>
-    </Grid>
+            Spacing="20"
+            Padding="0, 20, 0, 20">
+
+                <TextBlock Text="Filters here" />
+
+                <controls:ListDetailsView
+                x:Uid="Orders"
+                x:Name="ListDetailsViewControl"
+                BackButtonBehavior="Manual"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                DetailsTemplate="{StaticResource DetailsTemplate}"
+                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                ItemTemplate="{StaticResource ItemTemplate}"
+                ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
+                NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
+                SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
+                ViewStateChanged="OnViewStateChanged"/>
+
+                <TextBlock Text="Pagination here" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>
