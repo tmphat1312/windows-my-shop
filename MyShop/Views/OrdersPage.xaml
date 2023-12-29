@@ -9,6 +9,7 @@
     xmlns:views="using:MyShop.Views"
     xmlns:behaviors="using:MyShop.Behaviors"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    xmlns:myControls="using:MyShop.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="ItemTemplate" x:DataType="models:Order">
@@ -108,10 +109,9 @@
             Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
 
             <StackPanel
-            Visibility="{x:Bind ViewModel.IsContentReady, Mode=OneWay}" 
+            Visibility="{x:Bind ViewModel.ContentIsReady, Mode=OneWay}" 
             Spacing="20"
             Padding="0, 20, 0, 20">
-
                 <TextBlock Text="Filters here" />
 
                 <controls:ListDetailsView
@@ -128,7 +128,19 @@
                 SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
                 ViewStateChanged="OnViewStateChanged"/>
 
-                <TextBlock Text="Pagination here" />
+                <!--Pagination-->
+                <myControls:PaginationControl 
+                    TotalPages="{x:Bind ViewModel.TotalPages, Mode=OneWay}" 
+                    CurrentPage="{x:Bind ViewModel.CurrentPage, Mode=OneWay}"
+                    TotalItems="{x:Bind ViewModel.TotalItems, Mode=OneWay}"
+                    ItemsPerPage="{x:Bind ViewModel.ItemsPerPage, Mode=OneWay}"
+                    From="{x:Bind ViewModel.From, Mode=OneWay}"
+                    To="{x:Bind ViewModel.To, Mode=OneWay}"
+                    HasPreviousPage="{x:Bind ViewModel.HasPreviousPage, Mode=OneWay}"
+                    HasNextPage="{x:Bind ViewModel.HasNextPage, Mode=OneWay}"
+                    GoToPreviousPageCommand="{x:Bind ViewModel.GoToPreviousPageCommand}"
+                    GoToNextPageCommand="{x:Bind ViewModel.GoToNextPageCommand}"
+                    />
             </StackPanel>
         </Grid>
     </ScrollViewer>
