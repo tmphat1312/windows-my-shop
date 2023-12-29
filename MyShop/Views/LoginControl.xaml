@@ -9,7 +9,7 @@
     mc:Ignorable="d">
 
     <Grid x:Name="Login" MinWidth="400" MaxWidth="440" Visibility="{x:Bind ViewModel.IsNotAuthenticated, Mode=OneWay}" Loaded="Login_Loaded">
-        <Border BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="2" Padding="32, 40" CornerRadius="10" Background="White">
+        <Border BorderBrush="{ThemeResource CardBorderBrush}" BorderThickness="2" Padding="32, 40" CornerRadius="10" Background="{ThemeResource CardBackgroundBrush}">
             <StackPanel Spacing="12">
                 <TextBlock Text="Login to your account" Margin="0,0,0,32" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" />
                 <TextBox Header="Email"  x:Name="LoginEmailBox" />
@@ -17,16 +17,16 @@
                 <CheckBox Content="Remember me" x:Name="RememberMeCheckBox" />
 
                 <!--Loading-->
-                <ProgressRing 
-                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
-                    Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" 
+                <ProgressRing
+                    IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
                     Width="60"
                     Margin="0, 20, 0, 20"
                     Height="{Binding Width, RelativeSource={RelativeSource Self}}"/>
 
                 <!--Error & Info-->
                 <InfoBarPanel>
-                    <InfoBar 
+                    <InfoBar
                         x:Name="ErrorInfoBar"
                         Title="Error Logging in"
                         Severity="Error"
@@ -36,10 +36,10 @@
                         Margin="0, 20, 0, 20"
                         />
                 </InfoBarPanel>
-                
-                
+
+
                 <Button Style="{StaticResource AccentButtonStyle}" Content="LOGIN" HorizontalAlignment="Center" FontSize="18" Margin="0, 16, 0, 0" Width="80" IsEnabled="{x:Bind ViewModel.IsNotLoading, Mode=OneWay}" x:Name="LoginButton" Click="LoginButton_Click" />
-                
+
                  <!--settings-->
                 <Expander
                     MinWidth="300"
