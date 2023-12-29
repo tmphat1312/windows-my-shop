@@ -69,7 +69,6 @@ public partial class AddOrderViewModel : ResourceLoadingViewModel, INavigationAw
 
         if (validBooks.Count == 0)
         {
-
             ErrorMessage = "Please select at least one book";
             NotfifyChanges();
             await Task.Delay(2000); // Chờ 2 giây

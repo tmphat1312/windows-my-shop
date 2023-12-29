@@ -82,7 +82,6 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
-            services.AddSingleton<ISampleDataService, SampleDataService>();
             services.AddSingleton<IUserDataService, UserDataService>();
             services.AddSingleton<IBookDataService, BookDataService>();
             services.AddSingleton<IBookRepository, BookRepository>();
@@ -96,6 +95,7 @@ public partial class App : Application
             services.AddSingleton<IStoreLoginCredentialsService, StoreCredentialsService>();
             services.AddSingleton<IStoreServerOriginService, StoreServerOriginService>();
             services.AddSingleton<IStorePageSettingsService, StorePageSettingsService>();
+            services.AddSingleton<IStoreLastOpenPageService, StoreLastOpenPageService>();
 
             // Views and ViewModels
             services.AddTransient<ImportDataViewModel>();
@@ -129,7 +129,6 @@ public partial class App : Application
             services.AddTransient<ShellPage>();
             services.AddTransient<ShellViewModel>();
             services.AddTransient<LoginControlViewModel>();
-
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

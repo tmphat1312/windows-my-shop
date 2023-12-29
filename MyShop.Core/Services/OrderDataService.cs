@@ -34,7 +34,7 @@ public class OrderDataService : IOrderDataService
 
     public async Task<(IEnumerable<Order>, int, string, int)> LoadDataAsync()
     {
-        _orderDataTuple = await _orderRepository.GetAllOrdersAsync();
+        _orderDataTuple = await _orderRepository.GetAllOrdersAsync(SearchParams);
 
         return _orderDataTuple;
     }
@@ -53,7 +53,6 @@ public class OrderDataService : IOrderDataService
 
     public async Task<(Order, string, int)> UpdateOrderAsync(Order order)
     {
-
         return await _orderRepository.UpdateOrderAsync(order);
     }
 

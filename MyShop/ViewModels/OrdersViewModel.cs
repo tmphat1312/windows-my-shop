@@ -17,8 +17,6 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     [ObservableProperty]
     private Order? selected;
 
-    [ObservableProperty]
-    public bool isContentReady = false;
 
     public ObservableCollection<Order> Source { get; private set; } = new ObservableCollection<Order>();
 
@@ -37,21 +35,27 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     {
         get;
     }
+
+    public RelayCommand ApplyFilterCommand
+    {
+        get;
+    }
     public OrdersViewModel(IOrderDataService OrderDataService, IStorePageSettingsService storePageSettingsService) : base(storePageSettingsService)
     {
         _orderDataService = OrderDataService;
 
         currentPage = 1;
 
-
         AddOrderCommand = new RelayCommand(AddOrder);
         DeleteOrderCommand = new RelayCommand(DeleteOrder, () => Selected != null);
         EditOrderCommand = new RelayCommand(EditOrder, () => Selected != null);
+        ApplyFilterCommand = new RelayCommand(LoadDataAsync);
+
+        FunctionOnCommand = LoadDataAsync;
     }
 
     private void UpdateCommands()
     {
-
         DeleteOrderCommand.NotifyCanExecuteChanged();
         EditOrderCommand.NotifyCanExecuteChanged();
     }
@@ -71,11 +75,12 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
 
     }
 
-    public async void OnNavigatedTo(object parameter)
+    private async void LoadDataAsync()
     {
-        Source.Clear();
         IsLoading = true;
-        IsContentReady = false;
+        NotfifyChanges();
+
+        _orderDataService.SearchParams = await BuildSearchParamsAsync();
 
         await Task.Run(async () => await _orderDataService.LoadDataAsync());
 
@@ -106,9 +111,13 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
         }
 
         IsLoading = false;
-        IsContentReady = true;
-
+        NotfifyChanges();
         EnsureItemSelected();
+    }
+
+    public void OnNavigatedTo(object parameter)
+    {
+        LoadDataAsync();
     }
 
     public void OnNavigatedFrom()
@@ -118,6 +127,5 @@ public partial class OrdersViewModel : ResourceLoadingViewModel, INavigationAwar
     public void EnsureItemSelected()
     {
         Selected = Source.Any() ? Source.First() : null;
-
     }
 }

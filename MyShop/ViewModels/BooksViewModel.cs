@@ -76,7 +76,6 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
                 Source.Add(item);
             }
 
-            IsLoading = false;
             TotalItems = totalItems;
 
             if (TotalItems == 0)
@@ -92,6 +91,7 @@ public partial class BooksViewModel : ResourceLoadingViewModel, INavigationAware
             }
         }
 
+        IsLoading = false;
         NotfifyChanges();
     }
 

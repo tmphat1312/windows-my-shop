@@ -53,8 +53,6 @@ public class OrderRepository : IOrderRepository
         return (order, message, ERROR_CODE);
     }
 
-   
-
     public async Task<(IEnumerable<Order>, int, string, int)> GetAllOrdersAsync()
     {
         var Orders = new List<Order>();
@@ -144,24 +142,24 @@ public class OrderRepository : IOrderRepository
             var content = new StringContent(JsonSerializer.Serialize(updateOrder), Encoding.UTF8, "application/json");
             var contentString = await content.ReadAsStringAsync();
             var response = await client.PatchAsync($"orders/{order.Id}", content);
-        
+
             if (response.IsSuccessStatusCode)
             {
-            
+
                 var responseContent = response.Content.ReadAsStringAsync().Result;
                 var orders = JsonSerializer.Deserialize<HttpDataSchemaResponse<Order>>(responseContent);
                 order = orders.Data;
             }
             else
             {
-            
+
                 message = response.ReasonPhrase;
                 ERROR_CODE = (int)response.StatusCode;
             }
         }
         catch (Exception ex)
         {
-        
+
             message = ex.Message;
             ERROR_CODE = -1;
         }
@@ -176,9 +174,9 @@ public class OrderRepository : IOrderRepository
 
         try
         {
-           
+
             var client = _httpClientFactory.CreateClient("Backend");
-           
+
             var response = await client.DeleteAsync($"orders/{order.Id}");
 
             if (response.IsSuccessStatusCode)

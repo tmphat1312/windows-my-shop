@@ -26,4 +26,18 @@ public sealed partial class OrdersPage : Page
             ViewModel.EnsureItemSelected();
         }
     }
+
+    private void FromDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+    {
+        var date = FromDate.Date;
+        var convertedDate = date.HasValue ? date.Value.DateTime : DateTime.MinValue;
+        ViewModel.SetFromDate(convertedDate);
+    }
+
+    private void ToDate_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+    {
+        var date = ToDate.Date;
+        var convertedDate = date.HasValue ? date.Value.DateTime : DateTime.MinValue;
+        ViewModel.SetToDate(convertedDate);
+    }
 }

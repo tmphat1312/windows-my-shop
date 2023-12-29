@@ -17,6 +17,7 @@ public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
     private readonly IStorePageSettingsService _storePageSettingsService;
+    private readonly IStoreLastOpenPageService _storeLastOpenPageService;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -32,17 +33,28 @@ public partial class SettingsViewModel : ObservableRecipient
     [ObservableProperty]
     public int itemsPerPage = 10;
 
+    [ObservableProperty]
+    public bool openLastPage;
+
+    public bool IsFirstLaunch
+    {
+        get;
+        set;
+    } = true;
+
     public ICommand SwitchThemeCommand
     {
         get;
     }
 
-    public SettingsViewModel(IThemeSelectorService themeSelectorService, IStorePageSettingsService storePageSettingsService)
+
+    public SettingsViewModel(IThemeSelectorService themeSelectorService, IStorePageSettingsService storePageSettingsService, IStoreLastOpenPageService storeLastOpenPageService)
     {
         _themeSelectorService = themeSelectorService;
         _storePageSettingsService = storePageSettingsService;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
+        _storeLastOpenPageService = storeLastOpenPageService;
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
             async (param) =>
@@ -60,11 +72,26 @@ public partial class SettingsViewModel : ObservableRecipient
     private async void InitializeAsync()
     {
         ItemsPerPage = await _storePageSettingsService.GetItemsPerPageAsync();
+        OpenLastPage = await _storeLastOpenPageService.GetOpenLastPageAsync();
+        await Task.CompletedTask;
     }
 
     public async void SaveItemsPerPage()
     {
         await _storePageSettingsService.SaveItemsPerPageAsync(ItemsPerPage);
+        await Task.CompletedTask;
+    }
+
+    public async void SaveOpenLastPage()
+    {
+        await _storeLastOpenPageService.SaveOpenLastPageAsync(true);
+        await Task.CompletedTask;
+    }
+
+    public async void SaveNotOpenLastPage()
+    {
+        await _storeLastOpenPageService.SaveOpenLastPageAsync(false);
+        await Task.CompletedTask;
     }
 
     private static string GetVersionDescription()
